@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh" class="lang-zh">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>pm-agent 技能包 · Skills Pack</title>
+<style>
+:root{--bg:#0f1115;--panel:#171a21;--panel2:#1e222b;--border:#2a2f3a;--txt:#e6e9ef;--sub:#9aa3b2;--accent:#5b8cff;--accent2:#39d3a6;--chip:#222836;}
+html.light{--bg:#ffffff;--panel:#f6f7f9;--panel2:#eef0f4;--border:#d8dce4;--txt:#1a1d24;--sub:#5b6472;--accent:#2563eb;--accent2:#0f9d76;--chip:#e7ebf2;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;}
+.wrap{max-width:960px;margin:0 auto;padding:32px 20px 80px;}
+header.top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:8px;}
+h1{font-size:30px;margin:0;letter-spacing:.3px;}
+h2{font-size:22px;margin:34px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+h3{font-size:17px;margin:22px 0 6px;}
+p{margin:8px 0;color:var(--txt);}
+.sub{color:var(--sub);font-size:14px;}
+.langbtn{display:inline-flex;gap:6px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:4px;cursor:pointer;}
+.langbtn button{border:0;background:transparent;color:var(--sub);font-size:14px;padding:6px 14px;border-radius:7px;cursor:pointer;font-weight:600;}
+.langbtn button.on{background:var(--accent);color:#fff;}
+.note{background:var(--panel);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;margin:14px 0;}
+pre.code{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;overflow:auto;font-size:13px;color:var(--txt);}
+.group{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:16px 0;}
+.skill{border-top:1px solid var(--border);padding:14px 0;}
+.skill:first-of-type{border-top:0;}
+.skill .name{font-weight:700;font-size:16px;}
+.tag{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;background:var(--chip);color:var(--sub);margin-left:8px;vertical-align:middle;border:1px solid var(--border);}
+.tag.orig{background:rgba(91,140,255,.15);color:var(--accent);border-color:transparent;}
+.tag.adapt{background:rgba(57,211,166,.13);color:var(--accent2);border-color:transparent;}
+.skill .desc{margin:6px 0 0;color:var(--sub);font-size:14.5px;}
+.qr{display:block;margin:18px auto;max-width:240px;width:240px;border-radius:12px;border:1px solid var(--border);}
+.center{text-align:center;}
+footer{margin-top:40px;color:var(--sub);font-size:13px;text-align:center;}
+a{color:var(--accent);}
+.lang-en .zh{display:none}
+.lang-zh .en{display:none}
+</style></head><body><div class="wrap">
+<header class="top">
+  <div>
+    <h1 class="zh">pm-agent 技能包（含第三方改造适配技能）</h1>
+    <h1 class="en">pm-agent Skills Pack (with third-party adapted skills)</h1>
+    <div class="sub zh">面向 WorkBuddy 的自定义技能集合 · 中文 / English 双语</div>
+    <div class="sub en">A custom skill collection for WorkBuddy · bilingual Chinese / English</div>
+  </div>
+  <div class="langbtn" id="langbtn">
+    <button data-lang="zh" class="on">中文</button>
+    <button data-lang="en">English</button>
+  </div>
+</header>
+<div class="note">
+  <p class="zh">这是一套面向 WorkBuddy（以及兼容 Anthropic Agent Skills 规范的工具）的自定义技能集合，分两部分：一是由作者自己沉淀的原创技能；二是第三方作者创作、由作者适配到 WorkBuddy 环境的技能。每个技能是一个独立目录，里面是 <code>SKILL.md</code> 加脚本、模板或参考文件。</p>
+  <p class="en">A custom skill collection for WorkBuddy (and tools compatible with the Anthropic Agent Skills spec). It has two parts: skills authored and maintained by the repo owner, and skills created by third-party authors and adapted into the WorkBuddy environment by the owner. Each skill is a standalone folder containing a <code>SKILL.md</code> plus scripts, templates, or references.</p>
+</div>
+<h2><span class="zh">这套包里有什么</span><span class="en">What's inside</span></h2>
+<p class="zh"><b>1. 作者原创技能</b>——<code>cyx-</code> 系列（作者把实际工作里反复打磨的方法论沉淀成技能）+ 少量自建工具技能。这些由作者自己写、自己维护。</p>
+<p class="en"><b>1. Original skills by the author</b> — the <code>cyx-</code> series (the author's battle-tested methodologies turned into skills) plus a few self-built utility skills, all written and maintained by the author.</p>
+<p class="zh"><b>2. 改造适配技能</b>——由第三方作者创作，由作者（Lulu）自行适配到 WorkBuddy 环境（部分做了运行时接线、依赖安装、shim 等改造，详见各技能 <code>SKILL.md</code> 内的适配说明）。</p>
+<p class="en"><b>2. Adapted third-party skills</b> — created by third-party authors and adapted into the WorkBuddy environment by the author (Lulu). Some needed runtime wiring, dependency install, or shims; see each skill's <code>SKILL.md</code> for adaptation notes.</p>
+<p class="zh">每个技能条目讲清三件事：<b>做什么 / 解决什么问题 / 适合场景</b>，并标注作者归属〔原创〕或〔改造适配 · 原作者〕。</p>
+<p class="en">Each skill entry states three things: <b>what it does / what problem it solves / when to use it</b>, and is tagged [Original] or [Adapted · original author].</p>
+<h2><span class="zh">怎么装</span><span class="en">How to install</span></h2>
+<p class="zh">把需要的技能目录整个复制到 WorkBuddy 的技能目录，重启或刷新即可识别。只用其中一部分也行，但凡是标注了「上游 / 下游」的，缺了上游产物下游就跑不起来，装的时候一并装上。</p>
+<p class="en">Copy the skill folders you need into WorkBuddy's skills directory, then restart or refresh to load them. You can use a subset, but if a skill is marked with an upstream/downstream dependency, install the upstream too or it won't run.</p>
+<pre class="code">~/.workbuddy/skills/</pre>
+<p class="zh">改造适配类技能如果带运行依赖（如 <code>archify</code> 需要 <code>npm install</code>、<code>drawio-*</code> 需要 <code>drawio-ai</code> 引擎），请按对应 <code>SKILL.md</code> 里的适配说明先把依赖装好。</p>
+<p class="en">Adapted skills with runtime dependencies (e.g. <code>archify</code> needs <code>npm install</code>; <code>drawio-*</code> needs the <code>drawio-ai</code> engine) require you to install those deps per the skill's adaptation notes first.</p>
+<h2 class="zh">一、作者原创技能（Lulu / Buddy 自建）</h2>
+<h2 class="en">Part 1 · Original skills (by Lulu / Buddy)</h2>
+<div class="group"><h3 class="zh">需求与产品规划</h3><h3 class="en">需求与产品规划</h3>
+<p class="zh sub">解决什么问题：把白皮书、截图、会议记录、脑中想法，收敛成能评审、能填数据的产品文档。<br>适合场景：立项前梳理、版本需求评审、给老板/客户讲清楚要做什么。</p>
+<p class="en sub">解决什么问题：把白皮书、截图、会议记录、脑中想法，收敛成能评审、能填数据的产品文档。<br>适合场景：立项前梳理、版本需求评审、给老板/客户讲清楚要做什么。</p>
+<div class="skill"><div class="name">cyx-summary-need<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">把一份产品资料 / 一堆素材 / 一份旧稿，整理成结构化、可直看、可填数据的功能需求文档（单文件暗色科技风 HTML）。</p>
+<p class="desc en">Turn a product brief, a pile of materials, or an old draft into a structured, viewable, data-fillable functional requirements doc (single-file dark tech-style HTML).</p>
+</div>
+<div class="skill"><div class="name">cyx-ears-need<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">按 EARS 六段式写需求条目的重型 PRD 章法，只在用户点名时加载。核心是十层骨架：评价准则、验收、异常、状态机等。</p>
+<p class="desc en">Heavyweight PRD method using the EARS six-clause requirement format, loaded only on request. A ten-layer skeleton covering evaluation criteria, acceptance, exceptions, state machines.</p>
+</div>
+<div class="skill"><div class="name">cyx-priority-need<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">输入产品名 + 目标版本 + 版本业务目标 + 需求清单，输出 P0–P3 优先级评估、RICE 打分、风险与行动建议。</p>
+<p class="desc en">Given product + target version + version goal + requirement list, output a P0–P3 priority assessment, RICE scoring, risks, and action advice.</p>
+</div>
+<div class="skill"><div class="name">cyx-strcuture-need<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">把一份已存在或规划中的产品/平台，基于其真实能力、界面与材料，组织成清晰、可直看、可讲、可立项评审的产品功能规划（十步链）。</p>
+<p class="desc en">Organize an existing or planned product/platform — from its real capabilities, UI, and materials — into a clear, viewable, presentable, review-ready product functional plan (ten-step chain).</p>
+</div>
+<div class="skill"><div class="name">cyx-original-need-md<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">为单个产品写一份《功能演进与需求分析》Markdown 主文档：从白皮书、业务介绍、官网、访谈等原始材料梳理演进路线与需求。</p>
+<p class="desc en">Write a Markdown master 'Feature Evolution &amp; Requirements Analysis' for one product, drawn from whitepapers, intros, official site, interviews.</p>
+</div>
+<div class="skill"><div class="name">cyx-original-need-html<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">为单个产品产出《功能演进与需求分析》单文件暗色科技风 HTML：左侧固定目录 + 八章骨架（演进路线、能力地图、需求清单）。</p>
+<p class="desc en">Produce a single-file dark tech-style HTML 'Feature Evolution &amp; Requirements Analysis' for one product: fixed left TOC + eight-chapter skeleton.</p>
+</div>
+</div>
+<div class="group"><h3 class="zh">调研与报告</h3><h3 class="en">调研与报告</h3>
+<p class="zh sub">解决什么问题：立住调研报告的底线——数据可溯源、来源拆分、口径显式、去 AI 味。<br>适合场景：写行业/竞品/市场调研，需要拿得出手、经得起追问。</p>
+<p class="en sub">解决什么问题：立住调研报告的底线——数据可溯源、来源拆分、口径显式、去 AI 味。<br>适合场景：写行业/竞品/市场调研，需要拿得出手、经得起追问。</p>
+<div class="skill"><div class="name">cyx-research-report<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">产出带数据来源标注、可信级标签、口径边界的中文市场/行业调研报告（单文件暗色科技风 HTML）。语言去 AI 味、通俗、严谨。</p>
+<p class="desc en">Produce Chinese market/industry research reports (single-file dark tech-style HTML) with data-source tags, credibility levels, and scope boundaries. Plain, rigorous, no AI jargon.</p>
+</div>
+</div>
+<div class="group"><h3 class="zh">课程与课件</h3><h3 class="en">课程与课件</h3>
+<p class="zh sub">解决什么问题：把教案、大纲、笔记做成单文件、能直接打开的交互式课件。<br>适合场景：老师做课、培训交付、把长文转成可讲的页面。</p>
+<p class="en sub">解决什么问题：把教案、大纲、笔记做成单文件、能直接打开的交互式课件。<br>适合场景：老师做课、培训交付、把长文转成可讲的页面。</p>
+<div class="skill"><div class="name">cyx-course-html<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">通用课堂课件 HTML 制作流程：把课程笔记、教案、大纲或既有课件，做成单文件、无依赖、中文、响应式、赛博暗色风的交互式 HTML。</p>
+<p class="desc en">General courseware HTML workflow: turn course notes, lesson plans, syllabi, or slides into a single-file, dependency-free, responsive, dark cyber-style Chinese HTML.</p>
+</div>
+<div class="skill"><div class="name">cyx-brief-course<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">项目式创作课的双轨交付：同一门课同时产出——课堂简版（暗色赛博霓虹单文件交互课件）+ 全时长版（含学案/讲义）。</p>
+<p class="desc en">Two-track delivery for project-based creative courses: from one source produce a classroom short version (dark cyber-neon single-file interactive courseware) and a full version with lesson plan/study guide.</p>
+</div>
+</div>
+<div class="group"><h3 class="zh">说好 AI 短剧管线</h3><h3 class="en">说好 AI 短剧管线</h3>
+<p class="zh sub">解决什么问题：从小说到短剧的一条流水线，每步产物供下一步用，不返工。<br>适合场景：做 AI 短剧/漫剧，需要流程化产出大纲→角色→剧本→分镜→美术。</p>
+<p class="en sub">解决什么问题：从小说到短剧的一条流水线，每步产物供下一步用，不返工。<br>适合场景：做 AI 短剧/漫剧，需要流程化产出大纲→角色→剧本→分镜→美术。</p>
+<div class="skill"><div class="name">cyx-shuohao-outline<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">把一本小说改编成短剧大纲五件套：改编说明、人物表、爽点表、分集梗概、资产清单，产出 outline.json + Markdown。</p>
+<p class="desc en">Adapt a novel into a short-drama outline kit: adaptation notes, character table, hook table, episode synopses, asset list — outputs outline.json + Markdown.</p>
+</div>
+<div class="skill"><div class="name">cyx-shuohao-characters<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">从小说/短故事拆出角色表、人物画像、形象提示词、音色提示词，并给每个角色出设定图（左半身像 + 右全身三视图）。</p>
+<p class="desc en">Extract character tables, profiles, image prompts, voice prompts from a novel/story, and produce a character sheet image (left bust + right full-body three-view) per role.</p>
+</div>
+<div class="skill"><div class="name">cyx-shuohao-script<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">给 AI 短剧写剧本：把大纲的分集梗概落成结构化的场次 + 节拍流（动作节拍与台词），认领上一环的产物。</p>
+<p class="desc en">Write AI short-drama scripts: turn episode synopses into structured scenes + beat flow (action beats and dialogue), consuming the outline output.</p>
+</div>
+<div class="skill"><div class="name">cyx-shuohao-storyboard<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">给 AI 短剧出分镜：三层结构——段（一次生成≤15 秒）→ 分镜（2–5 秒剪切，认领剧本节拍）→ 帧，产出分镜 JSON。</p>
+<p class="desc en">Storyboard AI short dramas in three layers — segment (one gen, ≤15s) → shot (2–5s cut claiming a script beat) → frame; outputs storyboard JSON.</p>
+</div>
+<div class="skill"><div class="name">cyx-shuohao-art<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">给 AI 短剧出美术设定集（场景 + 叙事道具）：场景的设计意图、一致性锚点、光照时段变体、空景提示词；道具的戏剧功能与提示词。</p>
+<p class="desc en">Art setting book for AI short dramas (scenes + narrative props): scene intent, consistency anchors, lighting/time variants, empty-scene prompts; prop dramatic function + prompts.</p>
+</div>
+</div>
+<div class="group"><h3 class="zh">文档处理与对齐</h3><h3 class="en">文档处理与对齐</h3>
+<p class="zh sub">解决什么问题：同一项目里派生文档各自为政、对不齐、乱放。<br>适合场景：课程/项目文档多版本管控、主课件与派生稿对齐。</p>
+<p class="en sub">解决什么问题：同一项目里派生文档各自为政、对不齐、乱放。<br>适合场景：课程/项目文档多版本管控、主课件与派生稿对齐。</p>
+<div class="skill"><div class="name">cyx-doc-align-baseline<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">把同一项目里的派生文档（讲课稿/大纲/学案/旧副本/Prompt 合集）对齐到一份内容基线，避免各说各话。</p>
+<p class="desc en">Align a project's derivative documents (scripts, syllabi, study guides, old copies, prompt sets) to one content baseline so they stay consistent.</p>
+</div>
+<div class="skill"><div class="name">cyx-doc-separate<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">统一管控参考素材与 AI 产出：分区隔离、精简输出、控制文件数量、规范归档，解决文件夹越堆越乱。</p>
+<p class="desc en">Manage reference materials and AI outputs: zone isolation, concise output, file-count control, standardized archiving — fixes messy, piling-up folders.</p>
+</div>
+</div>
+<div class="group"><h3 class="zh">内容提取</h3><h3 class="en">内容提取</h3>
+<p class="zh sub">解决什么问题：WebFetch 抓不到的动态站（抖音等）正文、要点、评论。<br>适合场景：要从短视频/动态页提取结构化内容做二次创作。</p>
+<p class="en sub">解决什么问题：WebFetch 抓不到的动态站（抖音等）正文、要点、评论。<br>适合场景：要从短视频/动态页提取结构化内容做二次创作。</p>
+<div class="skill"><div class="name">cyx-douyin-extract<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">提取抖音视频页的完整内容——标题、作者、时长、互动数据、AI 章节要点/逐条讲解正文、评论区，用真实浏览器抓取。</p>
+<p class="desc en">Extract a Douyin video page in full — title, author, duration, engagement stats, AI chapter highlights/full transcript, comments — via a real browser.</p>
+</div>
+</div>
+<div class="group"><h3 class="zh">技能工程</h3><h3 class="en">技能工程</h3>
+<p class="zh sub">解决什么问题：技能用久了会走样，教训没沉淀。<br>适合场景：维护 cyx 系列技能、调研开源生态、把经验回写进技能。</p>
+<p class="en sub">解决什么问题：技能用久了会走样，教训没沉淀。<br>适合场景：维护 cyx 系列技能、调研开源生态、把经验回写进技能。</p>
+<div class="skill"><div class="name">cyx-skill-evolution<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">cyx 系列共用的自我进化条款：任何技能被使用后，用户的修改/补充/纠偏都按本条款判定通用还是个案，回写进技能而非只改当次。</p>
+<p class="desc en">Self-evolution clause shared by cyx skills: any user edit/addition/correction during use is judged (generic vs case-specific) and written back into the skill, not just the current task.</p>
+</div>
+<div class="skill"><div class="name">cyx-search-github<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">在 GitHub 系统化调研某类产品/系统的开源生态，找出可复用组件与可参考的类似产品，产出关键词矩阵 + 真实仓库清单。</p>
+<p class="desc en">Systematically research the open-source ecosystem of a product/system type on GitHub; find reusable components and reference products; output a keyword matrix + real repo list.</p>
+</div>
+</div>
+<div class="group"><h3 class="zh">技能部署与发布</h3><h3 class="en">技能部署与发布</h3>
+<p class="zh sub">解决什么问题：本地技能怎么安全、干净地推上 GitHub 归档共享。<br>适合场景：把做好的技能打包发布、团队共享。</p>
+<p class="en sub">解决什么问题：本地技能怎么安全、干净地推上 GitHub 归档共享。<br>适合场景：把做好的技能打包发布、团队共享。</p>
+<div class="skill"><div class="name">cyx-git-push<span class="tag orig zh">〔原创 · Lulu〕</span><span class="tag orig en">[Original · Lulu]</span></div>
+<p class="desc zh">把本地技能目录或任意文件树推送到 GitHub 的标准流程：解决本机无 git 凭据助手、git push 卡在认证的问题。</p>
+<p class="desc en">Standard workflow to push a local skill directory or file tree to GitHub — solves the case where the machine has no git credential helper and git push stalls on auth.</p>
+</div>
+<div class="skill"><div class="name">gh-skill-install<span class="tag orig zh">〔原创 · Buddy〕</span><span class="tag orig en">[Original · Buddy]</span></div>
+<p class="desc zh">把 GitHub 上任意 Agent Skill 安装并适配到 WorkBuddy：覆盖安全审计、结构拷贝、托管运行时接线、CLI shim、冒烟测试。</p>
+<p class="desc en">Install and adapt any Agent Skill from GitHub into WorkBuddy: security audit, structural copy, managed-runtime wiring, CLI shim, smoke test.</p>
+</div>
+</div>
+<h2 class="zh">二、改造适配技能（第三方作者创作，作者适配到 WorkBuddy）</h2>
+<h2 class="en">Part 2 · Adapted skills (third-party authors, adapted by the repo author)</h2>
+<div class="note"><p class="zh">以下技能均由第三方作者创作，由作者（Lulu）自行适配到 WorkBuddy 的运行环境（部分做了运行时接线、依赖安装、shim 等改造，详见各技能 <code>SKILL.md</code> 内的适配说明）。版权归原作者，使用前请遵守各原作者的许可协议。</p>
+<p class="en">All skills below were created by third-party authors and adapted into the WorkBuddy environment by the repo author (Lulu). Copyright belongs to the original authors; comply with each author's license before use.</p></div>
+<div class="group"><h3 class="zh">图表与架构图（技术图 / 可编辑图）</h3><h3 class="en">图表与架构图（技术图 / 可编辑图）</h3>
+<p class="zh sub">解决什么问题：把架构、流程、时序、状态、数据关系画成能看、能改、能进文档的图。<br>适合场景：技术方案评审、给客户讲架构、出可编辑的 draw.io / Excalidraw 源文件。</p>
+<p class="en sub">解决什么问题：把架构、流程、时序、状态、数据关系画成能看、能改、能进文档的图。<br>适合场景：技术方案评审、给客户讲架构、出可编辑的 draw.io / Excalidraw 源文件。</p>
+<div class="skill"><div class="name">archify<span class="tag adapt zh">〔改造适配 · tt-a1i〕</span><span class="tag adapt en">[Adapted · tt-a1i]</span></div>
+<p class="desc zh">生成经过校验的架构图、流程图、时序图、状态机、数据血缘、生命周期等，输出可交互的离线 HTML（带 SVG/动效）。</p>
+<p class="desc en">Create polished, validated architecture, workflow, sequence, state-machine, data-lineage, lifecycle diagrams as interactive offline HTML (SVG/animation).</p>
+</div>
+<div class="skill"><div class="name">fireworks-tech-graph<span class="tag adapt zh">〔改造适配 · yizhiyanhua-ai〕</span><span class="tag adapt en">[Adapted · yizhiyanhua-ai]</span></div>
+<p class="desc zh">生成精确的 SVG 技术图，可导出 PNG 或离线 HTML，并支持把可动 SVG 渲染成 GIF。</p>
+<p class="desc en">Create precise SVG technical diagrams, export PNG or offline HTML, and render animated SVG to GIF.</p>
+</div>
+<div class="skill"><div class="name">drawio-skill<span class="tag adapt zh">〔改造适配 · Agents365-ai〕</span><span class="tag adapt en">[Adapted · Agents365-ai]</span></div>
+<p class="desc zh">创建、编辑、同步、检查、测试、发布可编辑的 draw.io 图表。</p>
+<p class="desc en">Create, edit, synchronize, inspect, test, and publish editable draw.io diagrams.</p>
+</div>
+<div class="skill"><div class="name">drawio-aws<span class="tag adapt zh">〔改造适配 · sparklabx〕</span><span class="tag adapt en">[Adapted · sparklabx]</span></div>
+<p class="desc zh">需要 AWS 架构图（VPC/网络、事件驱动、落地区、多可用区、Serverless 管道）时使用，生成可编辑 .drawio。</p>
+<p class="desc en">Use when asking for an AWS architecture diagram (VPC/networking, event-driven, landing zone, multi-AZ, serverless pipeline); produces editable .drawio.</p>
+</div>
+<div class="skill"><div class="name">drawio-azure<span class="tag adapt zh">〔改造适配 · sparklabx〕</span><span class="tag adapt en">[Adapted · sparklabx]</span></div>
+<p class="desc zh">需要 Azure 架构图（VNet、App Service、AKS、落地区、多区域）时使用，生成可编辑 .drawio。</p>
+<p class="desc en">Use when asking for an Azure architecture diagram (VNet, App Service, AKS, landing zone, multi-region); produces editable .drawio.</p>
+</div>
+<div class="skill"><div class="name">drawio-gcp<span class="tag adapt zh">〔改造适配 · sparklabx〕</span><span class="tag adapt en">[Adapted · sparklabx]</span></div>
+<p class="desc zh">需要 GCP / Google Cloud 架构图（VPC、GKE、Cloud Run、落地区、多区域）时使用，生成可编辑 .drawio。</p>
+<p class="desc en">Use when asking for a GCP / Google Cloud architecture diagram (VPC, GKE, Cloud Run, landing zone, multi-region); produces editable .drawio.</p>
+</div>
+<div class="skill"><div class="name">drawio-databricks<span class="tag adapt zh">〔改造适配 · sparklabx〕</span><span class="tag adapt en">[Adapted · sparklabx]</span></div>
+<p class="desc zh">需要 Databricks 湖仓架构图（Bronze/Silver/Gold、Delta Lake、Unity Catalog）时使用，生成可编辑 .drawio。</p>
+<p class="desc en">Use when asking for a Databricks lakehouse architecture diagram (medallion, Delta Lake, Unity Catalog); produces editable .drawio.</p>
+</div>
+<div class="skill"><div class="name">drawio-bpmn<span class="tag adapt zh">〔改造适配 · sparklabx〕</span><span class="tag adapt en">[Adapted · sparklabx]</span></div>
+<p class="desc zh">需要 BPMN / 泳道 / 业务流程图（带角色与阶段）时使用，生成可编辑 .drawio。</p>
+<p class="desc en">Use when asking for a BPMN, swimlane, or business-process diagram (roles/lanes, phases); produces editable .drawio.</p>
+</div>
+<div class="skill"><div class="name">diagram-maker<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">生成独立的 SVG/HTML 或可在 Excalidraw 里编辑的图表。</p>
+<p class="desc en">Create standalone SVG/HTML or editable Excalidraw diagrams.</p>
+</div>
+<div class="skill"><div class="name">excalidraw-diagram<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">生成 Excalidraw 图表 JSON，用草图风格做视觉论证。</p>
+<p class="desc en">Create Excalidraw diagram JSON files that make visual arguments in sketch style.</p>
+</div>
+<div class="skill"><div class="name">buddy-diagram-design<span class="tag adapt zh">〔改造适配 · Anthropic（Buddy 改造）〕</span><span class="tag adapt en">[Adapted · Anthropic（Buddy 改造）]</span></div>
+<p class="desc zh">Buddy 改造版：用自包含 HTML/SVG/PNG 绘制品牌化架构图、流程图、时序图、状态机、ER、时间线、泳道、象限等。</p>
+<p class="desc en">Buddy's adapted version: draw branded architecture/flow/sequence/state-machine/ER/timeline/swimlane/quadrant diagrams as self-contained HTML/SVG/PNG.</p>
+</div>
+</div>
+<div class="group"><h3 class="zh">办公文档（Word / PPT / Excel / PDF）</h3><h3 class="en">办公文档（Word / PPT / Excel / PDF）</h3>
+<p class="zh sub">解决什么问题：创建、读取、编辑、排版这四类最常用的办公文档。<br>适合场景：写报告、做演示、理表格、处理 PDF，且要样式统一。</p>
+<p class="en sub">解决什么问题：创建、读取、编辑、排版这四类最常用的办公文档。<br>适合场景：写报告、做演示、理表格、处理 PDF，且要样式统一。</p>
+<div class="skill"><div class="name">docx<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">创建、读取、编辑、美化石 Word 文档（.docx）。</p>
+<p class="desc en">Create, read, edit, and beautify Word documents (.docx).</p>
+</div>
+<div class="skill"><div class="name">pptx<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">创建、读取、编辑、美化石 PowerPoint 演示文稿（.pptx）。</p>
+<p class="desc en">Create, read, edit, and beautify PowerPoint presentations (.pptx).</p>
+</div>
+<div class="skill"><div class="name">xlsx<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">创建、读取、编辑、分析 Excel 电子表格（.xlsx）。</p>
+<p class="desc en">Create, read, edit, and analyze Excel spreadsheets (.xlsx).</p>
+</div>
+<div class="skill"><div class="name">pdf<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">对 PDF 做任何事：读取、合并、拆分、转换、加表单、加密、OCR 等。</p>
+<p class="desc en">Do anything with PDFs: read, merge, split, convert, add forms, encrypt, OCR.</p>
+</div>
+<div class="skill"><div class="name">theme-factory<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">给产物套用主题样式的工具包（暗色、品牌色等）。</p>
+<p class="desc en">Toolkit for styling artifacts with a theme (dark, brand colors, etc.).</p>
+</div>
+</div>
+<div class="group"><h3 class="zh">设计与前端</h3><h3 class="en">设计与前端</h3>
+<p class="zh sub">解决什么问题：从界面视觉设计到可运行网页产物，再到测试，覆盖前端创作全链。<br>适合场景：做网页/交互件、定设计风格、生成插画与动图、测本地 Web 应用。</p>
+<p class="en sub">解决什么问题：从界面视觉设计到可运行网页产物，再到测试，覆盖前端创作全链。<br>适合场景：做网页/交互件、定设计风格、生成插画与动图、测本地 Web 应用。</p>
+<div class="skill"><div class="name">frontend-design<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">在构建前端界面时，提供有辨识度、有意图的视觉设计指引。</p>
+<p class="desc en">Guidance for distinctive, intentional visual design when building front-end interfaces.</p>
+</div>
+<div class="skill"><div class="name">ui-ux-pro-max<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">UI/UX 设计智能：67 种风格、96 套配色、57 套字体预设，按意图选设计语言。</p>
+<p class="desc en">UI/UX design intelligence: 67 styles, 96 palettes, 57 font presets; pick a design language by intent.</p>
+</div>
+<div class="skill"><div class="name">web-artifacts-builder<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">一套创建复杂多组件 WorkBuddy 产物的工具（网页/交互件）。</p>
+<p class="desc en">Suite of tools for creating elaborate, multi-component WorkBuddy artifacts (web/interactive).</p>
+</div>
+<div class="skill"><div class="name">canvas-design<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">在 .png / .pdf 文档里创作漂亮的视觉插画。</p>
+<p class="desc en">Create beautiful visual art in .png and .pdf documents.</p>
+</div>
+<div class="skill"><div class="name">algorithmic-art<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">用 p5.js 配合种子随机，生成可复现的算法艺术图。</p>
+<p class="desc en">Create reproducible algorithmic art using p5.js with seeded randomness.</p>
+</div>
+<div class="skill"><div class="name">brand-guidelines<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">把 WorkBuddy 官方品牌色与字体规范套用到生成的产物上。</p>
+<p class="desc en">Apply WorkBuddy's official brand colors and typography to generated artifacts.</p>
+</div>
+<div class="skill"><div class="name">slack-gif-creator<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">制作面向 Slack 优化的动画 GIF 的知识与工具。</p>
+<p class="desc en">Knowledge and utilities for creating animated GIFs optimized for Slack.</p>
+</div>
+<div class="skill"><div class="name">webapp-testing<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">与本地 Web 应用交互、做端到端测试的工具包。</p>
+<p class="desc en">Toolkit for interacting with and end-to-end testing local web applications.</p>
+</div>
+<div class="skill"><div class="name">course-html-to-md<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">把单文件课件/卡片式长页 HTML（图为主、字极简的中文宣讲页）反向转成结构化 Markdown。</p>
+<p class="desc en">Reverse-convert single-file courseware / card-style long-page HTML (image-led, minimal-text Chinese pitch pages) into structured Markdown.</p>
+</div>
+</div>
+<div class="group"><h3 class="zh">演示文稿 Deck</h3><h3 class="en">演示文稿 Deck</h3>
+<p class="zh sub">解决什么问题：一套风格各异的单文件 HTML 演示模板，选中主题直接填内容。<br>适合场景：做路演、上课、分享、品牌宣讲，不想从空白幻灯片做起。</p>
+<p class="en sub">解决什么问题：一套风格各异的单文件 HTML 演示模板，选中主题直接填内容。<br>适合场景：做路演、上课、分享、品牌宣讲，不想从空白幻灯片做起。</p>
+<div class="skill"><div class="name">deck-blueprint<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">奶油纸 + 锈红 + 蓝图网格遮罩 + 黑边硬卡片 + pipeline 盒的演示主题。</p>
+<p class="desc en">Cream paper + rust-red + blueprint grid masks + hard black-edged cards + pipeline boxes — a presentation deck theme.</p>
+</div>
+<div class="skill"><div class="name">deck-course-module<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">暖纸背景 + Playfair 字体，左侧学习目标常驻，含 MCQ 自测页的课程模块 deck。</p>
+<p class="desc en">Warm-paper background + Playfair font, persistent learning objectives on the left, MCQ self-test pages — a course-module deck.</p>
+</div>
+<div class="skill"><div class="name">deck-dir-key-nav<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">8 页单色背景、160px 大标题 + 4px 强调色 + Mono 箭头列表的方向导航 deck。</p>
+<p class="desc en">8-page monochrome background, 160px display title + 4px accent + Mono arrow list — a directional key-nav deck.</p>
+</div>
+<div class="skill"><div class="name">deck-graphify-dark<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">深夜渐变 + 漂浮光球 + SVG 力导向图谱 + JetBrains Mono 的暗色图谱 deck。</p>
+<p class="desc en">Late-night gradient + floating orbs + SVG force-directed graph + JetBrains Mono — a dark graphify deck.</p>
+</div>
+<div class="skill"><div class="name">deck-guizang-editorial<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">电子杂志 × 电子墨水；10 个版面 + 5 套调色板（墨水/靛蓝瓷/森林墨/牛皮纸/沙丘）。</p>
+<p class="desc en">eMagazine × eInk; 10 layouts + 5 palettes (ink/celadon/forest/ksraft/dune) — an editorial deck.</p>
+</div>
+<div class="skill"><div class="name">deck-hermes-cyber<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">黑底 + CRT 网格扫描线 + $ 命令行标题 + 薄荷绿大字 + 三档 tag 的赛博 deck。</p>
+<p class="desc en">Black base + CRT grid scanlines + $ command-line title + mint-green display + three-tier tags — a cyber deck.</p>
+</div>
+<div class="skill"><div class="name">deck-ljg-present<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">把大纲 1:1 铸成色块大字宣言 deck，原文不动只做美化；三档主题黑/红/黄。</p>
+<p class="desc en">Cast an outline 1:1 into bold color-block manifesto slides, beautifying only — three themes black/red/yellow.</p>
+</div>
+<div class="skill"><div class="name">deck-magazine-web<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">电子杂志 × 电子墨水风，WebGL 流体背景 + 衬线 display 的杂志 deck。</p>
+<p class="desc en">eMagazine × eInk style, WebGL fluid background + serif display — a magazine-web deck.</p>
+</div>
+<div class="skill"><div class="name">deck-obsidian<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">GitHub-dark + 紫蓝环境光 + 三色渐变标题 + GitHub 风代码的 Obsidian deck。</p>
+<p class="desc en">GitHub-dark + purple-blue ambient glow + three-color gradient title + GitHub-style code — an Obsidian deck.</p>
+</div>
+<div class="skill"><div class="name">deck-open-slide-canvas<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">锁死 1920×1080 画布，React 组件级自由组合、不绑模板的开放幻灯片画布。</p>
+<p class="desc en">Locked 1920×1080 canvas, React component-level free composition, template-free — an open slide canvas.</p>
+</div>
+<div class="skill"><div class="name">deck-pitch<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">10 页融资 deck：白底 + 蓝紫渐变 hero、traction 柱状图、$X.XM 融资额。</p>
+<p class="desc en">10-page fundraising deck: white base + blue-purple gradient hero, traction bars, $X.XM ask.</p>
+</div>
+<div class="skill"><div class="name">deck-presenter-mode<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">tokyo-night 默认主题，T 切换 5 套主题，S 打开提词器弹窗的演讲者模式 deck。</p>
+<p class="desc en">tokyo-night default theme, T to switch 5 themes, S to open a teleprompter popup — a presenter-mode deck.</p>
+</div>
+<div class="skill"><div class="name">deck-product-launch<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">暗 hero + 亮内容、橙→桃强调色、特性卡 + 定价 + CTA 的产品发布 deck。</p>
+<p class="desc en">Dark hero + light content, orange→peach accent, feature cards + pricing + CTA — a product-launch deck.</p>
+</div>
+<div class="skill"><div class="name">deck-replit<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">Replit Slides 八套主题（helix/holm/vance/bevel/world/atlas/blueh…）的 Replit deck。</p>
+<p class="desc en">Replit Slides eight themes (helix/holm/vance/bevel/world/atlas/blueh…) — a Replit deck.</p>
+</div>
+<div class="skill"><div class="name">deck-safety-alert<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">红琥珀警示色 + hazard 条纹 + L1/L2/L3 分级卡片 + 删除线标题的安全警示 deck。</p>
+<p class="desc en">Red-amber alert color + hazard stripes + L1/L2/L3 tiered cards + strikethrough titles — a safety-alert deck.</p>
+</div>
+<div class="skill"><div class="name">deck-simple<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">通用横向滑动 HTML deck，不要杂志调性的简洁 deck。</p>
+<p class="desc en">Generic horizontal-swipe HTML deck, no magazine tone — a simple deck.</p>
+</div>
+<div class="skill"><div class="name">deck-swiss-international<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">16 列网格 + 单一饱和强调色 + 22 个锁死版面（Klein Blue/Lemon/Mint…）的瑞士国际风 deck。</p>
+<p class="desc en">16-column grid + single saturated accent + 22 locked layouts (Klein Blue/Lemon/Mint…) — a Swiss-international deck.</p>
+</div>
+<div class="skill"><div class="name">deck-tech-sharing<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">GitHub-dark + JetBrains Mono + 终端代码块，含 agenda + Q&amp;A 的技术分享 deck。</p>
+<p class="desc en">GitHub-dark + JetBrains Mono + terminal code blocks, with agenda + Q&amp;A — a tech-sharing deck.</p>
+</div>
+<div class="skill"><div class="name">deck-xhs-pastel<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">奶油底 + 柔光 blob + 马卡龙圆角卡片 + Playfair 斜体序号的小红书 pastel deck。</p>
+<p class="desc en">Cream base + soft-glow blobs + macaron rounded cards + Playfair italic numerals — a Xiaohongshu pastel deck.</p>
+</div>
+<div class="skill"><div class="name">deck-xhs-post<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">9 页 3:4 竖版图文、暖 pastel + 虚线 sticker 卡片的小红书图文 deck。</p>
+<p class="desc en">9-page 3:4 vertical image-text, warm pastel + dashed sticker cards — a Xiaohongshu post deck.</p>
+</div>
+<div class="skill"><div class="name">deck-xhs-white<span class="tag adapt zh">〔改造适配 · 第三方（deck 演示模板系列）〕</span><span class="tag adapt en">[Adapted · 第三方（deck 演示模板系列）]</span></div>
+<p class="desc zh">纯白 + 顶部彩虹 bar + 渐变文字 + 马卡龙软卡片 + 黑底 pill 的小红书白底 deck。</p>
+<p class="desc en">Pure white + top rainbow bar + gradient text + macaron soft cards + black pill — a Xiaohongshu white deck.</p>
+</div>
+</div>
+<div class="group"><h3 class="zh">开发 · MCP · 测试 · API</h3><h3 class="en">开发 · MCP · 测试 · API</h3>
+<p class="zh sub">解决什么问题：对接 API、造 MCP 服务、写/迁移技能、查官方用法。<br>适合场景：调 Claude API、搭 MCP、把 Claude 技能搬进 WorkBuddy、学 WorkBuddy 用法。</p>
+<p class="en sub">解决什么问题：对接 API、造 MCP 服务、写/迁移技能、查官方用法。<br>适合场景：调 Claude API、搭 MCP、把 Claude 技能搬进 WorkBuddy、学 WorkBuddy 用法。</p>
+<div class="skill"><div class="name">claude-api<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">Claude API / Anthropic SDK 参考：模型 ID、参数、最佳实践、代码示例。</p>
+<p class="desc en">Reference for the Claude API / Anthropic SDK — model ids, parameters, best practices, code examples.</p>
+</div>
+<div class="skill"><div class="name">claude-skills-migrator<span class="tag adapt zh">〔改造适配 · Anthropic 生态〕</span><span class="tag adapt en">[Adapted · Anthropic 生态]</span></div>
+<p class="desc zh">把自定义的 Claude Code 技能批量迁移进 WorkBuddy 的技能格式。</p>
+<p class="desc en">Batch-migrate custom Claude Code skills into WorkBuddy's skill format.</p>
+</div>
+<div class="skill"><div class="name">mcp-builder<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">创建高质量 MCP（模型上下文协议）服务器的指引。</p>
+<p class="desc en">Guide for creating high-quality MCP (Model Context Protocol) servers.</p>
+</div>
+<div class="skill"><div class="name">skill-creator<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">创建新技能、改进现有技能、把技能提炼成可复用的方法。</p>
+<p class="desc en">Create new skills, modify and improve existing skills, and distill skills into reusable methods.</p>
+</div>
+<div class="skill"><div class="name">skill-migrate<span class="tag adapt zh">〔改造适配 · Anthropic 生态〕</span><span class="tag adapt en">[Adapted · Anthropic 生态]</span></div>
+<p class="desc zh">将 Anthropic 官方格式的 SKILL.md 技能（Claude skills 仓库）改造并安装到 WorkBuddy。</p>
+<p class="desc en">Adapt and install Anthropic-format SKILL.md skills (Claude skills repo) into WorkBuddy.</p>
+</div>
+<div class="skill"><div class="name">ai-course-md-to-html<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">把长篇 Markdown（方案、规格、系统设计、RFC、研究笔记）转成可直接讲的单文件 HTML 课程/讲义页。</p>
+<p class="desc en">Convert long-form Markdown (plans, specs, system design, RFCs, research notes) into a ready-to-present single-file HTML course/lecture page.</p>
+</div>
+<div class="skill"><div class="name">learning-guide<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">在回答任何关于如何使用 WorkBuddy 或其功能的问题前，先查证官方文档、教程与用例再作答。</p>
+<p class="desc en">Before answering any question about how to use WorkBuddy or its features, point to the matching official docs, tutorials, and use cases.</p>
+</div>
+<div class="skill"><div class="name">antigravity-api-skill<span class="tag adapt zh">〔改造适配 · Antigravity〕</span><span class="tag adapt en">[Adapted · Antigravity]</span></div>
+<p class="desc zh">在 WorkBuddy 内使用 Antigravity 反代出来的 API（Gemini 3 Flash/Pro、生图、视频理解）。</p>
+<p class="desc en">Use Antigravity-proxied APIs (Gemini 3 Flash/Pro, image generation, video understanding) inside WorkBuddy.</p>
+</div>
+</div>
+<div class="group"><h3 class="zh">内容 · 课程 · 分析</h3><h3 class="en">内容 · 课程 · 分析</h3>
+<p class="zh sub">解决什么问题：AI 内容创作、短视频剪辑、内部沟通、点子验证、股市分析。<br>适合场景：做图文/视频/音乐、剪映自动化、写内部材料、验创业点子、看股票。</p>
+<p class="en sub">解决什么问题：AI 内容创作、短视频剪辑、内部沟通、点子验证、股市分析。<br>适合场景：做图文/视频/音乐、剪映自动化、写内部材料、验创业点子、看股票。</p>
+<div class="skill"><div class="name">beatra<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">用同一个 AI 创作工具完成图片、视频、音乐与语音创作，查找公开社交数据，编辑视觉成果，集中管理生成资产。</p>
+<p class="desc en">One AI creation tool for images, video, music, and voice; find public social data, edit visuals, and centrally manage generated assets.</p>
+</div>
+<div class="skill"><div class="name">jianying-editor<span class="tag adapt zh">〔改造适配 · 剪映（第三方封装）〕</span><span class="tag adapt en">[Adapted · 剪映（第三方封装）]</span></div>
+<p class="desc zh">剪映 AI 自动化剪辑的高级封装 API（JyWrapper）：录屏、素材导入、字幕生成、Web 动效合成、工程导出；适配 macOS 与 Windows。</p>
+<p class="desc en">Advanced wrapper API (JyWrapper) for JianYing (CapCut CN) AI automated editing — screen recording, asset import, subtitles, web motion compositing, export; macOS + Windows.</p>
+</div>
+<div class="skill"><div class="name">internal-comms<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">帮用户写各类内部沟通材料（状态报告、领导层更新、3P 更新、公司简报等）。</p>
+<p class="desc en">Help write all kinds of internal communications (status reports, leadership updates, 3P updates, company newsletters).</p>
+</div>
+<div class="skill"><div class="name">idea-validator<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">用 Hexa 的 Opportunity Memo 框架和 PCV 方法论验证创业点子，评估问题-方案契合与市场机会。</p>
+<p class="desc en">Validate startup ideas using Hexa's Opportunity Memo framework and PCV methodology; assess problem-solution fit and market opportunity.</p>
+</div>
+<div class="skill"><div class="name">doc-coauthoring<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">引导用户走一套结构化的协作写文档流程（提案、技术规格、决策文档等）。</p>
+<p class="desc en">Guide users through a structured workflow for co-authoring documents (proposals, specs, decision docs).</p>
+</div>
+<div class="skill"><div class="name">discernment-nudge<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">在你给出可能被用户采纳的实质性回答或草稿前，插入一次判断提示，提醒用户自行核实。</p>
+<p class="desc en">Before you give a substantive answer or draft the user may act on, insert a discernment nudge reminding them to verify.</p>
+</div>
+<div class="skill"><div class="name">stock-analysis<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">用 Yahoo Finance 数据做股票与加密货币分析：组合管理、自选股提醒、分红分析、8 维评分、热点探测等。</p>
+<p class="desc en">Analyze stocks and crypto using Yahoo Finance data: portfolio management, watchlist alerts, dividend analysis, 8-dimension scoring, viral trend detection.</p>
+</div>
+<div class="skill"><div class="name">ai-product-methodology<span class="tag adapt zh">〔改造适配 · 第三方（原作者见技能文件内声明）〕</span><span class="tag adapt en">[Adapted · 第三方（原作者见技能文件内声明）]</span></div>
+<p class="desc zh">从 0 到 1 定义一款 AI 产品的结构化方法论：构思、定义或梳理一款 AI 产品（尤其基于大模型）时使用。</p>
+<p class="desc en">A structured methodology for defining an AI product from 0 to 1 — when conceiving, defining, or sorting out an LLM-based AI product.</p>
+</div>
+</div>
+<h2><span class="zh">说明</span><span class="en">Notes</span></h2>
+<ul>
+<li class="zh">技能里的图片资源（角色表模板图、报告缩略图等）已随技能目录一并提交，不受文本传输限制。</li>
+<li class="en">Image assets inside skills (character-sheet templates, report thumbnails, etc.) are committed alongside the skill folders, free of text-transfer limits.</li>
+<li class="zh">每个技能目录内的 <code>SKILL.md</code> 都写明了触发条件、上下游和禁区，装好后直接看对应文件即可。</li>
+<li class="en">Each skill's <code>SKILL.md</code> states its triggers, upstream/downstream, and guardrails — open it after installing.</li>
+<li class="zh">这套技能持续演进：发现错命令、过时信息或更好的写法，会通过 <code>cyx-skill-evolution</code> 的机制回写，不只改当次产物。</li>
+<li class="en">The pack evolves continuously: fixes and better wording are written back via the <code>cyx-skill-evolution</code> mechanism, not just patched for one task.</li>
+</ul>
+<h2><span class="zh">感谢支持</span><span class="en">Support</span></h2>
+<p class="zh">如果这套技能帮到了你，欢迎请作者喝杯咖啡。打开支付宝扫一扫：</p>
+<p class="en">If these skills helped you, you're welcome to buy the author a coffee. Scan with Alipay:</p>
+<img class="qr" src="assets/alipay-qr.jpg" alt="支付宝收款码 / Alipay">
+<p class="zh center">每一份支持都是持续整理、适配和更新这些技能的动力，谢谢。</p>
+<p class="en center">Every bit of support fuels keeping these skills organized, adapted, and updated. Thank you.</p>
+<footer>pm-agent skills pack · maintained by Lulu · adapted for WorkBuddy</footer>
+</div>
+<script>
+(function(){
+  var btn=document.getElementById('langbtn');
+  var html=document.documentElement;
+  function setLang(l){
+    html.className='lang-'+l;
+    html.setAttribute('lang', l==='zh'?'zh':'en');
+    btn.querySelectorAll('button').forEach(function(b){b.classList.toggle('on', b.dataset.lang===l);});
+    try{localStorage.setItem('pmagent_lang', l);}catch(e){}
+  }
+  var saved=null; try{saved=localStorage.getItem('pmagent_lang');}catch(e){}
+  var nav=(navigator.language||'zh').toLowerCase();
+  setLang(saved||(nav.indexOf('zh')===0?'zh':'en'));
+  btn.addEventListener('click', function(e){
+    var b=e.target.closest('button'); if(!b)return;
+    setLang(b.dataset.lang);
+  });
+})();
+</script>
+</body></html>

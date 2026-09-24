@@ -1,5 +1,9 @@
 # pm-agent技能包（含第三方改造适配技能）
 
+> **语言 / Language**
+> - 中文：本文件就是。
+> - English：看 `index.html`——这是一份带「中文 / English」切换按钮的自包含页面，在浏览器里打开就能点按钮换语言。GitHub 仓库页默认只显示这份中文 README，要看切换效果请打开 `index.html`。
+
 这是一套面向 WorkBuddy（以及兼容 Anthropic Agent Skills 规范的工具）的自定义技能集合。它分成两大部分：
 
 1. **作者原创技能**——`cyx-` 系列（Lulu 把实际工作里反复打磨的方法论沉淀成技能）+ 少量 Buddy 自建的工具技能。
