@@ -1,0 +1,6 @@
+{
+    "base_url": "http://127.0.0.1:8045/v1",
+    "api_key": "YOUR_API_KEY_HERE",
+    "default_chat_model": "gemini-3-flash",
+    "default_image_model": "gemini-3.1-flash-image"
+}

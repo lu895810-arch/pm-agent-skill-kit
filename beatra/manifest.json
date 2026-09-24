@@ -1,0 +1,99 @@
+{
+  "changelog": "Drop the instruction to rank a top-up tier down, and with it the hardcoded tier price and top-up address; add the read-only balance and ledger calls.",
+  "display_name": "Beatra",
+  "entry": "SKILL.md",
+  "homepage": "https://beatra.ai/install",
+  "icon": "https://beatra.ai/textures/icons/beatra-universal.png",
+  "localized": {
+    "en": {
+      "description": "Create AI images, videos, music, and voice, look up public social data, edit visual results, and keep generated assets easy to find and manage. Beatra Universal turns text into images, images and references into video, ideas into songs or instrumentals, and scripts into narration, while also supporting custom voice creation and public social media data lookup across YouTube, TikTok, Instagram, and X. Use it as an AI media generator and AI creative suite for text-to-image, image-to-video, AI video editing, AI music generation, text-to-speech, multilingual voice-over, voice cloning, multimodal content creation, and YouTube or TikTok data for posts, comments, accounts, and trends. Reuse source media, returned files, and public social findings across formats, follow production progress, and view actual credit use for completed creative work.",
+      "display_name": "Beatra Universal",
+      "summary": "Create AI images, videos, music, and voice, look up public social data, edit supported visual results, and keep returned files and credit use easy to track through one shared connection.",
+      "tags": [
+        "AI media generator",
+        "AI creative suite",
+        "public social data",
+        "social media data",
+        "AI image generator",
+        "AI video generator",
+        "AI music generator",
+        "AI voice generator",
+        "YouTube data",
+        "TikTok data",
+        "text to image",
+        "image to video",
+        "AI video editor",
+        "text to speech",
+        "voice cloning",
+        "multimodal content creation"
+      ],
+      "title": "Beatra Universal — AI Image, Video, Music, Voice & Public Social Data"
+    },
+    "ja": {
+      "description": "一つのAIクリエイティブツールでAI画像、動画、音楽、音声を制作し、公開ソーシャルデータを調べ、ビジュアルを編集しながら生成アセットをまとめて確認・管理できます。Beatra オールインワン制作は、AI画像生成（テキストから画像）、AI動画生成（画像から動画）、AI動画編集、アイデアから曲やインストを作るAI音楽生成、AI音声生成（音声読み上げ）、多言語ナレーション、AIボイスクローンに対応。YouTubeデータやTikTokデータに加え、InstagramとXの公開投稿、コメント、アカウント、トレンドを調べ、SNSデータを競合調査や制作に活かせます。AIコンテンツ制作とマルチモーダル制作のためのAIクリエイティブスイートとして、SNS、商品紹介、広告、講座、ポッドキャスト、短編動画、複数メディアの企画に活用でき、素材と生成済みファイル、調べた公開データを形式をまたいで再利用し、進行状況、成果物、実際の利用量、クレジット記録を確認できます。",
+      "display_name": "Beatra オールインワン制作",
+      "summary": "同じ接続でAI画像、動画、音楽、音声を作成し、公開ソーシャルデータを調べ、対応する画像や動画を編集しながら、返されたファイルと実際のクレジット使用量を確認できます。",
+      "tags": [
+        "AIコンテンツ制作",
+        "AIクリエイティブツール",
+        "公開ソーシャルデータ",
+        "SNSデータ",
+        "AI画像生成",
+        "AI動画生成",
+        "AI音楽生成",
+        "AI音声生成",
+        "YouTubeデータ",
+        "TikTokデータ",
+        "テキストから画像",
+        "画像から動画",
+        "AI動画編集",
+        "音声読み上げ",
+        "AIボイスクローン",
+        "マルチモーダル制作"
+      ],
+      "title": "Beatra オールインワン制作：AI画像・動画・音楽・音声と公開SNSデータ"
+    },
+    "zh": {
+      "description": "通过同一个AI创作工具完成AI图片、视频、音乐与语音创作，查找公开社交数据，编辑视觉成果，并集中查看和管理生成资产。Beatra 全能创作支持AI图片生成（文生图）、AI视频生成（图生视频）和AI视频编辑，通过AI音乐生成把想法做成歌曲或纯音乐，也可用AI语音生成（文字转语音）、多语言旁白和AI语音克隆完成跨媒介内容；还能查找抖音数据、小红书数据，以及 YouTube、TikTok、Instagram 与 X 上的公开帖子、笔记、评论、账号和趋势，把社交媒体数据用于竞品调研和创作。它是一款面向AI内容创作与多模态内容创作的AI创作套件，用起来就是一个把图片、视频、音乐与语音收在同一处的AI创作助手，适用于社交内容、产品展示、营销素材、课程、播客、短片和跨媒介项目；还能在不同媒介间复用原始素材、已有成果和查到的公开资料，查看制作进度、返回文件、实际用量和积分记录。",
+      "display_name": "视频短视频图片音乐音频配音口播数字人全能创作",
+      "summary": "通过同一连接生成AI图片、视频、音乐与语音，查找公开社交数据，编辑受支持的图片和视频，并清晰查看返回文件与实际积分用量。",
+      "tags": [
+        "AI内容创作",
+        "AI创作工具",
+        "公开社交数据",
+        "社交媒体数据",
+        "AI图片生成",
+        "AI视频生成",
+        "AI音乐生成",
+        "AI语音生成",
+        "抖音数据",
+        "小红书数据",
+        "文生图",
+        "图生视频",
+        "AI视频编辑",
+        "文字转语音",
+        "AI语音克隆",
+        "多模态内容创作",
+        "创作助手"
+      ],
+      "title": "Beatra 全能创作：AI图片、视频、音乐、语音与公开社交数据"
+    }
+  },
+  "mcp": {
+    "authentication": "device-bearer",
+    "credential_file": "~/.beatra/credentials.json",
+    "device_authorization_endpoint": "https://api.beatra.ai/oauth/device_authorization",
+    "name": "beatra",
+    "token_endpoint": "https://api.beatra.ai/oauth/token",
+    "transport": "streamable-http",
+    "url": "https://mcp.beatra.ai/mcp"
+  },
+  "name": "beatra",
+  "schema_version": 1,
+  "verification": {
+    "arguments": {},
+    "billable": false,
+    "tool": "beatra.tasks.list"
+  },
+  "version": "2.8.6"
+}

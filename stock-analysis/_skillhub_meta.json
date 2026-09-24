@@ -1,0 +1,23 @@
+{
+  "name": "Stock Analysis",
+  "installedAt": 1786436634993,
+  "source": "marketplace",
+  "version": "6.2.1",
+  "skillId": "skill_2053083961308913664",
+  "examples_zh": [
+    "为研究简报分析一组公开股票和加密资产，不作为投资建议",
+    "比较几家 AI 基础设施公司的公开市场表现",
+    "生成一份组合风险摘要供内部讨论",
+    "整理相关新闻、价格趋势和基本面数据"
+  ],
+  "examples_en": [
+    "Analyze public stocks and crypto assets for a research brief, not investment advice",
+    "Compare public-market performance of AI infrastructure companies",
+    "Generate a portfolio risk summary for internal discussion",
+    "Organize related news, price trends, and fundamentals data"
+  ],
+  "description_zh": "股票与加密货币分析（8维评分、组合管理、趋势扫描、传闻探测）",
+  "description_en": "Stock & crypto analysis with 8-dim scoring, portfolio, trend & rumor scanning",
+  "iconSource": "letter:auto",
+  "installedContentHash": "sha256:f38b2e746eb57ec3b31b9ec00c67fd0defd5d43a7d530da6ed819ff135aecb20"
+}

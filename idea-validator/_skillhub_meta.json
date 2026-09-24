@@ -1,0 +1,23 @@
+{
+  "name": "创业验证",
+  "installedAt": 1786436861872,
+  "source": "marketplace",
+  "version": "1.0.2",
+  "skillId": "skill_2053082102874447872",
+  "examples_zh": [
+    "验证一下'AI辅助写作工具'这个创业方向",
+    "评估我的商业想法可行性",
+    "分析这个产品的市场机会大小",
+    "帮我判断这个创业方向值不值得做"
+  ],
+  "examples_en": [
+    "Validate my startup idea for an AI writing tool",
+    "Evaluate the feasibility of my business idea",
+    "Analyze the market opportunity for this product",
+    "Should I pursue this startup direction? Help me decide."
+  ],
+  "description_zh": "创业想法验证，评估问题-方案匹配度与市场机会",
+  "description_en": "Validate startup ideas with problem-solution fit and market assessment",
+  "iconSource": "letter:auto",
+  "installedContentHash": "sha256:c69bbec3413c18ff5ae48e0393cdbf03913aee2515de891e45b4ea7c1b58d4ae"
+}

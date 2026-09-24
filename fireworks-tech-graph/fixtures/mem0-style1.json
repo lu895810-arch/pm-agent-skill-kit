@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "mode": "memory",
+  "template_type": "memory",
+  "style": 1,
+  "motion_scene": "memory-weave",
+  "quality_profile": "showcase",
+  "width": 960,
+  "height": 680,
+  "title": "Mem0 Memory Architecture",
+  "subtitle": "personal memory extraction, conflict resolution, storage, and retrieval",
+  "containers": [
+    { "id": "input-layer", "x": 40, "y": 110, "width": 880, "height": 110, "label": "Input Layer" },
+    { "id": "memory-core", "x": 40, "y": 260, "width": 880, "height": 140, "label": "Memory Manager" },
+    { "id": "storage-output", "x": 40, "y": 440, "width": 880, "height": 140, "label": "Storage and Retrieval" }
+  ],
+  "nodes": [
+    { "id": "user", "kind": "user_avatar", "x": 60, "y": 145, "width": 120, "height": 54, "label": "User", "fill": "#eff6ff", "stroke": "#3b82f6", "flat": true },
+    { "id": "app", "kind": "rect", "x": 280, "y": 145, "width": 160, "height": 54, "label": "AI App / Agent", "sublabel": "conversation input", "fill": "#ffffff", "stroke": "#cbd5e1", "flat": true },
+    { "id": "llm", "kind": "double_rect", "x": 560, "y": 145, "width": 140, "height": 54, "label": "LLM", "sublabel": "reason + extract", "fill": "#faf5ff", "stroke": "#8b5cf6", "flat": true },
+    { "id": "extractor", "kind": "rect", "x": 100, "y": 320, "width": 170, "height": 60, "label": "Fact Extractor", "sublabel": "salient memories", "fill": "#fff7ed", "stroke": "#f97316", "flat": true },
+    { "id": "manager", "kind": "double_rect", "x": 390, "y": 320, "width": 180, "height": 60, "label": "Memory Manager", "sublabel": "store · update · forget", "fill": "#faf5ff", "stroke": "#8b5cf6", "flat": true },
+    { "id": "resolver", "kind": "rect", "x": 700, "y": 320, "width": 160, "height": 60, "label": "Conflict Resolver", "sublabel": "merge + supersede", "fill": "#fff7ed", "stroke": "#f97316", "flat": true },
+    { "id": "vector", "kind": "cylinder", "x": 100, "y": 500, "width": 160, "height": 60, "label": "Vector Store", "sublabel": "semantic recall", "fill": "#ecfdf5", "stroke": "#10b981" },
+    { "id": "graph", "kind": "rect", "x": 400, "y": 500, "width": 160, "height": 60, "label": "Graph Memory", "sublabel": "relations + history", "fill": "#eff6ff", "stroke": "#3b82f6", "flat": true },
+    { "id": "response", "kind": "speech", "x": 700, "y": 500, "width": 160, "height": 60, "label": "Personalized Reply", "sublabel": "ranked context", "fill": "#faf5ff", "stroke": "#8b5cf6", "flat": true }
+  ],
+  "arrows": [
+    { "id": "request", "source": "user", "target": "app", "source_port": "right", "target_port": "left", "flow": "control", "motion_role": "ingress", "motion_stage": 1, "motion_order": 0, "label": "message" },
+    { "id": "reason", "source": "app", "target": "llm", "source_port": "right", "target_port": "left", "flow": "control", "motion_role": "reason", "motion_stage": 2, "motion_order": 0, "label": "reason" },
+    { "id": "extract", "source": "app", "target": "extractor", "source_port": "bottom", "target_port": "top", "flow": "data", "motion_role": "extract", "motion_stage": 3, "motion_order": 0, "label": "extract", "corridor_y": [240] },
+    { "id": "facts", "source": "extractor", "target": "manager", "source_port": "right", "target_port": "left", "flow": "data", "motion_role": "transform", "motion_stage": 4, "motion_order": 0, "label": "facts" },
+    { "id": "resolved", "source": "resolver", "target": "manager", "source_port": "left", "target_port": "right", "flow": "feedback", "motion_role": "resolve", "motion_stage": 4, "motion_order": 1, "label": "resolved" },
+    { "id": "write", "source": "manager", "target": "vector", "source_port": "bottom", "target_port": "top", "flow": "write", "motion_role": "memory-write", "motion_stage": 5, "motion_order": 0, "label": "write", "corridor_y": [420] },
+    { "id": "relate", "source": "vector", "target": "graph", "source_port": "right", "target_port": "left", "flow": "read", "motion_role": "memory-read", "motion_stage": 6, "motion_order": 0, "label": "retrieve" },
+    { "id": "context", "source": "graph", "target": "response", "source_port": "right", "target_port": "left", "flow": "control", "motion_role": "response-context", "motion_stage": 7, "motion_order": 0, "label": "context" }
+  ],
+  "legend_orientation": "horizontal",
+  "legend_x": 48,
+  "legend_y": 600,
+  "legend_locked": true,
+  "legend": [
+    { "flow": "control", "label": "control" },
+    { "flow": "write", "label": "memory write" },
+    { "flow": "read", "label": "memory read" },
+    { "flow": "data", "label": "data transform" }
+  ],
+  "footer": "Style 1 · Flat Icon · Mem0 memory lifecycle",
+  "footer_x": 48,
+  "footer_y": 650
+}

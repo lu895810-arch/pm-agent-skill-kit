@@ -1,0 +1,64 @@
+{
+  "name": "@yizhiyanhua-ai/fireworks-tech-graph",
+  "version": "1.2.0",
+  "description": "Agent Skill and CLI for geometry-safe technical diagrams, focused SVG-to-GIF motion, and offline HTML.",
+  "keywords": [
+    "claude-code",
+    "codex",
+    "openai-codex",
+    "agent-skills",
+    "skill",
+    "diagram",
+    "svg",
+    "architecture",
+    "flowchart",
+    "uml",
+    "sequence-diagram",
+    "er-diagram",
+    "visualization",
+    "animation",
+    "gif"
+  ],
+  "author": "yizhiyanhua-ai",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yizhiyanhua-ai/fireworks-tech-graph.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yizhiyanhua-ai/fireworks-tech-graph/issues"
+  },
+  "homepage": "https://yizhiyanhua-ai.github.io/fireworks-tech-graph/",
+  "bin": {
+    "fireworks-tech-graph": "scripts/fireworks.py"
+  },
+  "scripts": {
+    "test": "python3 -m unittest discover -s tests -v",
+    "check": "python3 tools/check_project_consistency.py && python3 tools/distribution.py --check",
+    "examples": "python3 scripts/fireworks.py examples"
+  },
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "README.zh.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "agents/",
+    "docs/",
+    "examples/",
+    "references/",
+    "schemas/",
+    "scripts/",
+    "tests/",
+    "fixtures/",
+    "templates/",
+    "assets/",
+    "!**/__pycache__/**",
+    "!**/*.pyc"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

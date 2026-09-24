@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JianYing Editor Skill | 官方开发者指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { scroll-behavior: smooth; }
+        .code-block-wrapper { position: relative; }
+        .code-block { background: #1a1a1a; color: #e4e4e7; border-radius: 0.75rem; padding: 1.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.05); }
+        .copy-btn { position: absolute; top: 0.75rem; right: 0.75rem; padding: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 0.5rem; opacity: 0; transition: all 0.2s; color: #94a3b8; z-index: 10; }
+        .code-block-wrapper:hover .copy-btn { opacity: 1; }
+        .copy-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+        .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .sidebar-link.active { border-left-color: #FFD100; color: #FFD100; font-weight: 600; }
+        .prompt-card { background: white; border: 1px solid #f1f5f9; padding: 1.5rem; border-radius: 1rem; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }
+        .dark .prompt-card { background: #1a1a1a; border-color: #262626; }
+        .prompt-card:hover { border-color: #FFD100; box-shadow: 0 10px 20px -10px rgba(0,0,0,0.1); }
+        .prompt-copy-btn { position: absolute; bottom: 1rem; right: 1rem; opacity: 0; transition: all 0.2s; }
+        .prompt-card:hover .prompt-copy-btn { opacity: 1; }
+        @keyframes flow {
+            from { stroke-dashoffset: 16; }
+            to { stroke-dashoffset: 0; }
+        }
+        @keyframes flow-reverse {
+            from { stroke-dashoffset: 0; }
+            to { stroke-dashoffset: 16; }
+        }
+        .animate-flow {
+            animation: flow 1s linear infinite;
+        }
+        .animate-flow-reverse {
+            animation: flow-reverse 1s linear infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        .animate-pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-[#0A0A0A] text-slate-900 dark:text-zinc-100 selection:bg-[#FFD100] selection:text-black">
+
+    <aside class="hidden lg:flex fixed left-0 top-0 h-screen w-64 flex-col border-r border-slate-200 dark:border-zinc-800 p-8 pt-24 z-40 bg-slate-50 dark:bg-[#0A0A0A]">
+        <div class="mb-12">
+            <h1 class="text-xl font-bold tracking-tighter">JY EDITOR <span class="text-[#FFD100]">SKILL</span></h1>
+            <p class="text-[10px] text-slate-400 mt-1 uppercase tracking-widest">Antigravity Skill v1.3</p>
+        </div>
+        <nav class="space-y-4 text-sm text-slate-500 dark:text-zinc-500">
+            <a href="#introduction" class="sidebar-link block border-l-2 border-transparent pl-4 hover:text-slate-900 dark:hover:text-white transition-all">项目简介</a>
+            <a href="#how-it-works" class="sidebar-link block border-l-2 border-transparent pl-4 hover:text-slate-900 dark:hover:text-white transition-all">互动原理</a>
+            <a href="#quick-start" class="sidebar-link block border-l-2 border-transparent pl-4 hover:text-slate-900 dark:hover:text-white transition-all">快速开始</a>
+            <a href="#ide-matrix" class="sidebar-link block border-l-2 border-transparent pl-4 hover:text-slate-900 dark:hover:text-white transition-all">多 IDE 安装</a>
+            <a href="#environment" class="sidebar-link block border-l-2 border-transparent pl-4 hover:text-slate-900 dark:hover:text-white transition-all">环境准备</a>
+            <a href="#ai-examples" class="sidebar-link block border-l-2 border-transparent pl-4 hover:text-slate-900 dark:hover:text-white transition-all">试试这样问 AI</a>
+            <a href="#faq" class="sidebar-link block border-l-2 border-transparent pl-4 hover:text-slate-900 dark:hover:text-white transition-all">常见问题 (FAQ)</a>
+        </nav>
+        <div class="mt-auto">
+            <a href="https://github.com/luoluoluo22/jianying-editor-skill" target="_blank" class="flex items-center space-x-3 p-4 bg-slate-100 dark:bg-zinc-900 rounded-2xl hover:bg-[#FFD100] hover:text-black transition-all group">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                <span class="text-xs font-bold uppercase tracking-widest">GitHub Repository</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="lg:ml-64 px-6 md:px-16 pt-24 pb-32 max-w-5xl">
+
+        <nav class="fixed top-0 right-0 left-0 lg:left-64 h-20 px-8 flex justify-between items-center z-50 backdrop-blur-md border-b border-slate-200 dark:border-zinc-800">
+            <div class="flex items-center space-x-4">
+                <a href="https://www.bilibili.com/video/BV1hLzCBzEDS/" target="_blank" class="text-[10px] font-bold uppercase tracking-widest px-4 py-2 bg-red-500 text-white rounded-full">B 站教程</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="https://github.com/luoluoluo22/jianying-editor-skill" target="_blank" class="p-2 text-slate-500 hover:text-[#FFD100] transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+                <button id="theme-toggle" class="p-3 rounded-xl border border-slate-200 dark:border-zinc-800 hover:bg-white dark:hover:bg-zinc-900 transition-all">
+                    <svg id="sun" class="hidden dark:block w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9h-1m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>
+                    <svg id="moon" class="dark:hidden w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+            </div>
+        </nav>
+
+        <section id="introduction" class="reveal active py-12">
+            <h2 class="text-6xl font-bold tracking-tight mb-6 leading-tight">JianYing Editor <br><span class="italic font-serif text-[#FFD100]">Skill for AI</span></h2>
+            <p class="text-xl text-slate-500 dark:text-zinc-400 mb-12 max-w-2xl leading-relaxed">
+                赋予 AI “手眼”，使其能通过 Python 代码全自动生成、编辑和导出剪映视频草稿。不仅支持基础剪辑，更支持网页动效生成 (Web-to-Video) 和生成式 VFX。
+            </p>
+        </section>
+
+        <section id="how-it-works" class="reveal py-24 border-t border-slate-100 dark:border-zinc-900">
+            <h3 class="text-4xl font-bold mb-16 text-center">互动原理 <span class="text-[#FFD100] italic">How it works</span></h3>
+
+            <div class="relative flex flex-col md:flex-row items-center justify-between gap-12 md:gap-0 px-4">
+                <svg class="hidden">
+                    <defs>
+                        <marker id="arrow-f" markerWidth="10" markerHeight="10" refX="8" refY="5" orientation="auto">
+                            <path d="M0,2 L8,5 L0,8 Z" fill="#FFD100" />
+                        </marker>
+                    </defs>
+                </svg>
+
+                <!-- Connector 1-2 (Desktop) -->
+                <div class="hidden md:block absolute left-[12.5%] w-[25%] top-8 z-0">
+                    <svg class="w-full overflow-visible" height="1" viewBox="0 0 100 1" preserveAspectRatio="none">
+                        <path d="M 0 0 L 95 0" fill="none" stroke="#FFD100" stroke-width="2" stroke-dasharray="4 4" class="animate-flow" opacity="0.8" marker-end="url(#arrow-f)" />
+                    </svg>
+                </div>
+                <!-- Connector 2-3 (Desktop) -->
+                <div class="hidden md:block absolute left-[37.5%] w-[25%] top-8 z-0">
+                    <svg class="w-full overflow-visible" height="1" viewBox="0 0 100 1" preserveAspectRatio="none">
+                        <path d="M 0 0 L 95 0" fill="none" stroke="#FFD100" stroke-width="2" stroke-dasharray="4 4" class="animate-flow" opacity="0.8" marker-end="url(#arrow-f)" />
+                    </svg>
+                </div>
+                <!-- Connector 3-4 (Desktop) -->
+                <div class="hidden md:block absolute left-[62.5%] w-[25%] top-8 z-0">
+                    <svg class="w-full overflow-visible" height="1" viewBox="0 0 100 1" preserveAspectRatio="none">
+                        <path d="M 0 0 L 95 0" fill="none" stroke="#FFD100" stroke-width="2" stroke-dasharray="4 4" class="animate-flow" opacity="0.8" marker-end="url(#arrow-f)" />
+                    </svg>
+                </div>
+
+                <!-- Node 1: AI -->
+                <div class="flex flex-col items-center z-10 w-full md:w-1/4">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-[#FFD100]/20 rounded-full animate-pulse-ring"></div>
+                        <div class="w-16 h-16 bg-white dark:bg-zinc-800 rounded-2xl border-2 border-[#FFD100] flex items-center justify-center shadow-lg animate-float">
+                            <svg class="w-8 h-8 text-[#FFD100]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71L12 2z"/></svg>
+                        </div>
+                    </div>
+                    <h4 class="mt-4 font-bold">AI 思考</h4>
+                    <p class="text-[10px] text-slate-500 text-center mt-1">Claude / Antigravity<br>生成指令流</p>
+                </div>
+
+                <!-- Mobile Arrow 1-2 -->
+                <div class="md:hidden flex justify-center -my-6">
+                    <svg class="w-6 h-12">
+                        <path d="M 12 0 L 12 48" fill="none" stroke="#FFD100" stroke-width="2" stroke-dasharray="4 4" class="animate-flow" />
+                    </svg>
+                </div>
+
+                <!-- Node 2: Skill -->
+                <div class="flex flex-col items-center z-10 w-full md:w-1/4">
+                    <div class="w-16 h-16 bg-white dark:bg-zinc-800 rounded-2xl border border-slate-200 dark:border-zinc-700 flex items-center justify-center shadow-lg">
+                        <svg class="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 24 24"><path d="M14.25 10.5l-2.25 2.25 2.25 2.25M9.75 10.5l2.25 2.25-2.25 2.25M21 12A9 9 0 113 12a9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h4 class="mt-4 font-bold">Skill 引擎</h4>
+                    <p class="text-[10px] text-slate-500 text-center mt-1">Python Wrapper<br>解析并转换逻辑</p>
+                </div>
+
+                <!-- Mobile Arrow 2-3 -->
+                <div class="md:hidden flex justify-center -my-6">
+                    <svg class="w-6 h-12">
+                        <path d="M 12 0 L 12 48" fill="none" stroke="#FFD100" stroke-width="2" stroke-dasharray="4 4" class="animate-flow" />
+                    </svg>
+                </div>
+
+                <!-- Node 3: Draft File -->
+                <div class="flex flex-col items-center z-10 w-full md:w-1/4">
+                    <div class="w-16 h-16 bg-white dark:bg-zinc-800 rounded-2xl border border-slate-200 dark:border-zinc-700 flex items-center justify-center shadow-lg">
+                        <svg class="w-8 h-8 text-orange-500" fill="currentColor" viewBox="0 0 24 24"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h4 class="mt-4 font-bold">剪映草稿</h4>
+                    <p class="text-[10px] text-slate-500 text-center mt-1">JSON 修改注入<br>无需官方 API</p>
+                </div>
+
+                <!-- Mobile Arrow 3-4 -->
+                <div class="md:hidden flex justify-center -my-6">
+                    <svg class="w-6 h-12">
+                        <path d="M 12 0 L 12 48" fill="none" stroke="#FFD100" stroke-width="2" stroke-dasharray="4 4" class="animate-flow" />
+                    </svg>
+                </div>
+
+                <!-- Node 4: Software -->
+                <div class="flex flex-col items-center z-10 w-full md:w-1/4">
+                    <div class="w-16 h-16 bg-black rounded-2xl border-2 border-[#FFD100] flex items-center justify-center shadow-lg">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h4 class="mt-4 font-bold">剪映软件</h4>
+                    <p class="text-[10px] text-slate-500 text-center mt-1">自动识别工程<br>专业级精细控制</p>
+                </div>
+            </div>
+
+            <div class="mt-20 p-8 bg-zinc-50 dark:bg-zinc-900/50 rounded-3xl border border-slate-200 dark:border-zinc-800 text-center">
+                <p class="text-slate-600 dark:text-zinc-400 text-sm leading-relaxed max-w-3xl mx-auto">
+                    这套方案的核心在于 <b>“文件注入驱动”</b>。AI 不需要直接操作鼠标点击，而是直接操作剪映底层的草稿数据。这不仅绕过了软件交互的延迟，更实现了对时间轴、素材坐标、滤镜参数的 <b>100% 精确控制</b>。
+                </p>
+            </div>
+        </section>
+
+        <section id="quick-start" class="reveal py-24 border-t border-slate-100 dark:border-zinc-900">
+            <h3 class="text-4xl font-bold mb-8">快速开始 (Quick Start)</h3>
+            <div class="code-block-wrapper">
+                <div class="bg-[#121212] rounded-2xl p-8 border border-white/5">
+                    <p class="text-xs text-zinc-500 uppercase tracking-[0.2em] mb-4">Windows 一键全套安装 (推荐)</p>
+                    <div class="code-block text-lg !text-white border-none p-0">irm is.gd/rpb65M | iex</div>
+                </div>
+                <button onclick="copyText('irm is.gd/rpb65M | iex', this)" class="copy-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+            </div>
+        </section>
+
+        <section id="ide-matrix" class="reveal py-24 border-t border-slate-100 dark:border-zinc-900">
+            <h3 class="text-4xl font-bold mb-8">多 IDE 手动安装矩阵</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Antigravity -->
+                <div class="code-block-wrapper">
+                    <div class="p-6 bg-white dark:bg-zinc-900 rounded-2xl border border-slate-100 dark:border-zinc-800 h-full">
+                        <h4 class="font-bold mb-3 text-sm flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span> Antigravity</h4>
+                        <div class="code-block !p-3 !text-[10px] truncate">git clone https://github.com/luoluoluo22/jianying-editor-skill.git .agent/skills/jianying-editor</div>
+                    </div>
+                    <button onclick="copyText('git clone https://github.com/luoluoluo22/jianying-editor-skill.git .agent/skills/jianying-editor', this)" class="copy-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                </div>
+                <!-- Trae -->
+                <div class="code-block-wrapper">
+                    <div class="p-6 bg-white dark:bg-zinc-900 rounded-2xl border border-slate-100 dark:border-zinc-800 h-full">
+                        <h4 class="font-bold mb-3 text-sm flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span> Trae IDE</h4>
+                        <div class="code-block !p-3 !text-[10px] truncate">git clone https://github.com/luoluoluo22/jianying-editor-skill.git .trae/skills/jianying-editor</div>
+                    </div>
+                    <button onclick="copyText('git clone https://github.com/luoluoluo22/jianying-editor-skill.git .trae/skills/jianying-editor', this)" class="copy-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                </div>
+                <!-- Claude Code -->
+                <div class="code-block-wrapper">
+                    <div class="p-6 bg-white dark:bg-zinc-900 rounded-2xl border border-slate-100 dark:border-zinc-800 h-full">
+                        <h4 class="font-bold mb-3 text-sm flex items-center"><span class="w-2 h-2 bg-orange-500 rounded-full mr-2"></span> Claude Code</h4>
+                        <div class="code-block !p-3 !text-[10px] truncate">git clone https://github.com/luoluoluo22/jianying-editor-skill.git .claude/skills/jianying-editor</div>
+                    </div>
+                    <button onclick="copyText('git clone https://github.com/luoluoluo22/jianying-editor-skill.git .claude/skills/jianying-editor', this)" class="copy-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                </div>
+                <!-- Cursor -->
+                <div class="code-block-wrapper">
+                    <div class="p-6 bg-white dark:bg-zinc-900 rounded-2xl border border-slate-100 dark:border-zinc-800 h-full">
+                        <h4 class="font-bold mb-3 text-sm flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span> Cursor / VSCode</h4>
+                        <div class="code-block !p-3 !text-[10px] truncate">git clone https://github.com/luoluoluo22/jianying-editor-skill.git skills/jianying-editor</div>
+                    </div>
+                    <button onclick="copyText('git clone https://github.com/luoluoluo22/jianying-editor-skill.git skills/jianying-editor', this)" class="copy-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                </div>
+            </div>
+        </section>
+
+        <section id="environment" class="reveal py-24 border-t border-slate-100 dark:border-zinc-900">
+            <h3 class="text-4xl font-bold mb-12 text-[#FFD100]">环境准备 (Essential)</h3>
+            <div class="p-8 bg-amber-50 dark:bg-amber-900/10 rounded-3xl border border-amber-100 dark:border-amber-500/10 mb-12">
+                <h4 class="font-bold text-amber-900 dark:text-amber-400 mb-2">版本说明</h4>
+                <p class="text-sm">草稿生成适配新版剪映。只有需要 Windows 无人值守自动导出时，才建议使用剪映 5.9 或更低版本。</p>
+            </div>
+            <h4 class="font-bold mb-4">安装 Python 依赖</h4>
+            <div class="code-block-wrapper">
+                <div class="code-block text-sm">pip install uiautomation playwright pynput edge-tts pymediainfo<br>playwright install chromium</div>
+                <button onclick="copyText('pip install uiautomation playwright pynput edge-tts pymediainfo\nplaywright install chromium', this)" class="copy-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+            </div>
+        </section>
+
+        <section id="ai-examples" class="reveal py-24 border-t border-slate-100 dark:border-zinc-900">
+            <h3 class="text-4xl font-bold mb-12">试试这样问 AI</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="prompt-card group">
+                    <div>
+                        <div class="text-[9px] font-bold text-green-500 uppercase tracking-widest mb-3">🟢 基础：极简剪辑</div>
+                        <p class="font-medium text-slate-800 dark:text-white leading-relaxed">"来一个简单的剪辑"</p>
+                    </div>
+                    <button onclick="copyText('来一个简单的剪辑', this)" class="prompt-copy-btn p-2 bg-slate-50 dark:bg-zinc-800 rounded-lg border border-slate-200 dark:border-zinc-700 hover:text-[#FFD100]"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                </div>
+                <div class="prompt-card group">
+                    <div>
+                        <div class="text-[9px] font-bold text-blue-500 uppercase tracking-widest mb-3">🟡 进阶：精准搜索与特效</div>
+                        <p class="font-medium text-slate-800 dark:text-white leading-relaxed text-sm">"帮我把 assets/ 里的视频导入，配上 BGM，最后加一个带打字机动画的标题。"</p>
+                    </div>
+                    <button onclick="copyText('帮我把 assets/ 里的视频导入，配上 BGM，最后加一个带打字机动画的标题。', this)" class="prompt-copy-btn p-2 bg-slate-50 dark:bg-zinc-800 rounded-lg border border-slate-200 dark:border-zinc-700 hover:text-[#FFD100]"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                </div>
+                <div class="prompt-card group">
+                    <div>
+                        <div class="text-[9px] font-bold text-purple-500 uppercase tracking-widest mb-3">✨ 创意：网页动效合成</div>
+                        <p class="font-medium text-slate-800 dark:text-white leading-relaxed">"帮我用网页写一个‘红心粒子爆炸’的动效，并导入到剪映。"</p>
+                    </div>
+                    <button onclick="copyText('帮我用网页写一个‘红心粒子爆炸’的动效，并导入到剪映。', this)" class="prompt-copy-btn p-2 bg-slate-50 dark:bg-zinc-800 rounded-lg border border-slate-200 dark:border-zinc-700 hover:text-[#FFD100]"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                </div>
+                <div class="prompt-card group">
+                    <div>
+                        <div class="text-[9px] font-bold text-red-500 uppercase tracking-widest mb-3">🔴 骨灰：全自动流水线</div>
+                        <p class="font-medium text-slate-800 dark:text-white leading-relaxed">"分析视频 assets/video.mp4 制作 60 秒影视解说。"</p>
+                    </div>
+                    <button onclick="copyText('分析视频 assets/video.mp4 制作 60 秒影视解说。', this)" class="prompt-copy-btn p-2 bg-slate-50 dark:bg-zinc-800 rounded-lg border border-slate-200 dark:border-zinc-700 hover:text-[#FFD100]"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="reveal py-24 border-t border-slate-100 dark:border-zinc-900">
+            <h3 class="text-4xl font-bold mb-12">常见问题 (FAQ)</h3>
+            <div class="space-y-6">
+                <div class="p-8 bg-white dark:bg-zinc-900 rounded-2xl border border-slate-100 dark:border-zinc-800">
+                    <h4 class="font-bold mb-2 flex items-start text-sm uppercase tracking-widest text-[#FFD100]">看不到新生成的草稿？</h4>
+                    <p class="text-sm text-slate-500 dark:text-zinc-400 leading-relaxed">剪映软件不会实时刷新列表。生成草稿后，请<b>重启剪映</b>，或者随便点击一个旧草稿再退出来，就能看到新的了。</p>
+                </div>
+                <div class="p-8 bg-white dark:bg-zinc-900 rounded-2xl border border-slate-100 dark:border-zinc-800">
+                    <h4 class="font-bold mb-2 flex items-start text-sm uppercase tracking-widest text-[#FFD100]">自动导出失败？</h4>
+                    <p class="text-sm text-slate-500 dark:text-zinc-400 leading-relaxed">自动导出脚本模拟了 Windows 鼠标键盘操作。macOS 请生成草稿后在剪映里手动导出；Windows 上剪映 5.9 或早版最稳。</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="py-20 border-t border-slate-100 dark:border-zinc-900 text-center opacity-40">
+            <p class="text-[9px] uppercase tracking-[0.6em]">© 2026 ELYSIAN x JIANYING SKILL / POWERED BY ANTIGRAVITY</p>
+        </footer>
+
+    </main>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        }
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
+        });
+
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.sidebar-link');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) current = section.getAttribute('id');
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) link.classList.add('active');
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        function copyText(text, btn) {
+            navigator.clipboard.writeText(text);
+            const originalIcon = btn.innerHTML;
+            btn.innerHTML = '<svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+            setTimeout(() => { btn.innerHTML = originalIcon; }, 2000);
+        }
+    </script>
+</body>
+</html>

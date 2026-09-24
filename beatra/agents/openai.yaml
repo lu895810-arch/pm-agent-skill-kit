@@ -1,0 +1,4 @@
+interface:
+  display_name: "Beatra"
+  short_description: "Create image, video, music, speech, and look up public social data with Beatra"
+  default_prompt: "Use $beatra to create media or look up public social data."
