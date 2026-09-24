@@ -1,8 +1,8 @@
+[English](README.en.md) | 中文
+
 # pm-agent技能包（含第三方改造适配技能）
 
-> **语言 / Language**
-> - 中文：本文件就是。
-> - English：Open the bilingual page (中文 / English toggle) at **https://pm-agent-skills.app.workbuddy.host/** — GitHub doesn't render HTML files inside a repo, so `index.html` here shows as plain source code; use the live page instead.
+在线双语版（中文 / English 按钮切换）：https://pm-agent-skills.app.workbuddy.host/
 
 这是一套面向 WorkBuddy（以及兼容 Anthropic Agent Skills 规范的工具）的自定义技能集合。它分成两大部分：
 
