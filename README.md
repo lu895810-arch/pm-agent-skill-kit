@@ -2,7 +2,7 @@
 
 > **语言 / Language**
 > - 中文：本文件就是。
-> - English：看 `index.html`——这是一份带「中文 / English」切换按钮的自包含页面，在浏览器里打开就能点按钮换语言。GitHub 仓库页默认只显示这份中文 README，要看切换效果请打开 `index.html`。
+> - English：Open the bilingual page (中文 / English toggle) at **https://pm-agent-skills.app.workbuddy.host/** — GitHub doesn't render HTML files inside a repo, so `index.html` here shows as plain source code; use the live page instead.
 
 这是一套面向 WorkBuddy（以及兼容 Anthropic Agent Skills 规范的工具）的自定义技能集合。它分成两大部分：
 
