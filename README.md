@@ -1,4 +1,4 @@
-# cyx 技能包（含第三方改造适配技能）
+# pm-agent技能包（含第三方改造适配技能）
 
 这是一套面向 WorkBuddy（以及兼容 Anthropic Agent Skills 规范的工具）的自定义技能集合。它分成两大部分：
 
