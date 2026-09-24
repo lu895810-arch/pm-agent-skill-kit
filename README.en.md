@@ -1,4 +1,4 @@
-English | [中文](README.md)
+[English](README.en.md) | [中文](README.md)
 
 # pm-agent Skills Pack (with third-party adapted skills)
 

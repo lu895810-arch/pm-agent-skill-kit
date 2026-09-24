@@ -1,4 +1,4 @@
-[English](README.en.md) | 中文
+[English](README.en.md) | [中文](README.md)
 
 # pm-agent技能包（含第三方改造适配技能）
 
