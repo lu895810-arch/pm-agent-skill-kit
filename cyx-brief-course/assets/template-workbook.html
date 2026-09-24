@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>【课程名】 · 【学案名】</title>
+<style>
+  :root{
+    --ink:#262019; --faint:#7A7260; --line:#C9C0A8;
+    --fill:#F5F1E4; --fill2:#FBF8EF;
+    --red:#B3402F; --teal:#1F6E6B; --gold:#8A6D1F;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#E9E4D6;font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink)}
+  .sheet{width:210mm;min-height:296mm;margin:8px auto;background:#fff;padding:12mm 13mm;box-shadow:0 2px 14px rgba(0,0,0,.18);position:relative}
+  .tbanner{background:#FFF6DF;border:1.5px dashed var(--gold);border-radius:8px;padding:8px 12px;font-size:10.5pt;color:#6B5A1E;margin-bottom:8px}
+  @media print{
+    body{background:#fff}
+    .sheet{width:auto;min-height:auto;margin:0;padding:0;box-shadow:none;page-break-after:always}
+    .sheet:last-child{page-break-after:auto}
+    .tbanner{display:none}
+    @page{size:A4 portrait;margin:11mm 12mm}
+  }
+
+  /* ---------- 窄屏自适应（必留） ----------
+     .sheet 写死 210mm，窄屏会横向溢出，check_brief_course.py --render 在 600px 档会 FAIL。
+     这一段放在 @media print 之后，只作用于屏幕；打印仍走上面那一段，A4 版式不受影响。 */
+  @media screen and (max-width:794px){
+    body{padding:12px 0 40px}
+    .sheet{width:100%;max-width:100%;min-height:0;margin:0 0 14px;padding:18px 14px 52px}
+    .wake{grid-template-columns:repeat(2,1fr)}
+    .grid2,.sieve,.fourgrid{grid-template-columns:1fr}
+    .frames{grid-template-columns:repeat(2,1fr)}
+    .stampbar{grid-template-columns:repeat(4,1fr)}
+    .mast .top{flex-wrap:wrap}
+    h1{font-size:21px}
+    table{font-size:11px}
+    th,td{padding:4px 5px}
+    td.l{white-space:normal}
+  }
+
+  /* ---------- 通用 ---------- */
+  .kicker{font-size:9pt;letter-spacing:3px;color:var(--faint)}
+  h1{font-size:20pt;letter-spacing:2px}
+  h2.sec{font-size:13pt;color:var(--red);border-bottom:2.5px solid var(--red);padding-bottom:3px;margin:14px 0 8px;display:flex;align-items:baseline;gap:8px}
+  h2.sec .no{font-size:10pt;color:#fff;background:var(--red);border-radius:4px;padding:1px 7px;letter-spacing:1px}
+  h2.sec .hint{margin-left:auto;font-size:9pt;font-weight:400;color:var(--faint);letter-spacing:0}
+  .blank{display:inline-block;border-bottom:1.5px solid var(--ink);min-width:60px}
+  .blank.w1{min-width:100px}.blank.w2{min-width:160px}.blank.w3{min-width:230px}
+  .note{font-size:9.5pt;color:var(--faint);line-height:1.7}
+  .hl{border-bottom:1.5px solid var(--line);height:9.5mm}
+
+  table{border-collapse:collapse;width:100%}
+  th,td{border:1.5px solid var(--ink);padding:4px 6px;font-size:10.5pt;text-align:center;vertical-align:middle}
+  th{background:var(--fill);font-weight:700;letter-spacing:1px}
+  td.l{text-align:left}
+  tr.ex td{background:var(--fill2);color:var(--faint);font-style:italic}
+  td.tall{height:13mm}
+  tr.ex td.tall{height:auto}
+
+  /* ---------- 第 1 页 ---------- */
+  .mast{border:2.5px solid var(--ink);border-radius:10px;padding:10px 14px;background:var(--fill2)}
+  .mast .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .mast .sub{font-size:10pt;color:var(--faint);letter-spacing:1px}
+  .mast .lead{font-family:"KaiTi","楷体",serif;font-size:13.5pt;margin:6px 0 4px}
+  .ids{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:11pt}
+  .idbox{flex:1;min-width:150px;border:1.5px dashed var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+
+  .wake{display:flex;gap:6px;margin-top:10px}
+  .wake .cell{flex:1;border:2px solid var(--ink);border-radius:8px;padding:5px 3px;text-align:center;background:#fff}
+  .wake .cell .ic{font-size:15pt}
+  .wake .cell .nm{font-size:8.5pt;font-weight:700;letter-spacing:.5px;margin-top:2px}
+  .wake .cell .dt{font-size:8pt;color:var(--faint);margin-top:3px;border-top:1px dashed var(--line);padding-top:2px}
+  .wake .cell.final{border-color:var(--red);border-style:double;border-width:3.5px;background:#FFF6DF}
+  .wake .cell.final .nm{color:var(--red)}
+
+  /* ---------- 通用组件 ---------- */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:6px}
+  .grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:6px}
+  .box{border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff;font-size:10pt;line-height:1.65}
+  .box b{color:var(--teal)}
+  .box.warn{border-color:#D9A79C;background:#FDF6F3}
+  .box.warn b{color:var(--red)}
+  .anchor{border:2px solid var(--ink);border-radius:9px;padding:6px 10px;background:#fff;font-size:9.5pt;line-height:1.65}
+  .anchor .an{display:block;font-weight:700;color:var(--red);margin-bottom:3px;font-size:10pt}
+  .frames{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:8px;margin-top:6px}
+  .frame{border:1.5px solid var(--ink);border-radius:8px;background:#fff;height:32mm;position:relative}
+  .frame .fl{position:absolute;top:3px;left:7px;font-size:9pt;color:var(--faint)}
+  .fourgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+  .gcell{border:2px solid var(--ink);border-radius:8px;background:#fff;height:30mm;position:relative}
+  .gcell .gn{position:absolute;top:4px;left:7px;width:17px;height:17px;border-radius:50%;border:1.5px solid var(--ink);font-size:8.5pt;font-weight:700;line-height:15px;text-align:center}
+  .signrow{display:flex;justify-content:space-between;gap:10px;margin-top:6px;font-size:10pt;flex-wrap:wrap}
+  .sieve{border:2px solid var(--ink);border-radius:9px;padding:6px 10px;background:#fff;font-size:10pt;line-height:1.65}
+  .sieve .sn{font-weight:700;color:var(--red)}
+  .mk-yes{color:var(--teal);font-weight:700}
+  .mk-no{color:var(--red);font-weight:700}
+  .stampbar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:6px}
+  .stampbar .sc{border:2px solid var(--ink);border-radius:8px;padding:5px 2px;text-align:center;background:#fff;font-size:8.5pt;line-height:1.4}
+  .stampbar .sc .si{font-size:14pt;display:block}
+  .stampbar .sc .sd{color:var(--faint);border-top:1px dashed var(--line);margin-top:3px;padding-top:2px;font-size:7.5pt}
+  .stampbar .sc.last{border-color:var(--red);border-style:double;border-width:3.5px;background:#FFF6DF}
+  .motto{margin-top:10px;text-align:center;font-family:"KaiTi","楷体",serif;font-size:13pt;letter-spacing:2px;color:var(--ink)}
+  .after{margin-top:10px;border:1.5px dashed var(--line);border-radius:8px;padding:7px 11px;font-size:10pt;line-height:1.8}
+  .foot{position:absolute;bottom:6mm;left:13mm;right:13mm;display:flex;justify-content:space-between;font-size:8.5pt;color:var(--faint)}
+</style>
+</head>
+<body>
+
+<!-- ================= 第 1 页 · 序章（报头 ＋ 公约 ＋ 红线） ================= -->
+<section class="sheet">
+  <!-- 教师打印说明：打印时自动隐藏。只写「怎么印」，不写「这是什么」 -->
+  <div class="tbanner">
+    <b>🖨 打印说明（打印时这行不出现）</b><br>
+    ① 按 A4 竖版、双面打印，共 【N】 页；② 第 【N】 页为空白纸本，按组印，每组 【N】 份；③ 装订后请学生填写封面组名与姓名。
+  </div>
+
+  <div class="mast">
+    <div class="top">
+      <div><div class="kicker">【学段】项目式创作课 · 【融合的学科】</div><h1>📖 【学案名】</h1></div>
+      <div class="sub">章节制 · 序章 ＋ 【N】 章 ｜ 第 ____ 组</div>
+    </div>
+    <div class="lead">「【全课核心句，用引号括起来】」</div>
+    <div class="ids">
+      <div class="idbox">组名：<span class="blank w2"></span></div>
+      <div class="idbox">姓名：<span class="blank w1"></span></div>
+      <div class="idbox">我的岗位：<span class="blank w1"></span><div class="note" style="margin-top:3px">【四个岗位名，用 / 分隔】（序章定岗，【之后固定 / 每章往后挪一格】）</div></div>
+    </div>
+  </div>
+
+  <!-- 六件成果格：flex 排一行，最后一格 .final 双线红边强调「整套作品包」 -->
+  <div class="wake">
+    <div class="cell"><div class="ic">📇</div><div class="nm">① 【第 1 件】</div><div class="dt">第01章 · 盖／涂　月＿日</div></div>
+    <div class="cell"><div class="ic">🧩</div><div class="nm">② 【第 2 件】</div><div class="dt">第02章 · 盖／涂　月＿日</div></div>
+    <div class="cell"><div class="ic">✏️</div><div class="nm">③ 【第 3 件】</div><div class="dt">第03章 · 盖／涂　月＿日</div></div>
+    <div class="cell"><div class="ic">🔧</div><div class="nm">④ 【第 4 件】</div><div class="dt">第04章 · 盖／涂　月＿日</div></div>
+    <div class="cell"><div class="ic">🖼️</div><div class="nm">⑤ 【第 5 件】</div><div class="dt">第05章 · 盖／涂　月＿日</div></div>
+    <div class="cell final"><div class="ic">🪧</div><div class="nm">⑥ 【第 6 件】· 整套作品包</div><div class="dt">第【N】章 · 【终章名】</div></div>
+  </div>
+  <p class="note" style="margin-top:5px">↑ 这个项目要交的六件。【写明哪一章不新增东西、哪一章交出最末一件，以及最后一件不是单件而是整套】</p>
+
+  <h2 class="sec"><span class="no">公约</span>【共同体名】公约 🤝<span class="hint">齐读一遍，读完开工</span></h2>
+  <div class="grid2">
+    <div class="box"><b>① 【公约 1】</b>【一句大白话解释，带具体判据】</div>
+    <div class="box"><b>② 【公约 2】</b>【】</div>
+    <div class="box"><b>③ 【公约 3】</b>【】</div>
+    <div class="box"><b>④ 【公约 4】</b>【】</div>
+  </div>
+
+  <h2 class="sec"><span class="no">底线</span>【N】条红线 🚫<span class="hint">碰一条，本章不盖章</span></h2>
+  <div class="grid2">
+    <div class="box warn"><b>【红线 1】</b>【具体到什么程度算犯规】</div>
+    <div class="box warn"><b>【红线 2】</b>【】</div>
+    <div class="box warn"><b>【红线 3】</b>【】</div>
+    <div class="box warn"><b>【红线 4】</b>【写明哪些要标、哪些不用标】</div>
+  </div>
+
+  <div class="motto">「【第 1 页格言，用引号括起来】」</div>
+  <div class="foot"><span>【课程名】 · 【学案名】</span><span>第 1 页 / 共 【N】 页</span></div>
+</section>
+
+<!-- ================= 第 2 页 · 岗位 ＋ 分工表 ＋ 盖章规则 ================= -->
+<section class="sheet">
+  <h2 class="sec"><span class="no">岗位</span>四个岗位 🎭<span class="hint">组员整门课固定不换组；岗位【序章定下之后也固定 / 每章往后挪一格】</span></h2>
+  <table>
+    <tr><th style="width:16%">岗位</th><th style="width:28%">管什么</th><th style="width:28%">每章要交出什么</th><th style="width:28%">明确不许做</th></tr>
+    <tr><td><b>【岗位 1】</b></td><td class="l">【职责】</td><td class="l">【产出】</td><td class="l">【禁区】</td></tr>
+    <tr><td><b>【岗位 2】</b></td><td class="l"></td><td class="l"></td><td class="l"></td></tr>
+    <tr><td><b>【岗位 3】</b></td><td class="l"></td><td class="l"></td><td class="l"></td></tr>
+    <tr><td><b>【岗位 4】</b></td><td class="l"></td><td class="l"></td><td class="l"></td></tr>
+  </table>
+  <p class="note" style="margin-top:6px">【组人数与岗位数不匹配时，多出来的人干什么——必须写清】</p>
+
+  <h2 class="sec"><span class="no">分工</span>我们组的岗位分配 👥<span class="hint">【序章定下之后，整门课都不换 / 每章盖章后往后挪一格】</span></h2>
+  <table>
+    <tr><th style="width:16%">岗位</th><th style="width:26%">谁</th><th>【这门课他要一直负责的事】</th></tr>
+    <tr><td class="l">【岗位 1】</td><td class="tall"></td><td>【长期职责】</td></tr>
+    <tr><td class="l">【岗位 2】</td><td class="tall"></td><td></td></tr>
+    <tr><td class="l">【岗位 3】</td><td class="tall"></td><td></td></tr>
+    <tr><td class="l">【岗位 4】</td><td class="tall"></td><td></td></tr>
+    <tr class="ex"><td class="l">【助理（多于四人时）】</td><td class="tall"></td><td></td></tr>
+  </table>
+  <div class="signrow"><span>代号对应：A = <span class="blank w2"></span>　B = <span class="blank w2"></span>　C = <span class="blank w2"></span>　D = <span class="blank w2"></span></span></div>
+  <p class="note" style="margin-top:5px">【岗位固定时的理由一句，如：岗位定死，是为了让每个人在同一件事上越做越熟】</p>
+
+  <h2 class="sec"><span class="no">通关</span>怎么盖章 🎖<span class="hint">两个条件同时满足，老师才盖</span></h2>
+  <div class="grid2">
+    <div class="box"><b>① 本章成果达标。</b>按本章的「过关标准」一条条对，达标才算。</div>
+    <div class="box"><b>② 全员说得清自己的工作。</b>组里每个人都能讲明：我这一章做了什么、为什么这么做。</div>
+  </div>
+  <div class="box warn" style="margin-top:7px"><b>【岗位到人之后不再变动 / 盖章之后才轮换岗位】。</b>本章没盖章的组，下一章先补齐，【岗位照旧 / 下一个岗要等这一章过了才轮到】。</div>
+
+  <!-- 盖章格：7 格一行，最后一格 .last 双线红边 -->
+  <div class="stampbar">
+    <div class="sc"><span class="si">📇</span>第 1 个章<div class="sd">　月　日</div></div>
+    <div class="sc"><span class="si">🧩</span>第 2 个章<div class="sd">　月　日</div></div>
+    <div class="sc"><span class="si">✏️</span>第 3 个章<div class="sd">　月　日</div></div>
+    <div class="sc"><span class="si">🔧</span>第 4 个章<div class="sd">　月　日</div></div>
+    <div class="sc"><span class="si">🖼️</span>第 5 个章<div class="sd">　月　日</div></div>
+    <div class="sc"><span class="si">✅</span>第 6 个章<div class="sd">　月　日</div></div>
+    <div class="sc last"><span class="si">🪧</span>参展章<div class="sd">第【N】章</div></div>
+  </div>
+  <div class="foot"><span>【课程名】 · 【学案名】</span><span>第 2 页 / 共 【N】 页</span></div>
+</section>
+
+<!-- ================= 第 3 页 · 第01章（示范：四列对照表 ＋ 卡片格 ＋ 三框草图 ＋ 过关盒） ================= -->
+<section class="sheet">
+  <h2 class="sec"><span class="no">第01章</span>【成果名】 📇<span class="hint">【一句话点出这一章的叙事内核】</span></h2>
+  <!-- 四列对照表：这一格 / 要填什么 / 例（示范角色） / 我们组的；示范行用 tr.ex -->
+  <table>
+    <tr><th style="width:14%">这一格</th><th style="width:26%">要填什么</th><th style="width:29%">例（【示范角色】）</th><th style="width:31%">我们组的</th></tr>
+    <tr><td><b>【字段 1】</b></td><td class="l">【填写要求】</td><td class="l">【示范】</td><td class="tall"></td></tr>
+    <tr><td><b>【字段 2】</b></td><td class="l"></td><td class="l"></td><td class="tall"></td></tr>
+    <tr><td><b>【字段 3】</b></td><td class="l"></td><td class="l"></td><td class="tall"></td></tr>
+    <tr><td><b>【字段 4】</b></td><td class="l"></td><td class="l"></td><td class="tall"></td></tr>
+    <tr><td><b>【字段 5】</b></td><td class="l"></td><td class="l"></td><td class="tall"></td></tr>
+    <tr><td><b>【字段 6】</b></td><td class="l"></td><td class="l"></td><td class="tall"></td></tr>
+  </table>
+  <p class="note" style="margin-top:5px">【为什么这六格缺一不可，用一句白话讲清】</p>
+
+  <h2 class="sec"><span class="no">锚点</span>【N】条一致性锚点 🎯<span class="hint">【什么时候对一遍】</span></h2>
+  <!-- anchor：粗体红色小标题 ＋ 示范 ＋ 「我们组：」＋ blank 手写线 -->
+  <div class="grid2">
+    <div class="anchor"><span class="an">① 【锚点 1】</span>例（【示范角色】）：【示范】。<br>我们组：<span class="blank w3"></span></div>
+    <div class="anchor"><span class="an">② 【锚点 2】</span>例（【示范角色】）：【示范】。<br>我们组：<span class="blank w3"></span></div>
+    <div class="anchor"><span class="an">③ 【锚点 3】</span>例（【示范角色】）：【示范】。<br>我们组：<span class="blank w3"></span></div>
+    <div class="anchor"><span class="an">④ 【锚点 4】</span>例（【示范角色】）：【示范】。<br>我们组：<span class="blank w3"></span></div>
+  </div>
+
+  <h2 class="sec"><span class="no">草图</span>【草图名】 ✏️<span class="hint">【这一栏画什么、不用什么】</span></h2>
+  <div class="frames">
+    <div class="frame"><span class="fl">【框 1】</span></div>
+    <div class="frame"><span class="fl">【框 2】</span></div>
+    <div class="frame"><span class="fl">【框 3】</span></div>
+  </div>
+
+  <!-- 每页收尾固定一个过关盒：过关标准 ＋ 不达标怎么办，两行都要有 -->
+  <div class="box" style="margin-top:9px"><b>过关标准：</b>【达标判据，可证伪】
+    <br><b>不达标怎么办：</b>【补救路径，指回具体哪一步；不写「再努力一点」】</div>
+  <div class="foot"><span>【课程名】 · 【学案名】</span><span>第 3 页 / 共 【N】 页</span></div>
+</section>
+
+<!-- ================= 第 4 页 · 第02章（示范：四个筛子 ＋ 表决表 ＋ 四行提纲 ＋ 强警示盒） ================= -->
+<section class="sheet">
+  <h2 class="sec"><span class="no">第02章</span>【N】个筛子 🔍<span class="hint">【N】 组方向逐条过，过不去就淘汰</span></h2>
+  <!-- sieve：粗体红色序号 ＋ 一句判据 ＋ 选/不选 两栏 -->
+  <div class="grid2">
+    <div class="sieve"><span class="sn">① 【筛子 1】</span>　【一句判据】。<br><span class="mk-yes">选</span> 【什么样留下】　<span class="mk-no">不选</span> 【什么样淘汰】</div>
+    <div class="sieve"><span class="sn">② 【筛子 2】</span>　【】<br><span class="mk-yes">选</span> 【】　<span class="mk-no">不选</span> 【】</div>
+    <div class="sieve"><span class="sn">③ 【筛子 3】</span>　【】<br><span class="mk-yes">选</span> 【】　<span class="mk-no">不选</span> 【】</div>
+    <div class="sieve"><span class="sn">④ 【筛子 4】</span>　【】<br><span class="mk-yes">选</span> 【】　<span class="mk-no">不选</span> 【】</div>
+  </div>
+  <p class="note" style="margin-top:5px">【筛完之后再自问一句什么】</p>
+
+  <h2 class="sec"><span class="no">表决</span>【表决表名】 🗳<span class="hint">用【AI 工具】出的 【N】 组方向，逐条过筛，组内表决</span></h2>
+  <table>
+    <tr><th style="width:36%">候选方向（【工具】给的 【N】 组）</th><th>①</th><th>②</th><th>③</th><th>④</th><th style="width:12%">表决</th></tr>
+    <tr class="ex"><td class="l">例：【示范方向】</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>留</td></tr>
+    <tr><td class="l">方向 1：</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td class="l">方向 2：</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td class="l">方向 3：</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td class="l">方向 4：</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td class="l">方向 5：</td><td></td><td></td><td></td><td></td><td></td></tr>
+  </table>
+
+  <h2 class="sec"><span class="no">提纲</span>【提纲名】 🧩<span class="hint">【最后一行必须满足什么】</span></h2>
+  <table>
+    <tr><th style="width:17%">第几行</th><th style="width:29%">这一行写什么</th><th style="width:26%">例（【示范角色】）</th><th style="width:28%">我们组的</th></tr>
+    <tr><td><b>① 【行名】</b></td><td class="l">【要求】</td><td class="l">【示范】</td><td class="tall"></td></tr>
+    <tr><td><b>② 【行名】</b></td><td class="l"></td><td class="l"></td><td class="tall"></td></tr>
+    <tr><td><b>③ 【行名】</b></td><td class="l"></td><td class="l"></td><td class="tall"></td></tr>
+    <tr><td><b>④ 【行名】</b></td><td class="l">【最后卡住的那一下（<b>必须卡住</b>）】</td><td class="l">【示范】</td><td class="tall"></td></tr>
+  </table>
+
+  <div class="box" style="margin-top:9px"><b>过关标准：</b>【最硬的那条判据】必须【满足什么】，否则必须重写。
+    <br><b>不达标怎么办：</b>【回到哪一步重来；明确「不在原方案上硬改」】</div>
+  <div class="foot"><span>【课程名】 · 【学案名】</span><span>第 4 页 / 共 【N】 页</span></div>
+</section>
+
+<!-- ================= 第 5 页 · 第03章（示范：脚本表 ＋ 问题清单 ＋ 四向卡片 ＋ warn 强警示） ================= -->
+<section class="sheet">
+  <h2 class="sec"><span class="no">第03章</span>【脚本表名】 ✏️<span class="hint">【这一章写稿还是画稿】</span></h2>
+  <table>
+    <tr><th style="width:10%">格</th><th style="width:20%">这一格的任务</th><th style="width:35%">例（【示范角色】）的 V1 稿</th><th style="width:35%">我们组的 V1 稿</th></tr>
+    <tr class="ex"><td>格①</td><td class="l">【起头：干什么】</td><td class="l">【示范】</td><td class="tall"></td></tr>
+    <tr class="ex"><td>格②</td><td class="l">【卡住：干什么】</td><td class="l"></td><td class="tall"></td></tr>
+    <tr class="ex"><td>格③</td><td class="l">【出手：干什么】</td><td class="l">【示范：示范角色在这里犯了错】</td><td class="tall"></td></tr>
+    <tr class="ex"><td>格④</td><td class="l">【结果：干什么】</td><td class="l"></td><td class="tall"></td></tr>
+  </table>
+  <p class="note" style="margin-top:5px">【点明示范稿错在哪、哪几格下一章要改——示范稿必须是「有价值的失败」】</p>
+
+  <h2 class="sec"><span class="no">清单</span>【清单名】 🔎<span class="hint">至少 【N】 条，其中必须有「【某类】问题」</span></h2>
+  <table>
+    <tr><th style="width:8%">序号</th><th style="width:56%">问题是什么（写到具体是哪一格）</th><th style="width:20%">属于哪个方向</th><th style="width:16%">是真问题吗</th></tr>
+    <tr class="ex"><td>例</td><td class="l">【示范问题，写清第几格、为什么是问题】</td><td>【方向】</td><td>是真问题</td></tr>
+    <tr><td>1</td><td class="tall"></td><td></td><td></td></tr>
+    <tr><td>2</td><td class="tall"></td><td></td><td></td></tr>
+    <tr><td>3</td><td class="tall"></td><td></td><td></td></tr>
+    <tr><td>4</td><td class="tall"></td><td></td><td></td></tr>
+  </table>
+
+  <h2 class="sec"><span class="no">四向</span>逐条过四个方向 🧭<span class="hint">每条问题都要归进这四类里</span></h2>
+  <div class="grid2">
+    <div class="box"><b>【方向 1】问题</b>【一句判据，用提问句式】</div>
+    <div class="box"><b>【方向 2】问题</b>【】</div>
+    <div class="box"><b>【方向 3】问题</b>【】</div>
+    <div class="box"><b>【方向 4】问题</b>【结尾要能戳到读者的那种】</div>
+  </div>
+
+  <!-- 强警示盒：这一章的核心纪律，用 box warn ＋ ⚠️ 起头 -->
+  <div class="box warn" style="margin-top:9px"><b>⚠️ 【本章核心纪律，如「V1 原稿禁止涂改删除」】。</b>【为什么不能删——它后面还要用在哪】
+    <br><b>过关标准：</b>【可数、可证的判据】
+    <br><b>不达标怎么办：</b>【外部资源怎么借；本章做不做什么】</div>
+  <div class="foot"><span>【课程名】 · 【学案名】</span><span>第 5 页 / 共 【N】 页</span></div>
+</section>
+
+<!-- ================= 第 6 页 · 第04章（示范：回头看 ＋ 变/不变表 ＋ 三栏记录 ＋ 尺子盒） ================= -->
+<section class="sheet">
+  <h2 class="sec"><span class="no">回头看</span>【上一版】崩在哪 🧩<span class="hint">只换「【只换哪一处】」，【哪些不许动】</span></h2>
+  <div class="box warn"><b>例（【示范角色】）：</b>【示范错在哪、错的性质是什么】【点明哪些不变、只把哪一步换掉】</div>
+
+  <h2 class="sec"><span class="no">V2</span>【V2 表名】 🧩<span class="hint">【几行】里哪行变、哪行不变，先想清楚</span></h2>
+  <table>
+    <tr><th style="width:17%">第几行</th><th style="width:16%">变还是不变</th><th style="width:33%">例（【示范角色】）的 V2</th><th style="width:34%">我们组的 V2</th></tr>
+    <tr><td><b>① 【行名】</b></td><td>不变</td><td class="l">【示范】</td><td class="tall"></td></tr>
+    <tr><td><b>② 【行名】</b></td><td>不变</td><td class="l"></td><td class="tall"></td></tr>
+    <tr><td><b>③ 【行名】</b></td><td><b>只换这一行</b></td><td class="l">【示范解法】</td><td class="tall"></td></tr>
+    <tr><td><b>④ 【行名】</b></td><td>跟着第③行一起变</td><td class="l">【示范结局】</td><td class="tall"></td></tr>
+  </table>
+
+  <h2 class="sec"><span class="no">记录</span>三栏修改记录 🔧<span class="hint">照例（【示范角色】）那一行写格式，一栏都不能空</span></h2>
+  <table>
+    <tr><th style="width:33%">改了什么</th><th style="width:34%">为什么改</th><th style="width:33%">改后效果</th></tr>
+    <tr class="ex"><td class="l">【示范：第几格，把什么改成什么】</td><td class="l">【示范：为什么非改不可】</td><td class="l">【示范：改完之后哪里站得住了】</td></tr>
+    <tr><td class="tall"></td><td class="tall"></td><td class="tall"></td></tr>
+    <tr><td class="tall"></td><td class="tall"></td><td class="tall"></td></tr>
+    <tr><td class="tall"></td><td class="tall"></td><td class="tall"></td></tr>
+  </table>
+
+  <div class="box" style="margin-top:9px"><b>选最优解的 【N】 条尺子：</b>① 【】 ② 【】 ③ 【】 ④ 【】。
+    <br><b>过关标准：</b>【】。
+    <br><b>不达标怎么办：</b>只换解法，不换【什么】；【仍不合格时的下一步】。</div>
+  <div class="foot"><span>【课程名】 · 【学案名】</span><span>第 6 页 / 共 【N】 页</span></div>
+</section>
+
+<!-- ================= 第 7 页 · 第05章（示范：脚本表 ＋ 空白画格 ＋ 落款 ＋ 三档画法） ================= -->
+<section class="sheet">
+  <h2 class="sec"><span class="no">第05章</span>【脚本表名】 🖼️<span class="hint">【一格画几个动作、对白怎么处理】</span></h2>
+  <table>
+    <tr><th style="width:11%">格</th><th style="width:19%">任务 · 镜头</th><th style="width:39%">这一格只画一个动作</th><th style="width:31%">对白（极简）</th></tr>
+    <tr class="ex"><td>格①</td><td>【起头 · 机位】</td><td class="l">【示范】</td><td class="l">「……」</td></tr>
+    <tr class="ex"><td>格②</td><td>【卡住 · 机位】</td><td class="l"></td><td class="l">（无）</td></tr>
+    <tr class="ex"><td>格③</td><td>【出手 · 机位】</td><td class="l"></td><td class="l">「【示范对白】」</td></tr>
+    <tr class="ex"><td>格④</td><td>【结果 · 机位】</td><td class="l"></td><td class="l">「【示范对白】」</td></tr>
+    <tr><td>我们①</td><td></td><td class="tall"></td><td></td></tr>
+    <tr><td>我们②</td><td></td><td class="tall"></td><td></td></tr>
+    <tr><td>我们③</td><td></td><td class="tall"></td><td></td></tr>
+    <tr><td>我们④</td><td></td><td class="tall"></td><td></td></tr>
+  </table>
+  <p class="note" style="margin-top:5px">上面 【N】 行是例（【示范角色】）的脚本，照着填下面 【N】 行。【四格连起来要能读成一句话：【一句话串】】</p>
+
+  <h2 class="sec"><span class="no">成稿</span>【成稿名】 · 画在这里 ✏️<span class="hint">每格左上角标上 1234，别改顺序；画在这张格子里，或放大到 A3 横纸，两种都算</span></h2>
+  <div class="fourgrid">
+    <div class="gcell"><span class="gn">1</span></div>
+    <div class="gcell"><span class="gn">2</span></div>
+    <div class="gcell"><span class="gn">3</span></div>
+    <div class="gcell"><span class="gn">4</span></div>
+  </div>
+
+  <div class="signrow">
+    <span>落款（作品名 ＋ 组名 ＋ 完成时间）：<span class="blank w3"></span></span>
+    <span>AI 参考图旁标注：<b>「AI生成·示意图」</b></span>
+  </div>
+  <div class="box" style="margin-top:9px"><b>画之前对一遍【N】个锚点</b>（【锚点名，用 / 分隔】，见第 【N】 页）——【对完要达到什么效果】。
+    <br><b>画不出来怎么办：</b>【N】档画法任选一档，评分完全一样 —— ① 【档 1】 ② 【档 2】 ③ 【档 3】。
+    <br><b>过关标准：</b>【外部可验证的判据，如「陌生人只看画面就能完整复述故事」】。
+    <br><b>不达标怎么办：</b>【复述卡在哪一格就重画哪一格；哪类错误必须拆开重画】。</div>
+  <div class="foot"><span>【课程名】 · 【学案名】</span><span>第 7 页 / 共 【N】 页</span></div>
+</section>
+
+<!-- ================= 第 8 页 · 自检 ＋ 终章（示范：自检表 ＋ 五块展板 ＋ 讲解线 ＋ 反馈表 ＋ 课后） ================= -->
+<section class="sheet">
+  <h2 class="sec"><span class="no">第06章</span>【自检表名】 ✅<span class="hint">交出去之前，自己先把该查的查一遍</span></h2>
+  <table>
+    <tr><th style="width:6%">序号</th><th style="width:28%">自检问题</th><th style="width:58%">具体查什么</th><th style="width:8%">过</th></tr>
+    <tr><td>1</td><td class="l"><b>【问 1】</b></td><td class="l">【怎么算过】</td><td></td></tr>
+    <tr><td>2</td><td class="l"><b>【问 2】</b></td><td class="l"></td><td></td></tr>
+    <tr><td>3</td><td class="l"><b>【问 3】</b></td><td class="l"></td><td></td></tr>
+    <tr><td>4</td><td class="l"><b>【问 4】</b></td><td class="l"></td><td></td></tr>
+    <tr><td>5</td><td class="l"><b>【问 5】</b></td><td class="l"></td><td></td></tr>
+  </table>
+  <p class="note" style="margin-top:5px">五问全过才盖章。哪一问没过，就回到对应的那一章改，改完再走一遍五问。</p>
+
+  <h2 class="sec"><span class="no">第07章</span>【终章展板名】 🪧<span class="hint">按这个顺序摆，一块都不能少</span></h2>
+  <div class="grid5">
+    <div class="box" style="text-align:center"><b>①</b> 【块 1】<br><span class="note">【为什么它是第一块】</span></div>
+    <div class="box" style="text-align:center"><b>②</b> 【块 2】<br><span class="note">【】</span></div>
+    <div class="box" style="text-align:center"><b>③</b> 【块 3】<br><span class="note">【】</span></div>
+    <div class="box" style="text-align:center"><b>④</b> 【块 4】<br><span class="note">【】</span></div>
+    <div class="box" style="text-align:center"><b>⑤</b> 【块 5】<br><span class="note">【＝第 06 章第 5 问，不用新写】</span></div>
+  </div>
+
+  <h2 class="sec"><span class="no">讲解</span>30 秒讲解词 🎤<span class="hint">照这个顺序说，30 秒讲得完</span></h2>
+  <!-- hl 三行横线：学生手写讲解词 -->
+  <div class="hl"></div><div class="hl"></div><div class="hl"></div>
+
+  <h2 class="sec"><span class="no">反馈</span>观众反馈记录 👥<span class="hint">不少于 【N】 条；只记观众说的，别替他们改口</span></h2>
+  <table>
+    <tr><th style="width:8%">序号</th><th style="width:52%">观众说了什么</th><th style="width:40%">我们下一版先改哪里</th></tr>
+    <tr><td>1</td><td class="tall"></td><td class="tall"></td></tr>
+    <tr><td>2</td><td class="tall"></td><td class="tall"></td></tr>
+    <tr><td>3</td><td class="tall"></td><td class="tall"></td></tr>
+  </table>
+
+  <div class="box" style="margin-top:9px"><b>过关标准：</b>【三条都写到，可数可查】。</div>
+  <!-- after：课后小任务，虚线框 -->
+  <div class="after"><b>📌 课后小任务</b>：① 【】；② 【】。</div>
+  <div class="motto">「【末页格言】」</div>
+  <div class="foot"><span>【课程名】 · 【学案名】</span><span>第 8 页 / 共 【N】 页</span></div>
+</section>
+
+</body>
+</html>

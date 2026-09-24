@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>市场调研报告 · 模板</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","HarmonyOS Sans SC",-apple-system,"Segoe UI",sans-serif;
+  background:var(--bg-deep); color:var(--text); line-height:1.7;
+  overflow-x:hidden; -webkit-font-smoothing:antialiased;
+}
+:root{
+  --bg-deep:#04071a;
+  --bg-night:#0A0E27;
+  --bg-card:#0F1638;
+  --bg-panel:rgba(20,27,63,.72);
+  --cyan:#00F5D4;
+  --magenta:#FF2E97;
+  --yellow:#FFE74C;
+  --purple:#B14AED;
+  --orange:#FF6B35;
+  --blue:#3A86FF;
+  --green:#5CE082;
+  --text:#E8ECFF;
+  --text-dim:#8E96C9;
+  --text-faint:#5A6094;
+  --border:rgba(0,245,212,.28);
+  --grid:rgba(0,245,212,.07);
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,245,212,.10), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 20%, rgba(255,46,151,.10), transparent 55%),
+    radial-gradient(ellipse 70% 60% at 10% 80%, rgba(177,74,237,.08), transparent 55%),
+    linear-gradient(180deg,#04071a 0%,#060A22 50%,#04071a 100%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 40%,#000 30%,transparent 90%);
+  opacity:.6;
+}
+.topnav{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(14px); background:rgba(6,10,34,.82);
+  border-bottom:1px solid var(--border);
+  padding:10px 22px; display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.5px;white-space:nowrap}
+.brand .logo{width:30px;height:30px;display:grid;place-items:center;border-radius:8px;
+  background:linear-gradient(135deg,var(--cyan),var(--magenta));box-shadow:0 0 14px rgba(0,245,212,.5);font-size:15px}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.nav-links a{
+  color:var(--text-dim);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:20px;
+  border:1px solid transparent;transition:.2s;white-space:nowrap}
+.nav-links a:hover{color:var(--cyan);border-color:var(--border);background:rgba(0,245,212,.06)}
+.part-banner{
+  position:relative;
+  margin:80px auto 40px;max-width:1360px;padding:0;scroll-margin-top:80px;
+  display:grid;grid-template-columns:62px 1fr;
+  grid-template-areas:"num title" "num desc";
+  column-gap:20px;row-gap:4px;align-items:center;
+}
+.part-banner::after{
+  content:"";position:absolute;left:0;right:0;bottom:-18px;height:1px;
+  background:linear-gradient(90deg,rgba(0,245,212,.35),transparent 75%);
+}
+.part-banner .pnum{
+  grid-area:num;width:56px;height:56px;border-radius:15px;
+  display:grid;place-items:center;
+  font-family:"JetBrains Mono",Consolas,monospace;font-size:26px;font-weight:800;line-height:1;
+  color:var(--cyan);
+  background:linear-gradient(135deg,rgba(0,245,212,.14),rgba(255,46,151,.08));
+  border:1px solid var(--border);
+  box-shadow:0 0 22px rgba(0,245,212,.16),inset 0 1px 0 rgba(255,255,255,.05);
+  text-shadow:0 0 10px rgba(0,245,212,.5);
+}
+.part-banner h1{grid-area:title;font-size:clamp(23px,3vw,34px);font-weight:800;letter-spacing:1px;line-height:1.2;margin:0}
+.part-banner .pdesc{grid-area:desc;color:var(--text-dim);font-size:14px}
+main{max-width:1360px;margin:0 auto;padding:0 64px 80px}
+.page{
+  position:relative; margin:0 auto 36px; border-radius:18px; overflow:hidden;
+  background:linear-gradient(160deg,rgba(15,22,56,.92),rgba(10,14,39,.96));
+  border:1px solid var(--border);
+  box-shadow:0 10px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.04);
+  scroll-margin-top:80px;
+}
+.page::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 0% 0%,rgba(0,245,212,.08),transparent 40%),
+             radial-gradient(circle at 100% 100%,rgba(255,46,151,.07),transparent 40%);
+}
+.page-head{
+  display:flex;align-items:center;gap:14px;padding:16px 24px;
+  border-bottom:1px solid rgba(0,245,212,.14);
+  background:linear-gradient(90deg,rgba(0,245,212,.05),transparent);
+}
+.page-title{font-size:clamp(18px,2.2vw,24px);font-weight:700;letter-spacing:.5px;flex:1}
+.pace{font-size:13px;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,231,76,.4);color:var(--yellow);white-space:nowrap}
+.pace.zap{border-color:rgba(0,245,212,.4);color:var(--cyan)}
+.page-body{padding:24px}
+.layout-tag{display:inline-block;font-size:12px;color:var(--text-dim);
+  background:rgba(0,245,212,.08);border:1px solid var(--border);
+  padding:3px 10px;border-radius:6px;margin-bottom:16px}
+.scene{
+  border-radius:14px;border:1px solid rgba(0,245,212,.18);overflow:hidden;margin-bottom:18px;
+  background:radial-gradient(ellipse at top,#0d1640,#070b24);min-height:200px;position:relative}
+.scene svg{display:block;width:100%;height:auto}
+.info-title{font-size:14px;color:var(--cyan);font-weight:700;margin:16px 0 8px;letter-spacing:1px;
+  display:flex;align-items:center;gap:8px}
+.info-title::before{content:"";width:4px;height:14px;background:var(--cyan);
+  box-shadow:0 0 8px var(--cyan);border-radius:2px}
+.info-title.mag{color:var(--magenta)}.info-title.mag::before{background:var(--magenta);box-shadow:0 0 8px var(--magenta)}
+.info-title.yel{color:var(--yellow)}.info-title.yel::before{background:var(--yellow);box-shadow:0 0 8px var(--yellow)}
+.info-title.pur{color:var(--purple)}.info-title.pur::before{background:var(--purple);box-shadow:0 0 8px var(--purple)}
+.info-title.ora{color:var(--orange)}.info-title.ora::before{background:var(--orange);box-shadow:0 0 8px var(--orange)}
+.formula{
+  background:linear-gradient(135deg,rgba(255,231,76,.10),rgba(255,46,151,.08));
+  border:1px solid rgba(255,231,76,.4);border-radius:12px;padding:16px 20px;margin:12px 0;
+  text-align:center;font-size:16px;font-weight:600;
+  box-shadow:0 0 24px rgba(255,231,76,.12);position:relative}
+.formula .lab{display:block;font-size:11px;color:var(--yellow);letter-spacing:3px;margin-bottom:6px}
+.formula .eq{font-family:"JetBrains Mono",Consolas,monospace;font-size:17px}
+.formula .eq b{color:var(--yellow);text-shadow:0 0 10px rgba(255,231,76,.5)}
+.define-box{
+  background:rgba(0,245,212,.06);border-left:3px solid var(--cyan);border-radius:0 10px 10px 0;
+  padding:12px 16px;margin:10px 0;font-size:15px}
+.define-box b{color:var(--cyan)}
+.define-box.mag{background:rgba(255,46,151,.06);border-left-color:var(--magenta)}
+.define-box.mag b{color:var(--magenta)}
+.define-box.yel{background:rgba(255,231,76,.06);border-left-color:var(--yellow)}
+.define-box.yel b{color:var(--yellow)}
+.ops{
+  margin-top:14px;background:linear-gradient(135deg,rgba(255,107,53,.08),rgba(255,46,151,.06));
+  border:1px solid rgba(255,107,53,.35);border-radius:10px;padding:12px 16px;font-size:14px}
+.ops .h{color:var(--orange);font-weight:700;margin-bottom:4px;font-size:13px;letter-spacing:1px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chip{font-size:13px;padding:4px 12px;border-radius:16px;border:1px solid var(--border);
+  background:rgba(0,245,212,.05);color:var(--text)}
+.chip b{color:var(--cyan);font-weight:600}
+.chip.m{border-color:rgba(255,46,151,.35);background:rgba(255,46,151,.06)}.chip.m b{color:var(--magenta)}
+.chip.p{border-color:rgba(177,74,237,.4);background:rgba(177,74,237,.07)}.chip.p b{color:var(--purple)}
+.chip.y{border-color:rgba(255,231,76,.4);background:rgba(255,231,76,.06)}.chip.y b{color:var(--yellow)}
+.chip.o{border-color:rgba(255,107,53,.4);background:rgba(255,107,53,.07)}.chip.o b{color:var(--orange)}
+.chip.g{border-color:rgba(92,224,130,.4);background:rgba(92,224,130,.06)}.chip.g b{color:var(--green)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:12px 0}
+.mini{background:var(--bg-panel);border:1px solid rgba(0,245,212,.15);border-radius:12px;padding:14px 16px;font-size:14px}
+.mini .t{color:var(--cyan);font-weight:700;margin-bottom:6px;font-size:13.5px}
+.mini.mag{border-color:rgba(255,46,151,.3)}.mini.mag .t{color:var(--magenta)}
+.mini.pur{border-color:rgba(177,74,237,.35)}.mini.pur .t{color:var(--purple)}
+.mini.yel{border-color:rgba(255,231,76,.35)}.mini.yel .t{color:var(--yellow)}
+.mini.ora{border-color:rgba(255,107,53,.35)}.mini.ora .t{color:var(--orange)}
+.mini.gre{border-color:rgba(92,224,130,.35)}.mini.gre .t{color:var(--green)}
+.big{background:var(--bg-panel);border:1px solid rgba(0,245,212,.18);border-radius:12px;padding:16px 18px;text-align:center}
+.big .num{font-family:"JetBrains Mono",Consolas,monospace;font-size:clamp(22px,2.8vw,30px);font-weight:800;color:var(--cyan);
+  text-shadow:0 0 18px rgba(0,245,212,.35);line-height:1.2}
+.big .lbl{font-size:12.5px;color:var(--text-dim);margin-top:6px}
+.big.mag .num{color:var(--magenta);text-shadow:0 0 18px rgba(255,46,151,.35)}
+.big.yel .num{color:var(--yellow);text-shadow:0 0 18px rgba(255,231,76,.35)}
+.big.pur .num{color:var(--purple);text-shadow:0 0 18px rgba(177,74,237,.35)}
+.big.gre .num{color:var(--green);text-shadow:0 0 18px rgba(92,224,130,.35)}
+.big.ora .num{color:var(--orange);text-shadow:0 0 18px rgba(255,107,53,.35)}
+table.t{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+table.t th{color:var(--cyan);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);font-size:13px;letter-spacing:1px}
+table.t td{padding:8px 12px;border-bottom:1px solid rgba(0,245,212,.08);vertical-align:top}
+table.t tr.hl{background:rgba(0,245,212,.05)}
+table.t tr.hl2{background:rgba(255,231,76,.05)}
+.tw{overflow-x:auto}
+.star{color:var(--yellow);letter-spacing:1px}
+/* ── 正文排版（page-body）── */
+.page-body p{margin:10px 0}
+.page-body p:first-child{margin-top:0}
+.page-body b,.page-body strong{color:var(--cyan);font-weight:600}
+.page-body ul{margin:10px 0 10px 4px;list-style:none}
+.page-body ul li{position:relative;padding-left:16px;margin:7px 0}
+.page-body ul li::before{content:"";position:absolute;left:0;top:.72em;width:6px;height:6px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 6px rgba(0,245,212,.6)}
+/* 二级子列表：一级点下的分项（逐家 / 逐项）。字号与圆点各弱一级，只用两级。 */
+.page-body ul ul{margin:6px 0 6px 4px;padding-left:18px}
+.page-body ul ul li{font-size:14.5px;opacity:.9}
+.page-body ul ul li::before{background:var(--text-faint);box-shadow:none}
+/* ── 实体级小标题（四级）：逐家 / 逐项的详情块标题 ── */
+h4.co-sub{font-size:15px;font-weight:700;letter-spacing:.3px;margin:26px 0 10px;padding-left:10px;
+  border-left:3px solid var(--cyan);color:var(--text)}
+/* ── 要点列表 ul.pts：一段话里 ≥2 个并列事实时拆点用 ── */
+ul.pts{list-style:none;margin:14px 0;padding:0;display:flex;flex-direction:column;gap:9px}
+ul.pts li{position:relative;padding-left:16px;margin:0;line-height:1.78;color:var(--text-dim)}
+ul.pts li::before{content:"";position:absolute;left:2px;top:10px;width:6px;height:6px;border-radius:50%;background:var(--cyan)}
+ul.pts li b{color:var(--text);font-weight:700}
+.mini ul.pts{margin:0}
+.mini ul.pts li{font-size:13.5px;line-height:1.74}
+.mini ul.pts li::before{top:8px}
+.mini.mag ul.pts li::before{background:var(--magenta)}
+.define-box .db-title{margin:0 0 7px;font-weight:800;color:var(--text);letter-spacing:.3px}
+.pts-tail{margin:14px 0 0;color:var(--text)}
+/* ul.pts 的二级子列表 */
+ul.pts ul{margin:6px 0 0 4px;padding-left:16px}
+ul.pts ul li{font-size:13.5px;line-height:1.7;opacity:.92}
+ul.pts ul li::before{background:var(--text-faint);box-shadow:none}
+/* ── 补充说明降级为注（八.14）── */
+.note{font-size:12.5px;line-height:1.72;color:var(--text-faint);margin:10px 0 0;
+  padding:2px 0 2px 12px;border-left:2px solid rgba(0,245,212,.22)}
+.viz-cap{font-size:12.5px;line-height:1.72;color:var(--text-faint);margin:8px 0 0}
+.fn-note{font-size:11.5px;line-height:1.7;color:var(--text-faint);margin:12px 0 0;
+  display:flex;gap:6px;align-items:flex-start}
+.fn-note .mk{color:var(--cyan);font-weight:700;flex:0 0 auto}
+footer .footnotes{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);
+  font-size:12px;line-height:1.8;color:var(--text-faint)}
+footer .footnotes div{margin:3px 0}
+footer .footnotes .mk{color:var(--cyan);font-weight:700;margin-right:5px}
+/* 脚注 */
+sup.fn{color:var(--cyan);font-size:11px;font-weight:700;margin:0 1px;cursor:default}
+.footnotes{margin-top:18px;padding-top:12px;border-top:1px dashed rgba(0,245,212,.22);font-size:12.5px;color:var(--text-dim);line-height:1.9}
+.footnotes .fn-item{margin:1px 0}
+.footnotes .fn-n{color:var(--cyan);font-family:"JetBrains Mono",Consolas,monospace;font-weight:700;margin-right:4px}
+.tag{display:inline-block;font-size:10.5px;padding:0 6px;border-radius:8px;margin-left:4px;vertical-align:1px}
+.tag.l1{background:rgba(0,245,212,.14);color:var(--cyan);border:1px solid rgba(0,245,212,.4)}
+.tag.l2{background:rgba(92,224,130,.12);color:var(--green);border:1px solid rgba(92,224,130,.4)}
+.tag.l3{background:rgba(58,134,255,.12);color:var(--blue);border:1px solid rgba(58,134,255,.4)}
+.tag.l4{background:rgba(255,231,76,.10);color:var(--yellow);border:1px solid rgba(255,231,76,.35)}
+.tag.l5{background:rgba(255,107,53,.10);color:var(--orange);border:1px solid rgba(255,107,53,.35)}
+.tag.term{background:rgba(0,245,212,.10);color:var(--cyan);border:1px dashed rgba(0,245,212,.55)}
+footer{text-align:center;padding:40px 24px;color:var(--text-faint);font-size:13px;
+  border-top:1px solid var(--border);margin-top:40px;scroll-margin-top:80px}
+footer a{color:var(--cyan);text-decoration:none}
+footer a:hover{color:var(--yellow)}
+footer .src{max-width:1100px;margin:16px auto 0;text-align:left;font-size:13px;line-height:1.9}
+footer .wm{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);
+  border-radius:20px;background:rgba(0,245,212,.04);color:var(--cyan);font-size:12px;margin-top:14px}
+.backtop{position:fixed;right:22px;bottom:26px;z-index:60;width:44px;height:44px;border-radius:12px;
+  display:grid;place-items:center;text-decoration:none;font-size:17px;
+  color:var(--cyan);border:1px solid var(--border);background:rgba(6,10,34,.85);
+  backdrop-filter:blur(10px);box-shadow:0 0 18px rgba(0,245,212,.25);transition:.2s}
+.backtop:hover{color:var(--yellow);border-color:rgba(255,231,76,.4);background:rgba(0,245,212,.10);transform:translateY(-2px)}
+@media(max-width:720px){
+  .page-body{padding:18px 16px}
+  .topnav{padding:10px 14px}
+  .part-banner{grid-template-columns:46px 1fr;column-gap:12px;margin:60px auto 32px}
+  .part-banner .pnum{width:44px;height:44px;font-size:20px;border-radius:12px}
+  main{padding:0 12px 60px}
+  .grid2,.grid3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<!--
+  说明：本模板是「反塑料味」范本，所有占位均为具体内容（带 <u> 下划线者需替换为真实数据）。
+  真实产出时请：
+  1) 把 <u>62.8 亿</u>、<u>+27%</u>、<u>68%</u> 等数字替换为已核数据；
+  2) 按「数据可信级标签体系」挂可信级脚注（① 官方 / ② 第三方 / ③ 平台财报 / ④ 推演 / ⑤ 行业媒体）；
+  3) 删除「示例数据，需替换」类的注释；
+  4) 任何"一句话结论""结论：""内容模块标题"等空标签禁止出现；
+  5) 「前提 / 推断 / 结论」三件套禁止作段落标签（用自然段落顺序 + 句首承接词呈现三步）；
+  6) 禁止使用「机制推演 / 路径推演 / 逻辑梳理 / 推导过程」等修辞动作标签；改成具体内容名，或直接删除角标；
+  7) 顶栏导航首位必须是「摘要」，不与正文板块共享 1/2/3 编号；
+  8) 摘要页必须有 2–3 条具体的关键判断（每条：事实 + 推断 + 结论），不是只有定位标语 / slogan / 产品矩阵；
+  9) 禁止加 eyebrow 元描述 chip（如「cyx-research-report · 暗色科技风 · 整理自xx」），与读者要读的内容无关。
+
+  本模板同时是组件参考：板块 1 演示表格 / 徽章 / 大数字，板块 2 演示分点列表与各类注
+  （`h4.co-sub`、`ul.pts` 及二级子项、`.pts-tail`、`.db-title`、`.viz-cap`、`.note`、`.fn-note`），
+  板块 3 演示公式框、说明框、插图容器 `.scene`（内联 SVG 见 SKILL 第十节渲染规则）与星级标示。
+  组件清单与 CSS 类名以 `SKILL.md`「九、组件类速查」为准；改动模板后请跑
+  `python scripts/check-template.py` 校验模板、样式与速查三方仍对齐。
+-->
+<div id="top" style="position:absolute;top:0;left:0"></div>
+
+<nav class="topnav">
+  <div class="brand"><div class="logo">◈</div>短视频工具市场调研报告 · 2026</div>
+  <div class="nav-links">
+    <a href="#cover">摘要</a>
+    <a href="#p1">市场盘子</a>
+    <a href="#p2">需求与供给</a>
+    <a href="#p3">竞争与机会</a>
+    <a href="#src">来源</a>
+  </div>
+</nav>
+
+<main>
+<!-- ═══════════ 摘要 ═══════════ -->
+<section class="page" id="cover">
+  <div class="page-head">
+    <span class="page-title">摘要</span>
+  </div>
+  <div class="page-body">
+    <div class="grid2">
+      <div class="mini"><div class="t">B 端内嵌是主要增量</div>B 端收入占比 <b>68%</b><sup class="fn">1</sup>，且 71% 创作者反映批量剪辑需求未被现有工具覆盖<sup class="fn">2</sup>——需求存在但 C 端付费率仅 3%，因此增量集中在 B 端企业内嵌场景。</div>
+      <div class="mini yel"><div class="t">付费率受 C 端免费习惯压制</div>工具付费率约 3%，远低于在线办公（≈15%）与设计工具（≈10%）；按当前增速，付费率提升 1pp 需 3 年，短期靠 B 端拉高总收入。</div>
+    </div>
+    <div class="mini pur"><div class="t">三个供给缺口（按创作者提及频次）</div>① 团队协作：3 人以上团队缺权限与审片工作流；② 合规内嵌：广告法 / 违禁词需剪辑环节实时提示，目前多靠人工；③ 数据回流：剪辑工具不接广告投放数据，难以闭环「剪辑 → 投流 → 回收」。</div>
+
+    <div class="grid3">
+      <div class="big yel"><div class="num"><u>62.8 亿</u></div><div class="lbl">2026 年市场规模<sup class="fn">3</sup></div></div>
+      <div class="big pur"><div class="num"><u>+27%</u></div><div class="lbl">同比增速<sup class="fn">4</sup></div></div>
+      <div class="big gre"><div class="num"><u>68%</u></div><div class="lbl">B 端收入占比<sup class="fn">1</sup></div></div>
+    </div>
+    <div class="footnotes">
+      <div class="fn-item"><span class="fn-n">1</span> 头部三家平台 2025 财报 IR 披露汇总；行业抽样推演，<b>非全行业普查</b>。<span class="tag l3">③ 平台财报</span><span class="tag l4">④ 推演</span></div>
+      <div class="fn-item"><span class="fn-n">2</span> 创作者访谈 N=128，自采问卷，<b>非全行业普查</b>。<span class="tag l4">④ 问卷</span></div>
+      <div class="fn-item"><span class="fn-n">3</span> 头豹研究院，2026 中国短视频工具行业研究。<span class="tag l2">② 第三方</span></div>
+      <div class="fn-item"><span class="fn-n">4</span> CNNIC，第 57 次中国互联网络发展状况统计报告。<span class="tag l1">① 官方</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 1、市场盘子 ═══════════ -->
+<div class="part-banner" id="p1">
+  <div class="pnum">1</div>
+  <h1>市场盘子 —— 总规模、增速、付费深度</h1>
+  <p class="pdesc">本节区分「网络视听规模」「短视频用户」「工具付费用户」三组口径，避免把 MAU 当作市场规模。</p>
+</div>
+
+<section class="page">
+  <div class="page-head">
+    <span class="page-title">1.1 用户基数与渗透率（口径从大到小收敛）</span>
+  </div>
+  <div class="page-body">
+    <span class="layout-tag">口径：网络视听用户 → 短视频用户 → 工具月活创作者 → 工具付费用户</span>
+
+    <div class="define-box mag">
+      <b>口径说明：</b>「网络视听规模」是上游内容盘子，数量级 10 亿；「短视频工具市场」是创作者付费的工具盘子，数量级几十亿到百亿；<b>不可直接套用</b>，也<b>不能与「短视频用户规模」混淆</b>。
+    </div>
+
+    <div class="info-title">用户与渗透率（2025 年 12 月口径）</div>
+    <div class="tw">
+    <table class="t">
+      <tr><th>指标</th><th>数值</th><th>口径/年份</th><th>来源</th></tr>
+      <tr class="hl"><td>网络视听用户</td><td>10.74 亿</td><td>2025.12</td><td>CNNIC 第 57 次报告<sup class="fn">4</sup></td></tr>
+      <tr><td>短视频用户</td><td>10.66 亿</td><td>2025.12</td><td>CNNIC 第 57 次报告<sup class="fn">4</sup></td></tr>
+      <tr class="hl"><td>短视频工具月活创作者</td><td>约 6,200 万</td><td>2025.Q4 推演</td><td>DataEye 行业监测<sup class="fn">5</sup></td></tr>
+      <tr><td>工具付费用户</td><td>约 190 万</td><td>2025.Q4 推演</td><td>三家头部平台 IR 汇总<sup class="fn">1</sup></td></tr>
+    </table>
+    </div>
+
+    <div class="info-title yel">创作者痛点（按访谈频次，N=128）</div>
+    <div class="chips">
+      <span class="chip m"><b>素材整理</b> 78% 提及<sup class="fn">2</sup></span>
+      <span class="chip y"><b>批量剪辑</b> 71% 提及<sup class="fn">2</sup></span>
+      <span class="chip g"><b>字幕/翻译</b> 65% 提及<sup class="fn">2</sup></span>
+      <span class="chip p"><b>合规审核</b> 52% 提及<sup class="fn">2</sup></span>
+    </div>
+
+    <div class="info-title pur">三个供给缺口（按创作者提及频次）</div>
+    <div class="grid3">
+      <div class="mini mag"><div class="t">① 团队协作</div>多数工具仍按个人计费，3 人以上团队缺权限/审片工作流。</div>
+      <div class="mini yel"><div class="t">② 合规内嵌</div>广告法、平台违禁词需在剪辑环节实时提示，目前多靠人工。</div>
+      <div class="mini pur"><div class="t">③ 数据回流</div>剪辑工具不接广告投放数据，难以闭环「剪辑→投流→回收」数据链。</div>
+    </div>
+
+    <div class="define-box">
+      短视频工具 <u>2026</u> 年市场规模 <b style="color:var(--yellow)"><u>62.8 亿元</u></b>，同比 <b style="color:var(--yellow)">+27%</b>；付费率约 <b style="color:var(--yellow)">3%</b>，远低于在线办公（≈15%）与设计工具（≈10%），主要受 C 端免费习惯压制。
+    </div>
+
+    <!-- 脚注编号全文连续：同一来源跨页复用同一编号（IR 汇总=1、问卷=2），本页新来源顺延（CNNIC=4、DataEye=5） -->
+    <div class="footnotes">
+      <div class="fn-item"><span class="fn-n">1</span> 头部三家平台 2025 财报 IR 披露汇总；行业抽样推演，<b>非全行业普查</b>。<span class="tag l3">③ 平台财报</span><span class="tag l4">④ 推演</span></div>
+      <div class="fn-item"><span class="fn-n">2</span> 创作者访谈 N=128，自采问卷，<b>非全行业普查</b>。<span class="tag l4">④ 问卷</span></div>
+      <div class="fn-item"><span class="fn-n">4</span> CNNIC，第 57 次中国互联网络发展状况统计报告。<span class="tag l1">① 官方</span></div>
+      <div class="fn-item"><span class="fn-n">5</span> DataEye，2025 短视频内容工具行业监测。<span class="tag l2">② 第三方</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 2、需求与供给 ═══════════ -->
+<div class="part-banner" id="p2">
+  <div class="pnum">2</div>
+  <h1>需求与供给 —— 谁在付费、缺口在哪</h1>
+  <p class="pdesc">本节按「个人创作者 / 团队 / 企业内嵌」三类付费主体拆需求，把访谈里反复出现的三个缺口落到具体产品形态上。</p>
+</div>
+
+<section class="page">
+  <div class="page-head">
+    <span class="page-title">2.1 三类付费主体的需求差异</span>
+    <span class="pace">口径：2025.Q4</span>
+  </div>
+  <div class="page-body">
+    <div class="define-box yel">
+      <div class="db-title">口径提示</div>
+      「团队」指 3 人以上的内容小组，不含 MCN 机构；「企业内嵌」指剪辑能力接进客户自有系统（营销中台、SaaS 工具），付费主体是企业而不是个人。
+    </div>
+
+    <div class="info-title ora">按付费主体拆分的需求差异</div>
+    <div class="tw">
+    <table class="t">
+      <tr><th>付费主体</th><th>核心需求</th><th>预算区间</th><th>决策链</th></tr>
+      <tr class="hl2"><td>企业内嵌</td><td>合规审核、数据回流</td><td>按调用量或项目计</td><td>技术 + 法务 + 采购</td></tr>
+      <tr><td>团队（3 人以上）</td><td>权限体系、审片工作流</td><td>按席位年付</td><td>负责人 + 财务</td></tr>
+      <tr><td>个人创作者</td><td>素材整理、字幕 / 翻译</td><td>0–300 元/年<sup class="fn">2</sup></td><td>本人当场决定</td></tr>
+    </table>
+    </div>
+    <p class="viz-cap">读法：三行预算区间的量级不同（项目制 / 年付 / 年付小额），不能横向相加，只能各自与其对应的成本结构相比。</p>
+
+    <div class="ops">
+      <div class="h">落地时的三个约束</div>
+      个人订阅与席位制不能共用一套计费模型；审片留痕要过企业法务；数据回流需拿到投流平台的接口授权，工具侧单方面解决不了。
+    </div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="page-head">
+    <span class="page-title">2.2 三个供给缺口逐项拆解</span>
+  </div>
+  <div class="page-body">
+    <h4 class="co-sub">缺口一 · 团队协作</h4>
+    <ul class="pts">
+      <li><b>现状</b>：多数工具仍按个人计费，3 人以上团队既没有权限体系，也没有审片工作流<sup class="fn">2</sup>。</li>
+      <li><b>卡点</b>：
+        <ul>
+          <li>席位与权限要重做计费模型，改动量大于新增一个功能；</li>
+          <li>审片意见散在即时通讯里，工具内没有留痕位置，团队会退回人工流程。</li>
+        </ul>
+      </li>
+      <li><b>先做什么</b>：从「项目空间 + 评论留痕」切入做团队版，权限与审批放到第二步。</li>
+    </ul>
+
+    <h4 class="co-sub">缺口二 · 合规内嵌</h4>
+    <ul class="pts">
+      <li><b>现状</b>：违禁词与平台敏感词要在剪辑环节实时提示，目前多靠人工复核<sup class="fn">2</sup>。</li>
+      <li><b>卡点</b>：词库要跟着平台规则更新，更新频率跟不上等于没有；误报率高，创作者会直接把提示关掉。</li>
+      <li><b>先做什么</b>：只做上传前拦截 + 一键替换建议，不做全片扫描。</li>
+    </ul>
+
+    <h4 class="co-sub">缺口三 · 数据回流</h4>
+    <ul class="pts">
+      <li><b>现状</b>：剪辑工具不接投放数据，剪辑到投流的链路断在导出这一步<sup class="fn">2</sup>。</li>
+      <li><b>卡点</b>：投流接口以代理商授权为主，工具侧单独申请拿不到全量数据。</li>
+    </ul>
+    <p class="pts-tail">三个缺口里，团队协作改动最轻、付费意愿最明确；合规内嵌次之；数据回流受制于外部授权，短期只能做到结构化导出这一层。</p>
+
+    <div class="note">分层依据：缺口排序按「改动量 × 付费意愿」交叉判断，改动量取访谈中产品负责人的原话，付费意愿取问卷里主动加价的比例<sup class="fn">2</sup>。</div>
+    <div class="fn-note"><span class="mk">[口径]</span><span>改动量是访谈中的主观判断项，与真实排期存在偏差；付费意愿为受访者自述，不等同实际付费行为。</span></div>
+
+    <div class="footnotes">
+      <div class="fn-item"><span class="fn-n">2</span> 创作者访谈 N=128，自采问卷，<b>非全行业普查</b>。<span class="tag l4">④ 问卷</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 3、竞争与机会 ═══════════ -->
+<div class="part-banner" id="p3">
+  <div class="pnum">3</div>
+  <h1>竞争与机会 —— 三条路径的成本结构</h1>
+  <p class="pdesc">本节把「工具订阅 / 企业内嵌 / 平台分成」三条路径的收入口径拉到同一尺度，并给出各自的起量门槛。</p>
+</div>
+
+<section class="page">
+  <div class="page-head">
+    <span class="page-title">3.1 三条路径的收入口径换算</span>
+    <span class="pace zap">口径：年化</span>
+  </div>
+  <div class="page-body">
+    <div class="chips">
+      <span class="chip o"><b>订阅制</b> 按月付的需年化</span>
+      <span class="chip g"><b>席位制</b> 与按账号计费的差</span>
+    </div>
+    <div class="formula">
+      <span class="lab">年化收入口径统一</span>
+      <span class="eq">年化收入 = 单价 × <b>留存系数</b> × 12</span>
+    </div>
+    <div class="grid2">
+      <div class="mini ora"><div class="t">企业内嵌</div>按调用量计费时收入随客户业务起落，不能用订阅口径直接年化。</div>
+      <div class="mini gre"><div class="t">平台分成</div>分成比例写在渠道协议里，随平台政策调整，年度可比性差。</div>
+    </div>
+    <div class="grid2">
+      <div class="big ora"><div class="num">2 条</div><div class="lbl">可稳定年化的路径</div></div>
+      <div class="big mag"><div class="num">1 条</div><div class="lbl">受外部授权约束的路径<sup class="fn">6</sup></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="page-head">
+    <span class="page-title">3.2 起量门槛与落地难度</span>
+  </div>
+  <div class="page-body">
+    <p>起量门槛<span class="tag term">术语</span>：指一类路径跑通所需的客户数量级，三条路径的量级差见下图。</p>
+    <div class="scene">
+      <svg viewBox="0 0 660 240" role="img" aria-label="三条路径起量门槛对比">
+        <text x="24" y="28" fill="#8E96C9" font-size="12">起量门槛（按所需客户数量级）<tspan baseline-shift="super" font-size="9" fill="#00F5D4">6</tspan></text>
+        <text x="24" y="88" fill="#E8ECFF" font-size="13">工具订阅</text>
+        <rect x="130" y="70" width="400" height="24" rx="6" fill="#00F5D4" opacity=".55"/>
+        <text x="542" y="88" fill="#E8ECFF" font-size="12">百万级</text>
+        <text x="24" y="148" fill="#E8ECFF" font-size="13">企业内嵌</text>
+        <rect x="130" y="130" width="240" height="24" rx="6" fill="#00F5D4" opacity=".38"/>
+        <text x="382" y="148" fill="#E8ECFF" font-size="12">十位到百位</text>
+        <text x="24" y="208" fill="#E8ECFF" font-size="13">平台分成</text>
+        <rect x="130" y="190" width="110" height="24" rx="6" fill="#00F5D4" opacity=".22"/>
+        <text x="252" y="208" fill="#FFE74C" font-size="12">受渠道协议约束</text>
+      </svg>
+    </div>
+    <p>落地难度（按前置条件数量）：工具订阅 <span class="star">★☆☆</span>；企业内嵌 <span class="star">★★☆</span>；平台分成 <span class="star">★★★</span>。</p>
+    <div class="footnotes">
+      <div class="fn-item"><span class="fn-n">6</span> 起量门槛按访谈原话与公开定价推算，非官方统计。<span class="tag l4">④ 推演</span></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ═══════════ 页脚 · 来源 ═══════════ -->
+<footer id="src">
+  <div style="font-size:15px;color:var(--text-dim)">短视频工具市场调研报告 ｜ 整理于 2026-XX-XX</div>
+  <div class="src">
+    <div class="info-title">数据来源总索引（按可信级）</div>
+    <div>
+      <span class="tag l1">① 官方</span>
+      <a href="#">CNNIC…</a>
+    </div>
+    <div>
+      <span class="tag l2">② 第三方</span>
+      <a href="#">头豹研究院…</a> ·
+      <a href="#">DataEye…</a>
+    </div>
+    <div>
+      <span class="tag l3">③ 平台财报</span>
+      <a href="#">快手 IR</a> ·
+      <a href="#">剪映 IR</a> ·
+      <a href="#">腾讯智影 IR</a>
+    </div>
+    <div>
+      <span class="tag l4">④ 推演/问卷</span>
+      <a href="#">自采问卷（N=128）</a> ·
+      <a href="#">竞品定价汇总</a>
+    </div>
+    <div>
+      <span class="tag l5">⑤ 行业媒体</span>
+      <a href="#">36氪</a> ·
+      <a href="#">甲子光年…</a>
+    </div>
+    <div style="margin-top:12px;color:var(--text-faint)">
+      口径边界：网络视听规模 ≠ 短视频工具市场；MAU ≠ 付费用户；内容流水 GMV ≠ 工具收入；意愿 ≠ 行为（付费意愿调查 ≠ 实际付费）。核心结论须有 ①/② 级来源支撑，④/⑤ 级数据只用于描述现象、提出假设。标注「推演」「估算」「抽样」的数值，为行业测算或待自采验证，非官方普查，请勿当作精确统计引用。
+    </div>
+  </div>
+  <div class="wm">数据截至 2025.12 ｜ 全文 6 条来源</div>
+</footer>
+
+<a class="backtop" href="#top">↑</a>
+</body>
+</html>

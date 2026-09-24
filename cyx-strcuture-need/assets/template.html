@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 改这里：文档标题 -->
+<title>{{产品名}} 产品功能规划</title>
+<style>
+:root{
+  --bg-deep:#04071a; --bg-night:#0A0E27; --bg-card:#0F1638; --bg-panel:rgba(20,27,63,.72);
+  --cyan:#00F5D4; --magenta:#FF2E97; --yellow:#FFE74C; --purple:#B14AED;
+  --orange:#FF6B35; --blue:#3A86FF; --green:#5CE082;
+  --text:#E8ECFF; --text-dim:#8E96C9; --text-faint:#5A6094;
+  --border:rgba(0,245,212,.28); --grid:rgba(0,245,212,.07);
+  --wrap:1280px; --gut:36px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg-deep); color:var(--text);
+  font-family:"PingFang SC","Microsoft YaHei","HarmonyOS Sans SC",-apple-system,"Segoe UI",sans-serif;
+  line-height:1.7; font-size:15px; position:relative; overflow-x:hidden;
+}
+body::before{content:"";position:fixed;inset:0;background:
+  radial-gradient(900px 500px at 15% -5%,rgba(0,245,212,.10),transparent 60%),
+  radial-gradient(800px 500px at 95% 0%,rgba(177,74,237,.12),transparent 55%),
+  radial-gradient(700px 600px at 50% 110%,rgba(255,46,151,.08),transparent 60%);
+  pointer-events:none;z-index:0}
+body::after{content:"";position:fixed;inset:0;background-image:
+  linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;z-index:0;opacity:.6}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--cyan),var(--purple));z-index:100;box-shadow:0 0 12px var(--cyan)}
+.topnav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+  padding:12px var(--gut);background:rgba(4,7,26,.82);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border)}
+.brand{font-weight:800;font-size:15px;letter-spacing:.5px;color:var(--text)}
+.brand b{color:var(--cyan)}
+.nav-links{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px}
+.nav-links a{color:var(--text-dim);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--cyan)}
+main{position:relative;z-index:1;max-width:var(--wrap);margin:0 auto;padding:0 var(--gut) 80px}
+.header{padding:54px 0 30px}
+.hero-t{font-size:30px;font-weight:800;letter-spacing:.5px;line-height:1.3}
+.hero-t .accent{color:var(--cyan)}
+.kick{color:var(--text-dim);font-size:14px;margin-top:10px;max-width:760px}
+.metas{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
+.meta{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:10px 16px;min-width:120px}
+.meta .k{font-size:12px;color:var(--text-dim)}
+.meta .v{font-size:16px;font-weight:700;color:var(--cyan);margin-top:2px;font-family:"JetBrains Mono",Consolas,monospace}
+.hd-r{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.bdg{display:inline-block;font-size:12px;padding:4px 10px;border-radius:20px;font-weight:700;border:1px solid}
+.b-v{color:var(--cyan);border-color:var(--border);background:rgba(0,245,212,.08)}
+.b-w{color:var(--text-dim);border-color:rgba(142,150,201,.3);background:rgba(142,150,201,.06)}
+.b-b{color:var(--magenta);border-color:rgba(255,46,151,.4);background:rgba(255,46,151,.08)}
+
+.part-banner{display:flex;align-items:center;gap:16px;margin:46px 0 18px}
+.part-banner .pnum{flex:0 0 auto;width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-family:"JetBrains Mono",Consolas,monospace;font-size:18px;font-weight:800;color:var(--bg-deep);
+  background:linear-gradient(135deg,var(--cyan),var(--purple));box-shadow:0 0 18px rgba(0,245,212,.35)}
+.part-banner h1{font-size:21px;font-weight:800}
+.part-banner .pdesc{color:var(--text-dim);font-size:13px;margin-top:2px}
+
+.info-title{font-size:16px;font-weight:700;color:var(--text);margin:22px 0 8px;padding-left:11px;border-left:3px solid var(--cyan)}
+.info-title.mag{color:var(--magenta);border-color:var(--magenta)}
+.info-title.yel{color:var(--yellow);border-color:var(--yellow)}
+.info-title.pur{color:var(--purple);border-color:var(--purple)}
+
+p{margin:9px 0;color:var(--text)}
+.dim{color:var(--text-dim)}
+ul.pts{list-style:none;margin:10px 0;padding-left:4px}
+ul.pts li{position:relative;padding-left:20px;margin:7px 0;color:var(--text)}
+ul.pts li::before{content:"";position:absolute;left:4px;top:11px;width:7px;height:7px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.pts-tail{color:var(--text-dim);font-size:13px;margin-top:8px}
+
+.tblw{overflow-x:auto;margin:14px 0;border:1px solid var(--border);border-radius:12px}
+table.t{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--bg-card)}
+table.t th{background:rgba(0,245,212,.08);color:var(--cyan);text-align:left;padding:11px 13px;font-weight:700;
+  border-bottom:1px solid var(--border);white-space:nowrap}
+table.t td{padding:10px 13px;border-bottom:1px solid rgba(142,150,201,.14);color:var(--text);vertical-align:top}
+table.t tr:last-child td{border-bottom:none}
+table.t tr:hover td{background:rgba(0,245,212,.04)}
+
+blockquote{border-left:3px solid var(--magenta);background:rgba(255,46,151,.06);padding:12px 16px;border-radius:0 10px 10px 0;margin:14px 0;color:var(--text)}
+blockquote .lbl{color:var(--magenta);font-weight:700;margin-right:6px}
+
+pre{background:var(--bg-night);border:1px solid var(--border);border-radius:12px;padding:16px 18px;
+  overflow-x:auto;font-family:"JetBrains Mono",Consolas,monospace;font-size:13px;color:var(--green);line-height:1.6;margin:14px 0;position:relative}
+pre::before{content:"FLOW";position:absolute;top:8px;right:12px;font-size:10px;color:var(--text-faint);letter-spacing:2px}
+
+.callout{background:linear-gradient(180deg,rgba(0,245,212,.08),rgba(177,74,237,.06));
+  border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:16px 0}
+.callout b{color:#cdd6f4;}
+
+/* 四层架构视觉条 */
+.layerbar{display:flex;gap:0;margin:14px 0;border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.layerbar .ly{flex:1;text-align:center;padding:12px 8px;font-size:13px;font-weight:600;color:#04071a}
+.ly.l1{background:var(--blue)} .ly.l2{background:var(--purple)} .ly.l3{background:var(--green)} .ly.l4{background:var(--orange)}
+
+/* 模块能力卡网格 */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:16px 0}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.card h4{margin:0 0 8px;color:var(--cyan);font-size:15px}
+.card p{margin:0;color:var(--text-dim);font-size:13.5px}
+
+/* 优先级徽章（JS 自动着色，正文只写纯文本） */
+.chip{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:6px}
+.chip.p0{color:var(--green);background:rgba(92,224,130,.12);border:1px solid rgba(92,224,130,.35)}
+.chip.p1{color:var(--cyan);background:rgba(0,245,212,.1);border:1px solid var(--border)}
+.chip.p2{color:var(--purple);background:rgba(177,74,237,.12);border:1px solid rgba(177,74,237,.35)}
+.chip.p3{color:var(--magenta);background:rgba(255,46,151,.12);border:1px solid rgba(255,46,151,.35)}
+.chip.h{color:var(--magenta);background:rgba(255,46,151,.1);border:1px solid rgba(255,46,151,.35)}
+.chip.m{color:var(--yellow);background:rgba(255,231,76,.1);border:1px solid rgba(255,231,76,.35)}
+.chip.l{color:var(--green);background:rgba(92,224,130,.1);border:1px solid rgba(92,224,130,.35)}
+.chip.d{color:var(--text-dim);background:rgba(142,150,201,.08);border:1px solid rgba(142,150,201,.3)}
+.chip.o{color:var(--orange);background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.35)}
+
+/* 优先级矩阵单元格 */
+.m-yes{color:var(--green);font-weight:700}
+.m-no{color:var(--text-dim)}
+.m-dash{color:var(--magenta);font-weight:700}
+
+/* 内联优先级 pill（清单表 / 列表中手动用，与卡片搭配） */
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--bg-panel);color:#cdd6f4;margin-right:6px}
+.pill.p0{background:rgba(92,224,130,.15);color:var(--green)}
+.pill.p1{background:rgba(0,245,212,.15);color:var(--cyan)}
+.pill.p2{background:rgba(177,74,237,.15);color:var(--purple)}
+.pill.p3{background:rgba(255,46,151,.15);color:var(--magenta)}
+
+/* MVP 验收 KPI 卡 */
+.kpi{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
+.kpi .box{flex:1;min-width:150px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.kpi .n{font-size:22px;font-weight:700;color:var(--cyan)}
+.kpi .l{font-size:12.5px;color:var(--text-dim);margin-top:4px}
+
+/* 模块序号标签（用于清单表首列） */
+.modtag{display:inline-block;font-size:12px;font-weight:700;color:#04071a;background:var(--cyan);border-radius:6px;padding:2px 9px;margin-right:8px}
+
+.note{color:var(--text-dim);font-size:12.5px;margin:6px 0}
+
+footer{position:relative;z-index:1;max-width:var(--wrap);margin:40px auto 0;padding:24px var(--gut);
+  border-top:1px solid var(--border);color:var(--text-faint);font-size:12.5px}
+footer .src{margin-top:6px}
+#top{position:fixed;right:22px;bottom:22px;width:42px;height:42px;border-radius:50%;background:var(--bg-card);
+  border:1px solid var(--border);color:var(--cyan);display:flex;align-items:center;justify-content:center;cursor:pointer;
+  z-index:80;font-size:18px;opacity:0;transition:opacity .3s}
+#top.show{opacity:1}
+@media(max-width:720px){.nav-links{display:none}.hero-t{font-size:18px;white-space:normal}.metas{gap:10px}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<!-- ===== 顶部导航：nav 项用原章节名，不加序号（增删章节同步增删） ===== -->
+<nav class="topnav">
+  <div class="brand">{{产品名}} <b>· 功能规划</b></div>
+  <div class="nav-links">
+    <a href="#c1">定位</a>
+    <a href="#c2">四层架构</a>
+    <a href="#c3">模块清单</a>
+    <a href="#c4">模块展开</a>
+    <a href="#c5">横切系统</a>
+    <a href="#c6">优先级矩阵</a>
+    <a href="#c7">MVP</a>
+    <a href="#c8">路线图</a>
+    <a href="#c9">数据对象</a>
+    <a href="#c10">指标风险</a>
+    <a href="#app">口径来源</a>
+  </div>
+</nav>
+
+<main>
+  <!-- ===== 头部 ===== -->
+  <div class="header">
+    <!-- 改这里：主标题 + 青色副标题 -->
+    <div class="hero-t">{{产品名}} 产品功能规划&nbsp;<span class="accent">{{一句话定位}</span></div>
+    <!-- 改这里：产品核心摘要，≤60 字一句——面向谁 + 输入什么 + 自动产出什么 -->
+    <div class="kick">面向 {{目标人群}} 的 {{产品形态}}：{{输入什么}}，在 {{核心链路}} 一条工作流里自动生成、逐项可改，最终 {{产出物}}。</div>
+    <div class="hd-r">
+      <!-- 改这里：版本 / 状态 / 待确认数 徽章 -->
+      <span class="bdg b-v">版本 V1.0</span>
+      <span class="bdg b-w">状态 待评审</span>
+      <span class="bdg b-b">{{N}} 项待确认</span>
+    </div>
+    <div class="metas">
+      <div class="meta"><div class="k">核心模块</div><div class="v">{{8}}</div></div>
+      <div class="meta"><div class="k">产品层级</div><div class="v">{{4}}</div></div>
+      <div class="meta"><div class="k">P0 主链路</div><div class="v">{{闭环}}</div></div>
+      <div class="meta"><div class="k">运行环境</div><div class="v">{{网页}}</div></div>
+    </div>
+  </div>
+
+  <!-- 1. 定位与价值主张 -->
+  <div class="part-banner" id="c1"><div class="pnum">1</div><div><h1>产品定位与价值主张</h1><div class="pdesc">核心定位 · 主流程 · 真正的差异化竞争力</div></div></div>
+
+  <div class="info-title">1.1 核心定位</div>
+  <blockquote>{{一句话定位段落：面向谁 + 是什么 + 用哪些能力组织成什么。避免空话，落到具体人群与场景。}}</blockquote>
+  <p>{{产品最终要回答的问题不是「能不能生成 X」，而是：一个 {{输入}} 即可完成从 {{环节一}} → … → {{成片}} 的完整生产。解决「{{传统工具的核心痛点：单点很强但要来回切工具}}」。}}</p>
+
+  <div class="info-title">1.2 完整主流程</div>
+<pre>用户 {{输入}} → {{环节一}} → {{环节二}} → … → {{成片}} → {{发布/复用}}
+底层支撑：{{模型聚合 + 工作流 + 资产管理 + 画布}}</pre>
+
+  <div class="info-title">1.3 真正的差异化竞争力</div>
+  <p>{{基础能力（迟早人人都有的）：{{如文生图/文生视频/TTS}}。真正拉开差距的是：{{把基础能力串成完整流程的系统能力——如剧本结构化 + 资产一致性 + 分镜生产 + 多模型生成 + 工作流 + Agent}}。}}</p>
+
+  <!-- 2. 四层架构 -->
+  <div class="part-banner" id="c2"><div class="pnum">2</div><div><h1>四层产品架构（总纲）</h1><div class="pdesc">把几十个功能归纳成四层，每层回答一个根本问题</div></div></div>
+  <p class="dim">为避免记忆几十个功能，把整个产品归纳为四层。每一层解决一个根本问题，规划拆解时均按此四层归口：</p>
+  <div class="layerbar">
+    <div class="ly l1">第一层 · 创意层<br>我要做什么？</div>
+    <div class="ly l2">第二层 · 生产层<br>怎么变素材？</div>
+    <div class="ly l3">第三层 · 工程层<br>怎么规模化？</div>
+    <div class="ly l4">第四层 · 流通层<br>怎么持续流通？</div>
+  </div>
+  <div class="tblw"><table class="t">
+    <tr><th style="width:120px">层级</th><th style="width:140px">核心问题</th><th>包含模块</th></tr>
+    <tr><td><span class="modtag" style="background:var(--blue)">L1</span> 创意层</td><td>我要做什么？</td><td>{{AI 创意助手、剧本、故事、角色、模板}}</td></tr>
+    <tr><td><span class="modtag" style="background:var(--purple)">L2</span> 生产层</td><td>怎么把创意变素材？</td><td>{{图片、视频、音频、分镜、模型}}</td></tr>
+    <tr><td><span class="modtag" style="background:var(--green)">L3</span> 工程层</td><td>怎么规模化、高质量生产？</td><td>{{画布/节点、工作流、Agent、资产管理、一致性、批量}}</td></tr>
+    <tr><td><span class="modtag" style="background:var(--orange)">L4</span> 流通层</td><td>怎么让内容持续流通？</td><td>{{社区、模板市场、资产市场、API、会员、算力}}</td></tr>
+  </table></div>
+
+  <!-- 3. 模块清单 -->
+  <div class="part-banner" id="c3"><div class="pnum">3</div><div><h1>核心模块功能清单</h1><div class="pdesc">{{N}} 个一级模块，作为后续规划目录；优先级按 P0→P1→P2 降序</div></div></div>
+  <p class="dim">四层架构落为 {{N}} 个一级功能模块。下表给出每模块的核心功能、定位与优先级（按顺序从上到下即 P0→P1→P2）：</p>
+  <div class="tblw"><table class="t">
+    <tr><th style="width:220px">一级模块</th><th>核心功能</th><th style="width:120px">定位</th><th style="width:80px">优先级</th></tr>
+    <!-- 复制 <tr> 扩展；优先级列必须按 P0→P1→P2 单调降序，不逆序混排 -->
+    <tr><td>模块 01 {{首页/创意中心}}</td><td>{{AI 创意助手、快速创作、模板中心、我的项目}}</td><td>{{降低门槛}}</td><td>P0</td></tr>
+    <tr><td>模块 02 {{图片创作}}</td><td>{{文生图、图生图、编辑、一致性}}</td><td>{{视觉素材}}</td><td>P0</td></tr>
+    <tr><td>模块 03 {{视频创作}}</td><td>{{文/图生视频、首尾帧、编辑、续写}}</td><td>{{视频生产}}</td><td>P0</td></tr>
+    <tr><td>模块 04 {{音频创作}}</td><td>{{AI 配音、音色克隆、音乐、音效}}</td><td>{{声音生产}}</td><td>P0</td></tr>
+    <tr><td>模块 05 {{后期制作}}</td><td>{{时间轴、智能剪辑、字幕、转场}}</td><td>{{成片}}</td><td>P0</td></tr>
+    <tr><td>模块 06 {{故事/剧本}}</td><td>{{AI 写本、拆解、角色、场景、分镜}}</td><td>{{内容策划}}</td><td>P1</td></tr>
+    <tr><td>模块 07 {{资产/社区/商业化}}</td><td>{{我的资产、模板、社区、会员、算力}}</td><td>{{沉淀与流通}}</td><td>P1</td></tr>
+    <tr><td>模块 08 {{创作工作台}}</td><td>{{画布、节点、工作流、Agent、历史}}</td><td>{{专业生产核心}}</td><td>P2</td></tr>
+  </table></div>
+
+  <!-- 4. 逐模块展开 -->
+  <div class="part-banner" id="c4"><div class="pnum">4</div><div><h1>逐模块功能展开</h1><div class="pdesc">每个模块：核心入口 + 功能分组表（带优先级）+ 关键机制</div></div></div>
+
+  <div class="info-title">4.1 模块 01 · {{首页/创意中心}}</div>
+  <p>{{入口定位：不让用户一上来面对复杂工作台，先解决「想做但不知道从哪开始」。}}</p>
+  <div class="info-title">4.1.1 核心入口</div>
+  <ul class="pts">
+    <li><span class="pill p0">P0</span> {{AI 创意输入框：「告诉我你想做什么，我帮你完成」+ 示例引导}}</li>
+    <li><span class="pill p0">P0</span> {{快速创作入口：{{场景一}}/{{场景二}}/…}}</li>
+    <li><span class="pill p1">P1</span> {{最近项目、推荐模板}}</li>
+  </ul>
+  <div class="info-title">4.1.2 {{核心功能}}（模块核心）</div>
+  <div class="tblw"><table class="t">
+    <tr><th style="width:64px">编号</th><th style="width:140px">创作模式</th><th>说明</th><th style="width:80px">优先级</th></tr>
+    <tr><td>A1</td><td>{{一键完成}}</td><td>{{自动跑完整条流程，用户只做最终确认和轻量修改}}</td><td>P0</td></tr>
+    <tr><td>A2</td><td>{{辅助完成}}</td><td>{{每一步提供方案，用户逐节点确认/改写}}</td><td>P0</td></tr>
+    <tr><td>A3</td><td>{{自己创作}}</td><td>{{进入专业工作台，完全手动编排}}</td><td>P1</td></tr>
+  </table></div>
+  <p class="note">{{每张模块表后跟一条：机制成因 / 实操口径 / 避坑。例：无限画布是专业核心，不进 MVP。}}</p>
+
+  <!-- 复制 4.2 / 4.3 … 直到覆盖所有模块；每个模块同构：入口说明 + 功能分组表 + .note -->
+  <!-- 编号纪律：独立「编号」列，编号与能力名不混写；模块 01→A、02→B… 字母随模块顺序连续分配；模块内数字 1,2,3… 连续递增；非模块迭代项用 R 前缀。 -->
+
+  <!-- 5. 横切系统 -->
+  <div class="part-banner" id="c5"><div class="pnum">5</div><div><h1>横切系统</h1><div class="pdesc">跨模块共享的能力：Agent / 工作流 / 模型路由 / API / 专业摄影棚</div></div></div>
+
+  <div class="info-title">5.1 {{AI Agent 系统}}</div>
+  <p>{{用户只需说「{{一句话需求}}」，Agent 自动完成：{{需求理解 → 创意 → 脚本 → 角色 → 分镜 → 生成 → 配音 → 剪辑 → 成片}}。用户可随时介入，Agent 只重跑受影响节点而非全项目重生成。}}</p>
+
+  <div class="info-title">5.2 {{工作流系统}}</div>
+  <p>{{专业用户拿来批量生产的工具。例：「{{某生产工作流}}」= {{步骤一→步骤二→…}}，存好之后一键复用、批量跑。}}</p>
+
+  <div class="info-title">5.3 {{模型中心（Router）}}</div>
+  <p>{{不让用户直接面对几十个模型，按 {{图片/视频/音频}} 分类并打标签。普通用户由 AI 自动选最佳模型，专业用户自选。底层让 Router 与具体模型不直接绑死，以后加新模型不用重写系统。}}</p>
+
+  <div class="info-title">5.4 {{API / 开放平台}}</div>
+  <div class="tblw"><table class="t">
+    <tr><th style="width:200px">API</th><th>Agent Skill</th></tr>
+    <tr><td>{{文本生成 / 图片生成 / 视频生成 / 音频生成 / 解析}}</td><td><code>{{create_script()}} / {{generate_video()}} / …</code></td></tr>
+  </table></div>
+
+  <!-- 可选：专业虚拟摄影棚等高端能力，没有就整节不写
+  <div class="info-title">5.5 {{专业虚拟摄影棚}}</div>
+  <p>{{相当于虚拟摄影棚，解决提示词写不清人物位置/镜头运动的问题。建议 P2 引入。}}</p>
+  -->
+
+  <!-- 6. 优先级矩阵 -->
+  <div class="part-banner" id="c6"><div class="pnum">6</div><div><h1>功能优先级矩阵（P0–P3）</h1><div class="pdesc">模块 × 阶段；✅ 核心可用 / ○ 部分 / — 不做（JS 自动着色）</div></div></div>
+  <div class="tblw"><table class="t">
+    <tr><th>模块</th><th>功能</th><th>P0 核心可用</th><th>P1 差异化</th><th>P2 专业生产</th><th>P3 平台化</th></tr>
+    <!-- 复制 <tr> 扩展；✅/○/— 纯文本写，JS 自动着色；列向之和要与清单表模块总体优先级一致 -->
+    <tr><td>{{创意中心}}</td><td>{{AI 助手/快速创作/模板/项目}}</td><td>✅</td><td>○</td><td>—</td><td>—</td></tr>
+    <tr><td>{{一键出片}}</td><td>{{脚本→分镜→生成→剪辑→成片}}</td><td>✅</td><td>○</td><td>—</td><td>—</td></tr>
+    <tr><td>{{图片}}</td><td>{{文生图/图生图/编辑}}</td><td>✅</td><td>○</td><td>—</td><td>—</td></tr>
+    <tr><td>{{视频}}</td><td>{{文/图生视频/首尾帧/编辑/续写}}</td><td>✅</td><td>✅</td><td>○</td><td>—</td></tr>
+    <tr><td>{{音频}}</td><td>{{配音/音色/音乐/音效}}</td><td>✅</td><td>✅</td><td>—</td><td>—</td></tr>
+    <tr><td>{{剪辑}}</td><td>{{时间轴/字幕/转场/智能剪辑}}</td><td>✅</td><td>✅</td><td>—</td><td>—</td></tr>
+    <tr><td>{{故事/剧本}}</td><td>{{写本/拆解/角色/场景/分镜}}</td><td>○</td><td>✅</td><td>○</td><td>—</td></tr>
+    <tr><td>{{资产}}</td><td>{{角色/场景/商品/风格资产}}</td><td>○最小</td><td>✅</td><td>○</td><td>—</td></tr>
+    <tr><td>{{模板}}</td><td>{{视频/剧本模板库}}</td><td>○</td><td>✅</td><td>—</td><td>—</td></tr>
+    <tr><td>{{创作工作台}}</td><td>{{画布/节点/工作流}}</td><td>—</td><td>○</td><td>✅</td><td>—</td></tr>
+    <tr><td>{{Agent}}</td><td>{{AI 导演/批量生产}}</td><td>—</td><td>○</td><td>✅</td><td>—</td></tr>
+    <tr><td>{{模型中心}}</td><td>{{分类/自动路由/自选}}</td><td>○单模型</td><td>✅</td><td>✅</td><td>—</td></tr>
+    <tr><td>{{社区}}</td><td>{{作品/创作者/资产/工作流市场}}</td><td>—</td><td>—</td><td>○</td><td>✅</td></tr>
+    <tr><td>{{API}}</td><td>{{开放 API/Agent Skill}}</td><td>—</td><td>—</td><td>○</td><td>✅</td></tr>
+    <tr><td>{{商业化}}</td><td>{{会员/算力/企业版}}</td><td>○限免</td><td>✅订阅</td><td>○团队</td><td>✅企业</td></tr>
+  </table></div>
+
+  <!-- 7. MVP -->
+  <div class="part-banner" id="c7"><div class="pnum">7</div><div><h1>MVP 范围建议</h1><div class="pdesc">只保矩阵 P0 列 ✅ 串成的主链路</div></div></div>
+  <div class="callout">
+    <b>MVP 主线：</b>{{首页 AI 输入框 → AI 创意助手（一键/辅助）→ 快速创作 → 生成（图+视频+音频）→ AI 剪辑成片 → 导出 + 多比例适配}}。<br>
+    <b>资产：</b>{{MVP 内置「{{角色/商品/风格}}」最小资产即可，复杂资产管理留 P1}}。<br>
+    <b>暂不纳入 MVP：</b>{{故事多集、画布/节点工作流、社区、团队协作、专业摄影棚、模型路由（先单模型接入，但保留 Router 接口）}}。
+  </div>
+  <div class="info-title">7.1 MVP 验收标准</div>
+  <div class="kpi">
+    <div class="box"><div class="n">≤{{3}} 步</div><div class="l">{{普通用户从输入到出首版成片，最多点几步}}</div></div>
+    <div class="box"><div class="n">≥{{1}}</div><div class="l">{{图、视频、音频每条线至少跑通 1 条}}</div></div>
+    <div class="box"><div class="n">{{4}} 比例</div><div class="l">{{成片自动适配 {{9:16/16:9/1:1/4:3}} 四种画幅}}</div></div>
+    <div class="box"><div class="n">{{V 版本}}</div><div class="l">{{每个镜头能存版本，任务进度看得见}}</div></div>
+  </div>
+
+  <!-- 8. 路线图 -->
+  <div class="part-banner" id="c8"><div class="pnum">8</div><div><h1>分阶段路线图</h1><div class="pdesc">V0.1→V3.0 对应 P0→P3</div></div></div>
+  <div class="tblw"><table class="t">
+    <tr><th style="width:160px">版本</th><th style="width:160px">目标</th><th>关键交付</th></tr>
+    <tr><td><span class="pill p0">P0</span> V0.1 {{一键出片}}</td><td>{{让用户第一次成功}}</td><td>{{AI 创意助手、脚本/分镜、文生图、文生视频、图生视频、AI 剪辑/字幕/配音/音乐、项目管理、素材库、分镜管理、版本、任务中心}}</td></tr>
+    <tr><td><span class="pill p1">P1</span> V1.0 {{差异化}}</td><td>{{故事与资产体系}}</td><td>{{剧本解析、角色/场景/道具资产、长故事多集、资产一致性、视频编辑/续写、模板、模型中心}}</td></tr>
+    <tr><td><span class="pill p2">P2</span> V2.0 {{专业生产}}</td><td>{{节点工作流与协作}}</td><td>{{画布、节点工作流、多模型、模型路由、Agent 导演、批量生成、团队协作、工作流市场}}</td></tr>
+    <tr><td><span class="pill p3">P3</span> V3.0 {{平台化}}</td><td>{{社区与开放市场}}</td><td>{{创作者社区、模板市场、资产市场、企业空间、API/Agent Skill、内容数据分析}}</td></tr>
+  </table></div>
+
+  <!-- 9. 数据对象 -->
+  <div class="part-banner" id="c9"><div class="pnum">9</div><div><h1>核心数据对象与关键系统</h1><div class="pdesc">决定产品是否成立为「系统」</div></div></div>
+  <div class="info-title">9.1 核心数据对象</div>
+<pre>User → Project → Story → Character → Scene → Asset → Storyboard → Shot → Generation → Timeline → Video → Publish
+核心对象：{{Project / Asset / Storyboard / Shot / Generation}}</pre>
+  <p>{{版本、任务、搜索、版权溯源、协作这些功能，全都绕着这几个核心对象搭。规划阶段先把它们的字段和关系定死，别等做了一半再改。}}</p>
+  <div class="info-title">9.2 关键横切系统</div>
+  <ul class="pts">
+    <li><b>{{版本管理/任务中心/素材库}}</b>：{{镜头级版本查看恢复对比；任务统一状态支持取消/重试/批量；素材库文件夹/标签/搜索/收藏}}。</li>
+    <li><b>{{自然语言搜索}}</b>：{{建立在核心对象索引之上，如「找出所有咖啡广告」}}。</li>
+    <li><b>{{内容安全与版权溯源}}</b>：{{输入/生成/发布三段审核；素材来源、AI 生成记录、模型来源、授权与商业权限 → 内容资产溯源}}。</li>
+    <li><b>{{多平台适配与发布助手}}</b>：{{{{9:16/16:9/1:1/4:3}}，覆盖 {{抖音/小红书/视频号/B站/TikTok/YouTube}}；按平台自动生成标题/简介/标签/封面}}。</li>
+    <li><b>{{用户体系与团队协作}}</b>：{{账号+个人空间；专业阶段团队空间、成员、权限、评论、审批、版本}}。</li>
+  </ul>
+
+  <!-- 10. 指标风险 -->
+  <div class="part-banner" id="c10"><div class="pnum">10</div><div><h1>北极星指标与风险</h1><div class="pdesc">指标有定义，风险有等级与对策</div></div></div>
+  <div class="info-title">10.1 北极星与关键指标</div>
+  <div class="tblw"><table class="t">
+    <tr><th style="width:200px">指标</th><th>定义</th></tr>
+    <tr><td>{{周活跃创作项目数}}</td><td>{{用户真正进入创作流程的项目（比注册数更有意义）}}</td></tr>
+    <tr><td>{{一句话出片成功率}}</td><td>{{普通用户从输入到首版成片的比例}}</td></tr>
+    <tr><td>{{成片发布率}}</td><td>{{导出/多平台发布占比}}</td></tr>
+    <tr><td>{{资产复用率}}</td><td>{{复用已有角色/商品/风格生成镜头的比例（差异化健康度）}}</td></tr>
+    <tr><td>{{生成成本/成片}}</td><td>{{单条成片平均模型调用成本（商业可持续性）}}</td></tr>
+  </table></div>
+  <div class="info-title">10.2 风险与合规</div>
+  <ul class="pts">
+    <li><b>{{模型能力波动}}</b>（等级 {{中}}）：{{依赖第三方模型质量与稳定性}} → {{用 Router + 重试/切换兜底，对外以「可交付成片」为准}}。</li>
+    <li><b>{{一致性难题}}</b>（等级 {{高}}）：{{角色/商品跨镜头一致是技术硬骨头}} → {{P1 前以「参考图 + 资产 Prompt」约束，不夸大承诺}}。</li>
+    <li><b>{{内容安全}}</b>（等级 {{高}}）：{{深度伪造、版权、违规内容}} → {{输入/生成/发布三段审核 + 溯源记录，合规前置}}。</li>
+    <li><b>{{范围蔓延}}</b>（等级 {{中}}）：{{N 个模块加横切系统，一上来全做肯定撑爆}} → {{严格按 P0–P3 分期，MVP 只保主链路}}。</li>
+    <li><b>{{社区起步难}}</b>（等级 {{中}}）：{{发内容的人和用内容的人得同时有}} → {{放 P3 再做，前期先用官方模板撑住}}。</li>
+  </ul>
+
+  <!-- 附录 -->
+  <div class="part-banner" id="app"><div class="pnum">附录</div><div><h1>文档口径与来源</h1><div class="pdesc">来源范围与口径归属一次说清；变更流水只此一处</div></div></div>
+  <div class="info-title">口径与边界</div>
+  <ul class="pts">
+    <li><b>内容基线</b>：{{来源清单}}。</li>
+    <li><b>口径冲突</b>：同一事实多份材料表述不一致时，按来源分别标注，不强行统一；冲突项一律挂 B 编号。</li>
+    <li><b>推断的处理</b>：没有材料支撑的推断已删除或标注「待确认」。</li>
+    <li><b>文档定位</b>：{{产品功能规划稿}}，交付标准是「{{能看、能讲、能立项评审}}」；{{不写 EARS 工程粒度，需要时另出需求文档}}。</li>
+  </ul>
+  <div class="info-title">参考来源</div>
+  <div class="tblw"><table class="t">
+    <tr><th style="width:260px">来源</th><th>用途</th></tr>
+    <tr><td>{{来源}}</td><td>{{用途}}</td></tr>
+  </table></div>
+  <div class="info-title">变更记录</div>
+  <p class="dim">倒序排列。此处是本文件唯一的变更流水。</p>
+  <ul class="pts">
+    <li><b>V1.0</b>——首版。</li>
+  </ul>
+
+</main>
+
+<footer>
+  {{产品名}} 产品功能规划 V1.0 · 整理自 {{来源}} · {{YYYY-MM-DD}}
+</footer>
+
+<div id="top" title="返回顶部">↑</div>
+
+<script>
+(function(){
+  var progress=document.getElementById('progress');
+  var top=document.getElementById('top');
+  function onScroll(){
+    var h=document.documentElement;
+    var st=h.scrollTop||document.body.scrollTop;
+    var sh=h.scrollHeight-h.clientHeight;
+    progress.style.width=(sh>0?(st/sh*100):0)+'%';
+    if(st>400){top.classList.add('show');}else{top.classList.remove('show');}
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  top.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+
+  // 单元格纯文本 → 徽章 / 矩阵着色：写正文时只写纯文本，不要手写徽章 HTML
+  var chipMap={'P0':'p0','P1':'p1','P2':'p2','P3':'p3','高':'h','中':'m','低':'l','待确认':'o','部分确认':'m','已确认':'l'};
+  var matrixMap={'✅':'m-yes','○':'m-no','—':'m-dash'};
+  document.querySelectorAll('table.t td').forEach(function(td){
+    var t=td.textContent.trim();
+    if(chipMap[t]){td.innerHTML='<span class="chip '+chipMap[t]+'">'+t+'</span>';return;}
+    // 矩阵标记可能带后缀（如「○最小」「✅订阅」），按首字符识别并整体着色
+    var mm=t.match(/^([✅○—])([\s\S]*)$/);
+    if(mm && matrixMap[mm[1]]){td.className=(td.className+' '+matrixMap[mm[1]]).trim();td.textContent=t;return;}
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{产品名} 功能演进与需求分析</title>
+<style>
+  :root{
+    --bg:#0b0c10; --bg2:#12141a; --bg3:#1a1d26; --line:#252a36;
+    --text:#e6e8ef; --text2:#9aa3b2; --text3:#6b7280;
+    --accent:#00d4aa; --accent2:#0ea5e9; --warn:#f59e0b; --risk:#ef4444; --ok:#10b981;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);font:15px/1.7 "PingFang SC","Microsoft YaHei","HarmonyOS Sans SC",-apple-system,"Segoe UI",sans-serif}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 左侧常驻目录 */
+  nav#toc{position:fixed;top:0;left:0;width:220px;height:100vh;background:var(--bg2);border-right:1px solid var(--line);padding:24px 18px 40px;overflow:auto;z-index:50}
+  nav#toc h3{margin:0 0 14px;font-size:14px;color:var(--text2);font-weight:600;letter-spacing:.05em}
+  nav#toc a{display:block;padding:6px 0;font-size:13px;color:var(--text2);border-left:2px solid transparent;padding-left:8px;margin-left:-8px}
+  nav#toc a:hover{color:var(--accent)}
+  nav#toc a.l2{padding-left:20px;font-size:12px;color:var(--text3)}
+  nav#toc a.on{color:var(--accent);border-left-color:var(--accent);background:rgba(0,212,170,.06)}
+  main{margin-left:220px;min-height:100vh}
+
+  /* 头部信息区 */
+  header{padding:48px 56px 32px;background:linear-gradient(180deg,var(--bg2) 0%,var(--bg) 100%);border-bottom:1px solid var(--line)}
+  .brand{font-size:12px;color:var(--accent);letter-spacing:.08em;margin-bottom:10px}
+  h1{margin:0 0 18px;font-size:34px;font-weight:700;line-height:1.25}
+  .kick{font-size:15px;color:var(--text2);max-width:820px}
+  .metas{display:flex;gap:32px;margin-top:22px;flex-wrap:wrap}
+  .meta{display:flex;flex-direction:column;gap:4px}
+  .meta .k{font-size:12px;color:var(--text3);letter-spacing:.05em}
+  .meta .v{font-size:18px;color:var(--text);font-weight:600}
+  .hd-r{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+  .bdg{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600}
+  .b-v{background:rgba(0,212,170,.12);color:var(--accent)}
+  .b-w{background:rgba(245,158,11,.12);color:var(--warn)}
+  .b-b{background:rgba(14,165,233,.12);color:var(--accent2)}
+
+  /* 章节 */
+  section{padding:36px 56px;border-bottom:1px solid var(--line)}
+  .part-banner{display:flex;align-items:center;gap:18px;margin:0 0 26px}
+  .pnum{width:36px;height:36px;flex:0 0 36px;border-radius:8px;background:var(--bg3);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent)}
+  .part-banner h2{margin:0;font-size:22px;font-weight:600}
+  .pdesc{margin-top:4px;color:var(--text2);font-size:13px}
+  h3{margin:28px 0 14px;font-size:18px;color:var(--text);font-weight:600;border-left:3px solid var(--accent);padding-left:12px}
+  h4{margin:20px 0 10px;font-size:15px;color:var(--text2);font-weight:600}
+
+  /* 正文 */
+  p{margin:0 0 14px;color:var(--text2)}
+  p strong{color:var(--text)}
+  ul,ol{margin:0 0 18px;padding-left:22px;color:var(--text2)}
+  li{margin:6px 0}
+  code{background:var(--bg3);padding:2px 6px;border-radius:4px;font-family:"JetBrains Mono",Consolas,monospace;font-size:12px;color:var(--accent)}
+  pre{background:var(--bg3);padding:16px;border-radius:8px;overflow:auto;font-size:13px;line-height:1.6;color:var(--text2);border:1px solid var(--line);font-family:"JetBrains Mono",Consolas,monospace}
+  .dim{color:var(--text3);font-size:13px}
+  .src{font-size:12px;color:var(--text3);margin-top:6px}
+
+  /* 表格 */
+  .tblw{overflow-x:auto;margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}
+  th{background:var(--bg3);color:var(--text);font-weight:600;white-space:nowrap}
+  td{color:var(--text2)}
+  tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+
+  /* 说明注 */
+  .note{background:var(--bg3);border-left:3px solid var(--accent);padding:14px 18px;margin:18px 0;color:var(--text2);font-size:13px}
+  .note strong{color:var(--text)}
+  .note ul{margin:8px 0 0}
+  .warn{background:var(--bg3);border-left:3px solid var(--warn)}
+  .risk{background:var(--bg3);border-left:3px solid var(--risk)}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+
+  /* 返回顶部 */
+  #top{position:fixed;right:24px;bottom:24px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--bg3);color:var(--accent);font-size:16px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s;z-index:60}
+  #top.show{opacity:1;pointer-events:auto}
+
+  @media(max-width:980px){
+    nav#toc{display:none}
+    main{margin-left:0}
+    section,header{padding:28px 24px}
+    .two-col{grid-template-columns:1fr}
+  }
+  @media print{
+    nav#toc,#top{display:none}
+    main{margin-left:0}
+    body{background:#fff;color:#111}
+    section{border-bottom:1px solid #ddd;padding:18px 0}
+    th{background:#f2f2f2;color:#111}
+    td,p,li{color:#333}
+    .note{background:#f7f7f7}
+  }
+</style>
+</head>
+<body>
+<nav id="toc">
+  <h3>目录</h3>
+  <a href="#s1">1. 演进路径与遗留问题</a>
+  <a href="#s2">2. 演进背景</a>
+  <a href="#s3">3. {N} 阶段演进</a>
+  <a class="l2" href="#s3-1">阶段1 {形态名}</a>
+  <a class="l2" href="#s3-2">阶段2 {形态名}</a>
+  <a href="#s4">4. {N} 层入口架构</a>
+  <a href="#s5">5. {N} 条需求主线</a>
+  <a href="#s6">6. 现存需求缺口</a>
+  <a href="#s7">7. 用户旅程流转</a>
+  <a href="#s8">8. 口径与来源</a>
+</nav>
+
+<main>
+<header>
+  <div class="brand">{产品名} · {品类}</div>
+  <h1>{产品名} 功能演进与需求分析</h1>
+  <div class="kick">{产品名} 从 {起点形态} 起步，一路做到 {终点形态}。这份文档梳理 {N} 个阶段各自解决了什么、还留下哪些问题，并汇总 {M} 条核心需求主线和当前缺口；标注「界面观察」「分析推断」的部分不是产品官方口径。</div>
+  <div class="metas">
+    <div class="meta"><div class="k">版本</div><div class="v">V1.0</div></div>
+    <div class="meta"><div class="k">内容基线</div><div class="v">{材料清单}</div></div>
+    <div class="meta"><div class="k">整理日期</div><div class="v">{YYYY-MM-DD}</div></div>
+    <div class="meta"><div class="k">演进阶段</div><div class="v">{N}</div></div>
+    <div class="meta"><div class="k">入口层级</div><div class="v">{N}</div></div>
+    <div class="meta"><div class="k">需求主线</div><div class="v">{M}</div></div>
+  </div>
+  <div class="hd-r">
+    <span class="bdg b-v">结构化整理</span>
+    <span class="bdg b-w">含界面观察</span>
+    <span class="bdg b-b">分析推断已标注</span>
+  </div>
+</header>
+
+<!-- 1. 演进路径与遗留问题 -->
+<section id="s1">
+  <div class="part-banner"><div class="pnum">1</div><div><h2>演进路径与当前遗留问题</h2><div class="pdesc">{N} 个阶段分别解决了什么，还剩什么没解决</div></div></div>
+  <p>{产品名} 的能力来自 {能力底座}，上层应用经历了 {N} 个阶段：<strong>{阶段1 形态} → {阶段2 形态} → …… → {阶段N 形态}</strong>。这一类产品基本都是这么迭代过来的。</p>
+  <p>{N} 个阶段一直在解同一对矛盾：<strong>用户希望上手越简单越好</strong>，而 {业务实质} 又要求<strong>更高的可控性、能反复改、资产能复用</strong>。商业上还得同时照顾三类人：{用户分层一句话}。</p>
+  <div class="note risk">
+    <strong>最大的遗留问题（分析推断）：</strong>{一句话点出全篇最大的遗留问题}。
+  </div>
+  <h3>{N} 个入口怎么选</h3>
+  <div class="tblw">
+  <table>
+    <tr><th>阶段</th><th>做什么</th><th>从哪进</th><th>适合谁</th></tr>
+    <tr><td>阶段1</td><td>{一句话}</td><td>{入口位置}</td><td>{角色名}</td></tr>
+    <tr><td>阶段2</td><td>{一句话}</td><td>{入口位置}</td><td>{角色名}</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- 2. 演进背景 -->
+<section id="s2">
+  <div class="part-banner"><div class="pnum">2</div><div><h2>演进背景</h2><div class="pdesc">能力底座与阶段编号说明</div></div></div>
+  <h3>能力底座</h3>
+  <p>{材料里列出的模型 / 数据 / 供应链组成}（{来源标签}）。</p>
+  <h3>阶段编号的含义</h3>
+  <div class="note">
+    下表中的阶段 1–{N} 是<strong>功能逻辑演进顺序</strong>（{从什么到什么}），不严格等于各入口的实际上线先后。据当前界面观察：{逐条说明偏差点}。
+  </div>
+</section>
+
+<!-- 3. 阶段演进 -->
+<section id="s3">
+  <div class="part-banner"><div class="pnum">3</div><div><h2>{N} 阶段演进总览</h2><div class="pdesc">{从起点能力到终点形态}</div></div></div>
+  <div class="tblw">
+  <table>
+    <tr><th>阶段</th><th>产品形态</th><th>核心入口</th><th>解决痛点</th><th>目标用户</th><th>遗留问题</th></tr>
+    <tr><td>阶段1：{形态名}</td><td>{一句话}</td><td>{入口名}</td><td>{用户视角的处境}</td><td>{角色名}</td><td>{天花板，并点名催生阶段2}</td></tr>
+    <tr><td>阶段2：{形态名}</td><td>{一句话}</td><td>{入口名}</td><td>{用户视角的处境}</td><td>{角色名}</td><td>{天花板，并点名催生阶段3}</td></tr>
+  </table>
+  </div>
+
+  <h3 id="s3-1">阶段1：{形态名}【{入口名}】</h3>
+  <h4>背景</h4>
+  <p>{谁提出了什么新要求；当时拿什么替代过、代价是什么}（{来源标签}）。</p>
+  <h4>用户需求</h4>
+  <ul>
+    <li>{动词开头的诉求}；</li>
+    <li>{动词开头的诉求}。</li>
+  </ul>
+  <h4>当前入口形态（界面观察）</h4>
+  <p>{入口位置}；{点进去之后的操作顺序}。</p>
+  <h4>界面要素（界面观察）</h4>
+  <ul>
+    <li>{参数档位}；</li>
+    <li>{按钮文案 / 提示文案，照抄界面原文}；</li>
+    <li>{上限与不可逆约束}。</li>
+  </ul>
+  <div class="note warn">
+    <strong>局限：</strong>{天花板在哪}，{为什么在本阶段框架内过不去}——由此催生阶段2 的{形态名}。
+  </div>
+  <p class="src">用户反馈：{用户原话，没有就整条删掉}。</p>
+  <p class="src">业务侧视角：{这个入口在商业上承担什么，指向具体客户类型或产能成本指标}。</p>
+
+  <h3 id="s3-2">阶段2：{形态名}【{入口名}】</h3>
+  <h4>背景</h4>
+  <p>{接住阶段1 的局限}（{来源标签}）。</p>
+  <h4>用户需求</h4>
+  <ul>
+    <li>{动词开头的诉求}；</li>
+    <li>{动词开头的诉求}。</li>
+  </ul>
+  <h4>当前入口形态（界面观察）</h4>
+  <p>{入口位置}；{流程}。</p>
+  <div class="note warn">
+    <strong>局限：</strong>{天花板}——由此催生阶段3 的{形态名}。
+  </div>
+</section>
+
+<!-- 4. 入口架构 -->
+<section id="s4">
+  <div class="part-banner"><div class="pnum">4</div><div><h2>{N} 层入口架构</h2><div class="pdesc">按当前落位重排的入口</div></div></div>
+  <div class="tblw">
+  <table>
+    <tr><th>层级</th><th>能力</th><th>当前入口位置</th><th>备注</th></tr>
+    <tr><td>1. {能力档}</td><td>【{入口名}】{一句话能力}</td><td>{左侧导航 / 首页 Tab / 我的项目卡片}</td><td>{上线时机，或与相邻入口的关系}</td></tr>
+    <tr><td>2. {能力档}</td><td>【{入口名}】{一句话能力}</td><td>{位置}</td><td>{备注}</td></tr>
+  </table>
+  </div>
+  <div class="note risk">
+    <strong>最大遗留体验问题（分析推断）：</strong>{N} 个入口能力差异大，{普通用户会卡在哪}。
+  </div>
+</section>
+
+<!-- 5. 需求主线 -->
+<section id="s5">
+  <div class="part-banner"><div class="pnum">5</div><div><h2>{M} 条核心需求主线</h2><div class="pdesc">贯穿产品演进、也是产品一直在权衡的几件事</div></div></div>
+  <h3>主线1：{两端对仗的矛盾}</h3>
+  <div class="tblw">
+  <table>
+    <tr><th>模式</th><th>上手难度</th><th>可控性</th><th>适用场景</th></tr>
+    <tr><td>{一端做法}</td><td>{难度}</td><td>{程度}</td><td>{场景}</td></tr>
+    <tr><td>{另一端做法}</td><td>{难度}</td><td>{程度}</td><td>{场景}</td></tr>
+  </table>
+  </div>
+  <p>{两端各自的代价，落到哪些功能上，收一句行业判断}。</p>
+
+  <h3>主线2：{单侧趋势}</h3>
+  <p>{早期怎么做 → 现在怎么做 → 因此迭代出了什么功能}。</p>
+  <div class="note">
+    {一句行业判断}。
+  </div>
+</section>
+
+<!-- 6. 需求缺口 -->
+<section id="s6">
+  <div class="part-banner"><div class="pnum">6</div><div><h2>现存需求缺口</h2><div class="pdesc">可作为后续迭代需求池</div></div></div>
+  <p class="dim">以下缺口为后续迭代候选，优先级待产品确认。</p>
+  <div class="tblw">
+  <table>
+    <tr><th>缺口</th><th>问题描述</th><th>建议方向</th></tr>
+    <tr><td>G1 {缺口名}</td><td>{哪份材料 / 哪个界面现象说明它还没解}</td><td>{建议方向}</td></tr>
+    <tr><td>G2 {缺口名}</td><td>{现状证据}</td><td>{建议方向}</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- 7. 用户旅程 -->
+<section id="s7">
+  <div class="part-banner"><div class="pnum">7</div><div><h2>用户旅程视角的需求流转</h2><div class="pdesc">从新用户到精品生产</div></div></div>
+<pre>
+新用户进入
+  → 先用【{入口1}】（需求：{一句}）
+  → 验证可行，尝试【{入口2}】（需求：{一句}）
+  → 进入【{入口3}】（需求：{一句}）
+</pre>
+</section>
+
+<!-- 8. 口径与来源 -->
+<section id="s8">
+  <div class="part-banner"><div class="pnum">8</div><div><h2>口径与来源</h2><div class="pdesc">三类事实标签的边界</div></div></div>
+  <div class="tblw">
+  <table>
+    <tr><th>类型</th><th>含义</th><th>本文使用方式</th></tr>
+    <tr><td>产品官方口径</td><td>{材料清单}中的明确描述</td><td>直接引用，作为事实基线（句末标来源）</td></tr>
+    <tr><td>界面观察</td><td>基于产品截图的判断，非官方文档直接陈述</td><td>文中标注「界面观察」，不作为官方事实</td></tr>
+    <tr><td>分析推断</td><td>基于事实推导的产品逻辑、用户痛点、迭代方向</td><td>文中标注「分析推断」，待产品确认</td></tr>
+  </table>
+  </div>
+</section>
+
+<footer style="padding:32px 56px;color:var(--text3);font-size:12px;border-top:1px solid var(--line)">
+  {产品名} 功能演进与需求分析 V1.0 · 内容基线：{材料清单} · {YYYY-MM-DD}
+</footer>
+</main>
+
+<button id="top" title="返回顶部">↑</button>
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('#toc a'));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'));});
+  var btn=document.getElementById('top');
+  function onScroll(){
+    var cur=null;
+    for(var i=0;i<secs.length;i++){
+      if(secs[i] && secs[i].getBoundingClientRect().top<=140) cur=links[i];
+    }
+    links.forEach(function(a){a.classList.toggle('on',a===cur);});
+    btn.classList.toggle('show',window.pageYOffset>400);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll);
+  btn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  onScroll();
+})();
+</script>
+</body>
+</html>

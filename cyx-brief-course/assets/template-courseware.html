@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:,">
+<title>【课程名】 · 课堂简版</title>
+<meta name="description" content="【课程名】课堂简版：图为主、字极简。序章＋N 章，每章以一件成果收尾。">
+<style>
+:root{
+  --bg-deep:#04071a;--bg-night:#0A0E27;--bg-card:#0F1638;--bg-panel:rgba(20,27,63,.72);
+  --cyan:#00F5D4;--magenta:#FF2E97;--yellow:#FFE74C;--crystal:#4FC3F7;--nebula:#BB86FC;
+  --purple:#B14AED;--orange:#FF6B35;--blue:#3A86FF;--green:#5CE082;
+  --text:#E8ECFF;--text-dim:#8E96C9;--text-faint:#5A6094;--border:rgba(0,245,212,.28);--grid:rgba(0,245,212,.07)
+}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:"PingFang SC","Microsoft YaHei","HarmonyOS Sans SC",-apple-system,"Segoe UI",sans-serif;background:var(--bg-deep);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(0,245,212,.10),transparent 60%),radial-gradient(ellipse 60% 50% at 90% 20%,rgba(187,134,252,.10),transparent 55%),radial-gradient(ellipse 70% 60% at 10% 80%,rgba(79,195,247,.10),transparent 55%),linear-gradient(180deg,#04071a 0%,#060A22 50%,#04071a 100%)}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 90% 70% at 50% 40%,#000 30%,transparent 90%);opacity:.55}
+a{color:inherit}
+.topnav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(6,10,34,.86);border-bottom:1px solid var(--border);padding:10px 22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.5px;white-space:nowrap}.brand .logo{width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:linear-gradient(135deg,var(--cyan),var(--magenta));box-shadow:0 0 14px rgba(0,245,212,.5);font-size:16px}.nav-links{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}.nav-links a{color:var(--text-dim);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:20px;border:1px solid transparent;transition:.2s;white-space:nowrap}.nav-links a:hover{color:var(--cyan);border-color:var(--border);background:rgba(0,245,212,.06)}
+.part-banner{margin:50px auto 28px;max-width:1280px;padding:0 24px;scroll-margin-top:80px}.part-banner .pnum{font-family:"JetBrains Mono",Consolas,monospace;font-size:13px;letter-spacing:4px;color:var(--cyan);text-shadow:0 0 12px rgba(0,245,212,.6)}.part-banner .pnum.purple{color:var(--nebula);text-shadow:0 0 12px rgba(187,134,252,.6)}.part-banner .pnum.orange{color:var(--orange);text-shadow:0 0 12px rgba(255,107,53,.6)}.part-banner .pnum.yellow{color:var(--yellow);text-shadow:0 0 12px rgba(255,231,76,.6)}.part-banner h1{font-size:clamp(24px,3.4vw,40px);margin:8px 0 6px;font-weight:800;letter-spacing:1px}.part-banner .pdesc{color:var(--text-dim);font-size:14.5px}
+.timechip{display:inline-block;margin-left:10px;font-size:12.5px;color:var(--cyan);border:1px dashed rgba(0,245,212,.45);border-radius:20px;padding:2px 12px;letter-spacing:.5px;vertical-align:middle}
+main{max-width:1280px;margin:0 auto;padding:0 24px 70px}
+.page{position:relative;margin:0 auto 30px;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,rgba(15,22,56,.94),rgba(10,14,39,.97));border:1px solid var(--border);box-shadow:0 10px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.04);scroll-margin-top:80px}
+.page::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 0% 0%,rgba(0,245,212,.08),transparent 40%),radial-gradient(circle at 100% 100%,rgba(187,134,252,.07),transparent 40%)}
+.page-head{display:flex;align-items:center;gap:14px;padding:14px 24px;border-bottom:1px solid rgba(0,245,212,.14);background:linear-gradient(90deg,rgba(0,245,212,.05),transparent)}.page-num{font-family:"JetBrains Mono",Consolas,monospace;font-weight:700;font-size:14px;padding:4px 10px;border-radius:6px;border:1px solid var(--cyan);color:var(--cyan);box-shadow:0 0 10px rgba(0,245,212,.25);white-space:nowrap}.page-num.purple{border-color:var(--nebula);color:var(--nebula);box-shadow:0 0 10px rgba(187,134,252,.3)}.page-num.orange{border-color:var(--orange);color:var(--orange);box-shadow:0 0 10px rgba(255,107,53,.3)}.page-num.yellow{border-color:var(--yellow);color:var(--yellow);box-shadow:0 0 10px rgba(255,231,76,.3)}.page-title{font-size:clamp(16px,2.2vw,22px);font-weight:700;letter-spacing:.5px;flex:1}
+.page-body{padding:20px 22px 24px;text-align:center}
+.hero{display:block;width:100%;height:auto;margin:0 auto 10px;border-radius:14px;border:1px solid rgba(0,245,212,.18);background:radial-gradient(ellipse at top,#0d1640,#070b24)}
+.hero text{font-family:"PingFang SC","Microsoft YaHei","HarmonyOS Sans SC",sans-serif}
+.hero .t{fill:#E8ECFF;font-weight:700}
+.hero .td{fill:#8E96C9}
+.hero .tf{fill:#5A6094}
+.hero .ty{fill:#FFE74C;font-weight:800}
+.hero .tc{fill:#00F5D4;font-weight:800}
+.hero .tm{fill:#FF2E97;font-weight:800}
+.hero .tn{fill:#BB86FC;font-weight:800}
+.hero .to{fill:#FF6B35;font-weight:800}
+.hero .tg{fill:#5CE082;font-weight:800}
+.cap{display:flex;flex-direction:column;gap:9px;align-items:center;margin:2px 0 4px}
+.cap .cl{font-size:21px;font-weight:800;letter-spacing:1px;color:var(--text);text-shadow:0 0 14px rgba(0,245,212,.25)}
+.cap .cl b{color:var(--yellow)}
+.prompt{margin-top:14px;border-radius:10px;overflow:hidden;border:1px solid rgba(0,245,212,.25);background:#060a1e;font-family:"JetBrains Mono",Consolas,monospace;text-align:left}
+.prompt .ph{background:rgba(0,245,212,.10);padding:8px 14px;font-size:12px;color:var(--cyan);border-bottom:1px solid rgba(0,245,212,.2);display:flex;align-items:center;gap:8px}
+.prompt .ph::before{content:"▌";color:var(--magenta)}
+.prompt .pc{padding:14px 16px;font-size:12.5px;color:#c8d0f5;line-height:1.85;white-space:pre-wrap}
+.prompt .k{color:var(--cyan);font-weight:700}
+.prompt .v{color:var(--nebula);font-weight:700}
+.prompt .warn{color:var(--yellow);font-weight:700}
+.rest-banner{max-width:1280px;margin:34px auto;padding:16px 24px;border-radius:14px;border:1px dashed rgba(255,231,76,.45);background:rgba(255,231,76,.05);text-align:center;color:var(--yellow);font-weight:700;letter-spacing:1px}.rest-banner small{display:block;color:var(--text-dim);font-weight:400;letter-spacing:0;margin-top:4px;font-size:12.5px}
+.backtop{position:fixed;right:22px;bottom:26px;z-index:60;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;text-decoration:none;font-size:17px;color:var(--cyan);border:1px solid var(--border);background:rgba(6,10,34,.85);backdrop-filter:blur(10px);box-shadow:0 0 18px rgba(0,245,212,.25);transition:.2s}.backtop:hover{color:var(--yellow);border-color:rgba(255,231,76,.4);transform:translateY(-2px)}
+footer{text-align:center;padding:40px 24px;color:var(--text-faint);font-size:13px;border-top:1px solid var(--border);margin-top:40px}footer .wm{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);border-radius:20px;background:rgba(0,245,212,.04);color:var(--cyan);font-size:12px;margin-top:14px}
+@media(max-width:720px){.page-body{padding:14px 12px 18px}.topnav{padding:10px 14px}.part-banner{padding:0 16px}main{padding:0 12px 60px}.cap .cl{font-size:17px}.nav-links{margin-left:0}}
+/* ---- 教师说课稿：默认收起，点击展开；打印不输出 ---- */
+.page-body{padding-bottom:48px}
+.tnote{position:absolute;right:16px;bottom:12px;z-index:20}
+.tnote summary{list-style:none;cursor:pointer;-webkit-tap-highlight-color:transparent;display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;border:1px solid rgba(255,231,76,.45);background:rgba(24,17,6,.9);color:var(--yellow);font-size:12.5px;font-weight:700;letter-spacing:1px;box-shadow:0 0 14px rgba(255,231,76,.14);transition:.2s}
+.tnote summary::-webkit-details-marker{display:none}
+.tnote summary:hover{border-color:var(--yellow);box-shadow:0 0 18px rgba(255,231,76,.32)}
+.tnote[open] summary{border-color:var(--yellow);background:rgba(34,24,8,.95)}
+.tnote .tnote-body{position:absolute;right:0;bottom:calc(100% + 10px);width:min(540px,88vw);max-height:52vh;overflow-y:auto;border-radius:12px;border:1px solid rgba(255,231,76,.42);background:rgba(21,15,5,.97);box-shadow:0 16px 44px rgba(0,0,0,.65);padding:13px 16px 15px;text-align:left}
+.tnote .tnote-body::after{content:"";position:absolute;right:22px;bottom:-7px;width:12px;height:12px;background:rgba(21,15,5,.97);border-right:1px solid rgba(255,231,76,.42);border-bottom:1px solid rgba(255,231,76,.42);transform:rotate(45deg)}
+.tnote .tseg{margin:0 0 9px}
+.tnote .tseg:last-child{margin-bottom:0}
+.tnote .tl{display:block;font-size:11px;font-weight:800;color:var(--yellow);letter-spacing:2px;margin-bottom:2px;opacity:.9}
+.tnote .tseg p{font-size:13px;line-height:1.78;color:#EADDB8;margin:0}
+.tnote .tseg.twarn p{color:#FFC9A0}
+@media print{.tnote{display:none}}
+/* ---- 档一：动作层 ---- */
+.stepchip{font-family:"JetBrains Mono",Consolas,monospace;font-size:11.5px;font-weight:700;letter-spacing:.5px;padding:3px 9px;border-radius:6px;border:1px dashed rgba(232,236,255,.34);color:var(--text-dim);white-space:nowrap;flex:none}
+.todo{margin:14px auto 0;max-width:820px;display:flex;align-items:center;gap:10px;border-radius:11px;border:1px solid rgba(255,231,76,.45);background:rgba(255,231,76,.07);padding:9px 16px;text-align:left}
+.todo .tk{font-size:16px;flex:none}
+.todo .tt{font-size:14px;color:#FFEFB0;line-height:1.6;flex:1}
+.todo .tt b{color:var(--yellow)}
+.todo .tp{font-family:"JetBrains Mono",Consolas,monospace;font-size:12.5px;color:var(--text-dim);flex:none;white-space:nowrap}
+@media(max-width:720px){.todo{flex-wrap:wrap;gap:6px}.todo .tp{width:100%}}
+/* 页脚页码条：页头写章段号（2.1）时，全课页序落在这里居中 */
+.pfoot{display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 22px 16px;border-top:1px solid rgba(232,236,255,.09)}
+.pfoot .pf-n{font-family:"JetBrains Mono",Consolas,monospace;font-size:12px;font-weight:700;letter-spacing:.6px;color:var(--text-dim);padding:3px 12px;border-radius:20px;border:1px solid rgba(232,236,255,.16);background:rgba(255,255,255,.025);white-space:nowrap}
+.pfoot .pf-n b{color:var(--cyan);font-weight:800}
+.pfoot .pf-n.purple b{color:var(--nebula)}
+.pfoot .pf-n.orange b{color:var(--orange)}
+.pfoot .pf-n.yellow b{color:var(--yellow)}
+@media print{.pfoot .pf-n{border-color:#999;color:#444;background:none}.pfoot .pf-n b{color:#000}}
+</style>
+</head>
+<body>
+<div id="top" style="position:absolute;top:0;left:0"></div>
+<nav class="topnav">
+  <div class="brand"><span class="logo">🏭</span><span>【课程名】 <small style="color:var(--text-faint);font-weight:400">简版</small></span></div>
+  <div class="nav-links"><a href="#ch0">序章</a><a href="#ch1">01 【章名】</a><a href="#appendix">📎 附录</a></div>
+</nav>
+
+<!-- ============ 序章 ============ -->
+<div class="part-banner" id="ch0"><div class="pnum">序章 · 项目启动</div><h1>🏭 【章大标题】</h1><div class="pdesc">【一句话本章要干什么】<span class="timechip">📦 成果：【本章交什么】</span></div></div>
+<main>
+
+<!-- 序章 P01：封面页（渐变标题 SVG ＋ 四格定位卡） -->
+<section class="page" id="p01"><div class="page-head"><span class="page-num">P 01</span><span class="page-title">【页面标题】</span></div><div class="page-body">
+<svg class="hero" viewBox="0 0 1000 420" role="img" aria-label="封面">
+  <defs><linearGradient id="p01g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#00F5D4"/><stop offset=".75" stop-color="#BB86FC"/><stop offset="1" stop-color="#FF2E97"/></linearGradient></defs>
+  <ellipse cx="500" cy="106" rx="360" ry="88" fill="rgba(0,245,212,.06)"/>
+  <text x="500" y="98" text-anchor="middle" font-size="54" font-weight="900" fill="url(#p01g)" letter-spacing="4">【课程主标题】</text>
+  <text x="500" y="140" text-anchor="middle" class="td" font-size="20">【副标题一句话】</text>
+  <g>
+    <rect x="118" y="184" width="184" height="130" rx="10" fill="#0F1638" stroke="rgba(0,245,212,.55)" stroke-width="2.5"/>
+    <rect x="316" y="184" width="184" height="130" rx="10" fill="#0F1638" stroke="rgba(187,134,252,.55)" stroke-width="2.5"/>
+    <rect x="514" y="184" width="184" height="130" rx="10" fill="#0F1638" stroke="rgba(255,107,53,.55)" stroke-width="2.5"/>
+    <rect x="712" y="184" width="184" height="130" rx="10" fill="#0F1638" stroke="rgba(255,231,76,.6)" stroke-width="2.5"/>
+  </g>
+  <g text-anchor="middle" font-size="15" font-weight="800">
+    <circle cx="134" cy="200" r="11" fill="#0F1638" stroke="#00F5D4" stroke-width="1.5"/><text x="134" y="205" class="tc" font-size="12">1</text>
+    <circle cx="332" cy="200" r="11" fill="#0F1638" stroke="#BB86FC" stroke-width="1.5"/><text x="332" y="205" class="tn" font-size="12">2</text>
+    <circle cx="530" cy="200" r="11" fill="#0F1638" stroke="#FF6B35" stroke-width="1.5"/><text x="530" y="205" class="to" font-size="12">3</text>
+    <circle cx="728" cy="200" r="11" fill="#0F1638" stroke="#FFE74C" stroke-width="1.5"/><text x="728" y="205" class="ty" font-size="12">4</text>
+  </g>
+  <g text-anchor="middle" font-size="42"><text x="210" y="268">🌱</text><text x="408" y="268">🚧</text><text x="606" y="268">🤝</text><text x="804" y="268">🎉</text></g>
+  <g text-anchor="middle" font-size="17" font-weight="800">
+    <text x="210" y="296" class="tc">① 起头</text><text x="408" y="296" class="tn">② 卡住</text><text x="606" y="296" class="to">③ 出手</text><text x="804" y="296" class="ty">④ 结果</text>
+  </g>
+  <g text-anchor="middle" font-size="13.5">
+    <text x="210" y="324" class="td">【这一格干什么】</text><text x="408" y="324" class="td">【这一格干什么】</text><text x="606" y="324" class="td">【这一格干什么】</text><text x="804" y="324" class="td">【这一格干什么】</text>
+  </g>
+  <text x="500" y="392" text-anchor="middle" class="tc" font-size="16">【核心句：这门课的一句话内核】</text>
+</svg>
+<div class="cap"><div class="cl">【标语一】</div><div class="cl">【标语二，可加 <b>黄字强调</b>】</div></div>
+<div class="todo"><span class="tk">✍️</span><span class="tt">【这一页学生要做的动作】 —— <b>【关键要求】</b></span><span class="tp">5 分钟</span></div>
+<details class="tnote"><summary>🎓 说课</summary><div class="tnote-body">
+<div class="tseg tsay"><span class="tl">🗣 口播</span><p>【老师照着念的话】</p></div>
+<div class="tseg top"><span class="tl">🎬 操作</span><p>【老师上台要做的动作】</p></div>
+<div class="tseg twarn"><span class="tl">⚠️ 提醒</span><p>【哪里最容易出问题、怎么拦】</p></div>
+</div></details>
+</div>
+</section>
+
+</main>
+
+<!-- ============ 第01章 ============ -->
+<div class="part-banner" id="ch1"><div class="pnum">CHAPTER · 01 · 【章名】</div><h1>【emoji】 【章大标题】</h1><div class="pdesc">【一句话本章要干什么】<span class="timechip">📦 本章成果：【一件成果】</span></div></div>
+<main>
+
+<!-- 章内页序列：总览页 → 分步页×N → 过关检查页。下面三页是标准版式示范，照抄换内容 -->
+
+<!-- ① 总览页：本章 N 件事（右侧挂页码徽标） -->
+<section class="page" id="p02"><div class="page-head"><span class="page-num purple">P 02</span><span class="stepchip">总览</span><span class="page-title">本章 N 件事 · 【一句话概括】</span></div><div class="page-body">
+<svg class="hero" viewBox="0 0 1000 420" role="img" aria-label="本章N件事">
+  <text x="60" y="40" class="t" font-size="17" font-weight="800">这一章按顺序做这 N 件事</text>
+  <text x="940" y="40" text-anchor="end" class="tf" font-size="14.5">做完交一件成果</text>
+  <rect x="60" y="90" width="880" height="68" rx="13" fill="rgba(0,0,0,0)" stroke="#BB86FC" stroke-opacity=".45" stroke-width="1.8"/>
+  <circle cx="104" cy="124" r="19" fill="#0F1638" stroke="#BB86FC" stroke-width="2"/>
+  <text x="104" y="124" text-anchor="middle" dominant-baseline="central" fill="#BB86FC" font-size="17" font-weight="800">①</text>
+  <text x="142" y="117" font-size="19" font-weight="800" fill="#E8ECFF">【第 1 件事】</text>
+  <text x="142" y="141" font-size="14.5" fill="#8E96C9">【一句补充说明】</text>
+  <rect x="826" y="110" width="100" height="27" rx="14" fill="#BB86FC" fill-opacity=".12" stroke="#BB86FC" stroke-opacity=".55" stroke-width="1.2"/>
+  <text x="876" y="124" text-anchor="middle" dominant-baseline="central" fill="#BB86FC" font-size="13.5" font-weight="800" font-family="ui-monospace,Consolas,monospace">P 03</text>
+  <rect x="60" y="170" width="880" height="68" rx="13" fill="rgba(0,0,0,0)" stroke="#BB86FC" stroke-opacity=".45" stroke-width="1.8"/>
+  <circle cx="104" cy="204" r="19" fill="#0F1638" stroke="#BB86FC" stroke-width="2"/>
+  <text x="104" y="204" text-anchor="middle" dominant-baseline="central" fill="#BB86FC" font-size="17" font-weight="800">②</text>
+  <text x="142" y="197" font-size="19" font-weight="800" fill="#E8ECFF">【第 2 件事】</text>
+  <text x="142" y="221" font-size="14.5" fill="#8E96C9">【一句补充说明】</text>
+  <rect x="826" y="190" width="100" height="27" rx="14" fill="#BB86FC" fill-opacity=".12" stroke="#BB86FC" stroke-opacity=".55" stroke-width="1.2"/>
+  <text x="876" y="204" text-anchor="middle" dominant-baseline="central" fill="#BB86FC" font-size="13.5" font-weight="800" font-family="ui-monospace,Consolas,monospace">P 04</text>
+  <text x="60" y="346" font-size="15.5" fill="#E8ECFF">📦 <tspan font-weight="800" fill="#BB86FC">本章成果：</tspan><tspan fill="#C8D0F5">【一件成果】</tspan></text>
+  <text x="60" y="372" font-size="15.5" fill="#E8ECFF">🎖 <tspan font-weight="800" fill="#BB86FC">过关标准：</tspan><tspan fill="#C8D0F5">【达标判据】</tspan></text>
+</svg>
+<div class="cap"><div class="cl">【标语一】</div><div class="cl">【标语二】</div></div>
+<div class="todo"><span class="tk">✍️</span><span class="tt">【动作】 —— <b>【要求】</b></span><span class="tp">5 分钟</span></div>
+<details class="tnote"><summary>🎓 说课</summary><div class="tnote-body">
+<div class="tseg twarn"><span class="tl">⚠️ 提醒</span><p>【本章最容易走偏的地方】</p></div>
+</div></details>
+</div>
+</section>
+
+<!-- ② 分步页：顶部接上一章回扣条 ＋ 两栏对照 ＋ 可选指令框 ＋ todo -->
+<section class="page" id="p03"><div class="page-head"><span class="page-num purple">P 03</span><span class="stepchip">第 1 步</span><span class="page-title">【这一步干什么】</span></div><div class="page-body">
+<svg class="hero" viewBox="0 0 1000 420" role="img" aria-label="分步页">
+  <text x="500" y="38" text-anchor="middle" class="tc" font-size="19">🔗 接第【N】章【上一件成果】：【上一章交了什么】 → 这一步【做什么】</text>
+  <g text-anchor="middle">
+    <g><rect x="46" y="62" width="440" height="150" rx="14" fill="rgba(92,224,130,.06)" stroke="rgba(92,224,130,.5)" stroke-width="2"/><text x="266" y="106" class="tg" font-size="19">✅ 这样写</text><text x="266" y="146" class="t" font-size="16">【合格的样子】</text><text x="266" y="176" class="td" font-size="14.5">【为什么这样对】</text></g>
+    <g><rect x="514" y="62" width="440" height="150" rx="14" fill="rgba(255,46,151,.06)" stroke="rgba(255,46,151,.5)" stroke-width="2"/><text x="734" y="106" class="tm" font-size="19">✕ 不要这样</text><text x="734" y="146" class="t" font-size="16">【不合格的样子】</text><text x="734" y="176" class="td" font-size="14.5">【为什么这样错】</text></g>
+  </g>
+  <rect x="46" y="236" width="908" height="76" rx="12" fill="rgba(255,231,76,.07)" stroke="#FFE74C" stroke-width="2"/>
+  <text x="500" y="268" text-anchor="middle" class="ty" font-size="17">【关键提醒：这一页最重要的一句话】</text>
+  <text x="500" y="294" text-anchor="middle" class="td" font-size="15">【补充说明】</text>
+  <text x="500" y="366" text-anchor="middle" class="td" font-size="15">【例（示范角色）：本页示范】</text>
+</svg>
+<div class="cap"><div class="cl">【标语一】</div><div class="cl">【标语二】</div></div>
+
+<!-- 有 AI 使用点的页，挂一个指令框（指令编号全课连续 ①②③…） -->
+<div class="prompt"><div class="ph">🤖 【工具名】 · 【用途】 · 指令【N】</div><div class="pc">【整段可照抄的提示词，用 <span class="k">青色</span> 标要改的字段、<span class="v">紫色</span> 标「要求：」、<span class="warn">黄色</span> 标「负面要求：」】</div></div>
+
+<div class="todo"><span class="tk">✍️</span><span class="tt">填<b>学案第 【N】 页【表名】</b>，【具体要求】</span><span class="tp">8 分钟</span></div>
+<details class="tnote"><summary>🎓 说课</summary><div class="tnote-body">
+<div class="tseg tsay"><span class="tl">🗣 口播</span><p>【老师照着念的话】</p></div>
+<div class="tseg top"><span class="tl">🎬 操作</span><p>【老师上台要做的动作】</p></div>
+<div class="tseg twarn"><span class="tl">⚠️ 提醒</span><p>【哪里最容易出问题、怎么拦】</p></div>
+</div></details>
+</div>
+</section>
+
+<!-- ③ 过关检查页：固定三块（过关标准 / 不达标怎么办 / 盖章条件），三栏配色固定 -->
+<section class="page" id="p04"><div class="page-head"><span class="page-num purple">P 04</span><span class="stepchip">过关</span><span class="page-title">第 0N 章 · 过关检查</span></div><div class="page-body">
+<svg class="hero" viewBox="0 0 1000 420" role="img" aria-label="过关检查">
+  <text x="500" y="44" text-anchor="middle" class="tc" font-size="21">📦 本章成果：【一件成果】</text>
+  <rect x="52" y="72" width="440" height="196" rx="14" fill="rgba(92,224,130,.06)" stroke="rgba(92,224,130,.5)" stroke-width="2"/>
+  <text x="76" y="106" class="tg" font-size="19">✅ 过关标准</text>
+  <text x="76" y="142" class="t" font-size="16">【标准 1】</text>
+  <text x="76" y="176" class="t" font-size="16">【标准 2】</text>
+  <text x="76" y="212" class="td" font-size="15">【最容易被糊过去的那一条】</text>
+  <text x="76" y="246" class="tf" font-size="14.5">加分项：【可选】</text>
+  <rect x="508" y="72" width="440" height="196" rx="14" fill="rgba(255,46,151,.06)" stroke="rgba(255,46,151,.5)" stroke-width="2"/>
+  <text x="532" y="106" class="tm" font-size="19">✕ 不达标怎么办</text>
+  <text x="532" y="142" class="t" font-size="16">【补救路径，指回具体哪一章哪一步】</text>
+  <text x="532" y="176" class="t" font-size="16">【第二条补救】</text>
+  <text x="532" y="212" class="td" font-size="15">【不要把整份重做】</text>
+  <rect x="52" y="288" width="896" height="100" rx="14" fill="rgba(255,231,76,.06)" stroke="rgba(255,231,76,.5)" stroke-width="2"/>
+  <text x="76" y="322" class="ty" font-size="18">🎖 盖章两个条件（同时满足才盖）</text>
+  <text x="76" y="354" class="t" font-size="16">① 【成果条件】　　② 【全员说得清自己的工作】</text>
+  <text x="76" y="380" class="tf" font-size="14.5">章盖在学案第 2 页第 【N】 个小格</text>
+</svg>
+<div class="cap"><div class="cl">【标语一】</div><div class="cl">【标语二】</div></div>
+<div class="todo"><span class="tk">✍️</span><span class="tt">【过关自查动作】 —— <b>【判据】</b></span><span class="tp">5 分钟</span></div>
+<details class="tnote"><summary>🎓 说课</summary><div class="tnote-body">
+<div class="tseg tsay"><span class="tl">🗣 口播</span><p>【盖章前对全组说的话】</p></div>
+<div class="tseg twarn"><span class="tl">⚠️ 提醒</span><p>【别让一个人替全组答】</p></div>
+</div></details>
+</div>
+</section>
+
+</main>
+
+<!-- ============ 附录 ============ -->
+<div class="part-banner" id="appendix"><div class="pnum yellow">APPENDIX · 附录</div><h1>📎 【附录名】</h1><div class="pdesc">【附录装什么，用 · 分隔】</div></div>
+<main>
+
+<!-- 附录 A：全课 AI 使用点地图（5 行，各带页码片） -->
+<section class="page" id="p90"><div class="page-head"><span class="page-num yellow">P 90</span><span class="page-title">附录 A · 全课 N 处 AI 使用点</span></div><div class="page-body">
+<svg class="hero" viewBox="0 0 1000 420" role="img" aria-label="AI使用点地图">
+  <text x="500" y="40" text-anchor="middle" class="tc" font-size="19">全课只有这 N 处用 AI，其他环节一律不动 —— 迷路了，回这一页找路</text>
+  <g font-size="15">
+    <rect x="46" y="58" width="908" height="60" rx="10" fill="rgba(0,245,212,.06)" stroke="rgba(0,245,212,.4)" stroke-width="1.5"/>
+    <text x="80" y="94" class="tc" font-size="18">①</text><text x="130" y="94" class="t">第01章 · 【让 AI 干什么】</text><text x="520" y="94" class="td">【我们要跟着做什么】</text><text x="925" y="94" class="tf" font-size="14">P 12</text>
+    <rect x="46" y="128" width="908" height="60" rx="10" fill="rgba(187,134,252,.06)" stroke="rgba(187,134,252,.4)" stroke-width="1.5"/>
+    <text x="80" y="164" class="tn" font-size="18">②</text><text x="130" y="164" class="t">第02章 · 【让 AI 干什么】</text><text x="520" y="164" class="td">【我们要跟着做什么】</text><text x="925" y="164" class="tf" font-size="14">P 17</text>
+    <rect x="46" y="198" width="908" height="60" rx="10" fill="rgba(255,107,53,.06)" stroke="rgba(255,107,53,.4)" stroke-width="1.5"/>
+    <text x="80" y="234" class="to" font-size="18">③</text><text x="130" y="234" class="t">第03章 · 【让 AI 干什么】</text><text x="520" y="234" class="td">【我们要跟着做什么】</text><text x="925" y="234" class="tf" font-size="14">P 24</text>
+    <rect x="46" y="268" width="908" height="60" rx="10" fill="rgba(255,231,76,.06)" stroke="rgba(255,231,76,.45)" stroke-width="1.5"/>
+    <text x="80" y="304" class="ty" font-size="18">④</text><text x="130" y="304" class="t">第04章 · 【让 AI 干什么】</text><text x="520" y="304" class="td">【我们要跟着做什么】</text><text x="925" y="304" class="tf" font-size="14">P 29</text>
+    <rect x="46" y="338" width="908" height="60" rx="10" fill="rgba(255,46,151,.06)" stroke="rgba(255,46,151,.45)" stroke-width="1.5"/>
+    <text x="80" y="374" class="tm" font-size="18">⑤</text><text x="130" y="374" class="t">第05章 · 【让 AI 干什么】</text><text x="520" y="374" class="td">【我们要跟着做什么】</text><text x="925" y="374" class="tf" font-size="14">P 35</text>
+  </g>
+</svg>
+<div class="cap"><div class="cl">N 处，不多不少</div><div class="cl">每处都是<b>它出参考、你做决定</b></div></div>
+<details class="tnote"><summary>🎓 说课</summary><div class="tnote-body">
+<div class="tseg twarn"><span class="tl">⚠️ 提醒</span><p>N 处以外的环节不动 AI，这条要讲死。【哪一章最容易顺手让 AI 把答案给出来】</p></div>
+</div></details>
+</div>
+</section>
+
+<!-- 附录 B：红线 ＋ 岗位禁区 -->
+<section class="page" id="p91"><div class="page-head"><span class="page-num yellow">P 91</span><span class="page-title">附录 B · 【N】条红线与岗位禁区</span></div><div class="page-body">
+<svg class="hero" viewBox="0 0 1000 420" role="img" aria-label="红线与岗位禁区">
+  <text x="500" y="38" text-anchor="middle" class="tm" font-size="19">🚫 【N】条红线：碰一条，本章不盖章</text>
+  <g font-size="15">
+    <rect x="46" y="56" width="440" height="62" rx="10" fill="rgba(255,46,151,.07)" stroke="#FF2E97" stroke-width="1.5"/>
+    <text x="70" y="84" class="tm" font-size="17">【红线 1】</text><text x="70" y="108" class="td" font-size="14">【具体到什么程度算犯规】</text>
+    <rect x="514" y="56" width="440" height="62" rx="10" fill="rgba(255,46,151,.07)" stroke="#FF2E97" stroke-width="1.5"/>
+    <text x="538" y="84" class="tm" font-size="17">【红线 2】</text><text x="538" y="108" class="td" font-size="14">【具体到什么程度算犯规】</text>
+  </g>
+  <text x="500" y="252" text-anchor="middle" class="ty" font-size="17">四个岗位各自「不许做」的那一条</text>
+  <g font-size="14.5">
+    <rect x="46" y="268" width="216" height="88" rx="10" fill="rgba(0,245,212,.06)" stroke="rgba(0,245,212,.4)" stroke-width="1.5"/>
+    <text x="154" y="296" text-anchor="middle" class="tc" font-size="16">【岗位 1】</text><text x="154" y="322" text-anchor="middle" class="tm" font-size="13.5">✕ 【不许做什么】</text>
+    <rect x="276" y="268" width="216" height="88" rx="10" fill="rgba(187,134,252,.06)" stroke="rgba(187,134,252,.4)" stroke-width="1.5"/>
+    <text x="384" y="296" text-anchor="middle" class="tn" font-size="16">【岗位 2】</text><text x="384" y="322" text-anchor="middle" class="tm" font-size="13.5">✕ 【不许做什么】</text>
+    <rect x="506" y="268" width="216" height="88" rx="10" fill="rgba(255,107,53,.06)" stroke="rgba(255,107,53,.4)" stroke-width="1.5"/>
+    <text x="614" y="296" text-anchor="middle" class="to" font-size="16">【岗位 3】</text><text x="614" y="322" text-anchor="middle" class="tm" font-size="13.5">✕ 【不许做什么】</text>
+    <rect x="736" y="268" width="218" height="88" rx="10" fill="rgba(255,231,76,.06)" stroke="rgba(255,231,76,.45)" stroke-width="1.5"/>
+    <text x="845" y="296" text-anchor="middle" class="ty" font-size="16">【岗位 4】</text><text x="845" y="322" text-anchor="middle" class="tm" font-size="13.5">✕ 【不许做什么】</text>
+  </g>
+  <text x="500" y="388" text-anchor="middle" class="td" font-size="15">【另外几条不许碰的，用「；」连成一行】</text>
+</svg>
+<div class="cap"><div class="cl">红线 【N】 条，岗位禁区 4 条</div><div class="cl">犯规多半犯在<b>「不许做」那一行</b></div></div>
+</div>
+</section>
+
+<!-- 附录 C：教师页（缺网预案 ＋ 教师控点 ＋ 备课链），不用投屏 -->
+<section class="page" id="p92"><div class="page-head"><span class="page-num yellow">P 92</span><span class="stepchip">教师页</span><span class="page-title">附录 C · 缺网预案 · 控点 · 备课链</span></div><div class="page-body">
+<svg class="hero" viewBox="0 0 1000 650" role="img" aria-label="教师页">
+  <text x="500" y="30" text-anchor="middle" class="ty" font-size="18">📵 缺网、缺设备 —— 三条退路，都不影响这门课的核心</text>
+  <g>
+    <rect x="46" y="46" width="290" height="104" rx="12" fill="rgba(0,245,212,.06)" stroke="rgba(0,245,212,.42)" stroke-width="1.5"/>
+    <text x="191" y="76" text-anchor="middle" class="tc" font-size="16.5">上不了网</text>
+    <text x="191" y="102" text-anchor="middle" class="td" font-size="13.5">【退路】</text>
+    <text x="191" y="144" text-anchor="middle" class="tf" font-size="12.5">【不变的底线】</text>
+    <rect x="355" y="46" width="290" height="104" rx="12" fill="rgba(187,134,252,.06)" stroke="rgba(187,134,252,.42)" stroke-width="1.5"/>
+    <text x="500" y="76" text-anchor="middle" class="tn" font-size="16.5">【缺什么】</text>
+    <text x="500" y="102" text-anchor="middle" class="td" font-size="13.5">【退路】</text>
+    <text x="500" y="144" text-anchor="middle" class="tf" font-size="12.5">【哪一步整章跳过】</text>
+    <rect x="664" y="46" width="290" height="104" rx="12" fill="rgba(255,107,53,.06)" stroke="rgba(255,107,53,.42)" stroke-width="1.5"/>
+    <text x="809" y="76" text-anchor="middle" class="to" font-size="16.5">【缺什么】</text>
+    <text x="809" y="102" text-anchor="middle" class="td" font-size="13.5">【退路】</text>
+    <text x="809" y="144" text-anchor="middle" class="tf" font-size="12.5">【换成什么载体】</text>
+  </g>
+  <text x="500" y="184" text-anchor="middle" class="tc" font-size="18">🎯 教师控点 4 条 —— 必盯</text>
+  <g font-size="14">
+    <rect x="46" y="198" width="908" height="36" rx="9" fill="rgba(15,22,56,.7)" stroke="rgba(0,245,212,.25)" stroke-width="1"/>
+    <text x="70" y="221" class="t">① 【控点】</text><text x="340" y="221" class="td">【出事怎么处理】</text>
+    <rect x="46" y="236" width="908" height="36" rx="9" fill="rgba(15,22,56,.7)" stroke="rgba(0,245,212,.25)" stroke-width="1"/>
+    <text x="70" y="259" class="t">② 【控点】</text><text x="340" y="259" class="td">【出事怎么处理】</text>
+    <rect x="46" y="274" width="908" height="36" rx="9" fill="rgba(15,22,56,.7)" stroke="rgba(0,245,212,.25)" stroke-width="1"/>
+    <text x="70" y="297" class="t">③ 【控点】</text><text x="340" y="297" class="td">【出事怎么处理】</text>
+    <rect x="46" y="312" width="908" height="36" rx="9" fill="rgba(15,22,56,.7)" stroke="rgba(0,245,212,.25)" stroke-width="1"/>
+    <text x="70" y="335" class="t">④ 【控点】</text><text x="340" y="335" class="td">【出事怎么处理】</text>
+  </g>
+  <text x="500" y="378" text-anchor="middle" class="ty" font-size="18">🔗 示范范例链 · 例（【示范角色】）—— 同一个角色、同一个麻烦，从第 01 章推到最后一章</text>
+  <g font-size="14">
+    <rect x="46" y="392" width="908" height="32" rx="8" fill="rgba(187,134,252,.06)" stroke="rgba(187,134,252,.35)" stroke-width="1"/>
+    <text x="70" y="413" class="tn">第01章 · 【成果名】</text><text x="300" y="413" class="td">【这一章的示范内容】</text>
+    <rect x="46" y="426" width="908" height="32" rx="8" fill="rgba(255,107,53,.06)" stroke="rgba(255,107,53,.35)" stroke-width="1"/>
+    <text x="70" y="447" class="to">第02章 · 【成果名】</text><text x="300" y="447" class="td">【这一章的示范内容】</text>
+    <rect x="46" y="460" width="908" height="32" rx="8" fill="rgba(255,46,151,.06)" stroke="rgba(255,46,151,.4)" stroke-width="1"/>
+    <text x="70" y="481" class="tm">第03章 · 【成果名】</text><text x="300" y="481" class="td">【这一章的示范内容】</text>
+    <rect x="46" y="494" width="908" height="32" rx="8" fill="rgba(255,231,76,.06)" stroke="rgba(255,231,76,.42)" stroke-width="1"/>
+    <text x="70" y="515" class="ty">第04章 · 【成果名】</text><text x="300" y="515" class="td">【这一章的示范内容】</text>
+    <rect x="46" y="528" width="908" height="32" rx="8" fill="rgba(92,224,130,.06)" stroke="rgba(92,224,130,.4)" stroke-width="1"/>
+    <text x="70" y="549" class="tg">第05章 · 【成果名】</text><text x="300" y="549" class="td">【这一章的示范内容】</text>
+  </g>
+</svg>
+<div class="cap"><div class="cl">缺网、缺设备都有退路 —— 核心目标一件都不会丢</div><div class="cl">同一角色、同一麻烦推到底 ＝ <b>老师的备课链</b></div></div>
+<details class="tnote"><summary>🎓 说课</summary><div class="tnote-body">
+<div class="tseg tsay"><span class="tl">🗣 口播</span><p>这一页三块：缺网预案、教师控点、备课链。上课不用投，备课的时候看一遍就够。</p></div>
+<div class="tseg top"><span class="tl">🎬 操作</span><p>教师控点那四条建议单独打印一张贴讲台，巡场时对照着走。备课照范例链走一遍，各章的示范就都现成了，不用每章重新编例子。</p></div>
+</div></details>
+</div>
+</section>
+
+</main>
+<footer>
+  【课程名】 · 课堂简版 ｜ 图为主 · 字极简 ｜ 配套《【学案名】》A4 共 【N】 页 ｜ 序章 ＋ 【N】 章，每章以一件成果收尾
+  <div class="wm">🏭 【全课收尾金句】</div>
+</footer>
+<a class="backtop" href="#top">▲</a>
+</body>
+</html>

@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{产品名}} 产品需求文档 PRD {{版本}} · {{状态}}</title>
+<!--
+  ============================================================
+  cyx-ears-need · PRD 模板
+  ------------------------------------------------------------
+  用法：
+    1. 全文检索 {{ 与 }}，把所有占位符替换成实际内容，一个不留。
+    2. 表格单元格里的 P0 / P1 / P2 / 高 / 中 / 低 / M0 / M1 / M-BC
+       直接写纯文本，脚本会自动转成徽章，不要手写 <span class="pb">。
+  3. 正文里出现「V1.x 新增 / 拆分 / 后移 / 扩展」会自动打标记。
+  4. 章节标题只写实体名词，不要「（一页纸）」「一句话定位」这类括注式自我描述；
+     方法名与优先级标签（EARS / P0 / 阶段二）留在括号里是允许的。
+  5. 替换完跑 python scripts/check-prd.py 本文件。
+  视觉基线：cyx-html-style（暗色科技风）
+  ============================================================
+-->
+<style>
+:root{
+  --bg-deep:#04071a; --bg-night:#0A0E27; --bg-card:#0F1638; --bg-panel:rgba(20,27,63,.72);
+  --cyan:#00F5D4; --magenta:#FF2E97; --yellow:#FFE74C; --purple:#B14AED;
+  --orange:#FF6B35; --blue:#3A86FF; --green:#5CE082;
+  --text:#E8ECFF; --text-dim:#8E96C9; --text-faint:#5A6094;
+  --border:rgba(0,245,212,.28); --border2:rgba(0,245,212,.5); --grid:rgba(0,245,212,.07);
+  --mono:"JetBrains Mono",Consolas,"Courier New",monospace;
+  --sans:"PingFang SC","Microsoft YaHei","HarmonyOS Sans SC",-apple-system,"Segoe UI",sans-serif;
+  --wrap:1560px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:86px}
+body{background:var(--bg-deep);color:var(--text);font:15px/1.9 var(--sans);position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 60% 50% at 15% -5%,rgba(0,245,212,.09),transparent),
+             radial-gradient(ellipse 50% 45% at 90% 0%,rgba(177,74,237,.09),transparent)}
+a{color:var(--cyan);text-decoration:none;transition:.15s} a:hover{color:var(--yellow)}
+
+/* ===== 进度条 & 顶栏 ===== */
+#bar{position:fixed;top:0;left:0;height:3px;width:0;z-index:99;
+  background:linear-gradient(90deg,var(--cyan),var(--purple),var(--magenta));
+  box-shadow:0 0 12px rgba(0,245,212,.8)}
+header.top{position:fixed;top:0;left:0;right:0;z-index:90;height:66px;display:flex;align-items:center;gap:12px;
+  padding:0 26px;background:rgba(4,7,26,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15.5px;color:#fff;white-space:nowrap}
+.logo i{width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px var(--cyan);animation:pl 2.2s infinite}
+@keyframes pl{50%{opacity:.3}}
+.bdg{font-size:11.5px;font-weight:700;padding:3px 11px;border-radius:999px;white-space:nowrap;letter-spacing:.05em}
+.b-v{color:var(--cyan);border:1px solid rgba(0,245,212,.45);background:rgba(0,245,212,.1)}
+.b-w{color:var(--yellow);border:1px solid rgba(255,231,76,.45);background:rgba(255,231,76,.1)}
+.b-b{color:var(--magenta);border:1px solid rgba(255,46,151,.5);background:rgba(255,46,151,.12);animation:bl 2s infinite}
+@keyframes bl{50%{box-shadow:0 0 10px rgba(255,46,151,.35)}}
+.hd-r{margin-left:auto;font-size:12.5px;color:var(--text-dim);white-space:nowrap}
+
+/* ===== Hero ===== */
+.hero{position:relative;z-index:1;overflow:hidden;padding:96px 0 46px;
+  background:radial-gradient(ellipse 70% 90% at 20% -10%,rgba(0,245,212,.1),transparent),
+             radial-gradient(ellipse 55% 70% at 90% 0%,rgba(255,46,151,.08),transparent)}
+.hero::before{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse 90% 100% at 50% 0%,#000 30%,transparent 75%);
+  mask-image:radial-gradient(ellipse 90% 100% at 50% 0%,#000 30%,transparent 75%)}
+.hero-in{position:relative;max-width:1180px;margin:0 auto;padding:0 38px}
+/* 标题块：左侧导轨 + 眉标行（横线延展到版心右缘）+ 主名 + 文档类型行（同款延展线，线尾挂版本戳） */
+.hero-in{position:relative;max-width:var(--wrap);margin:0 auto;padding:0 22px}
+.hero-t{position:relative;padding-left:30px}
+.hero-t::before{content:"";position:absolute;left:0;top:6px;bottom:8px;width:2px;border-radius:2px;
+  background:linear-gradient(180deg,var(--cyan),var(--purple) 58%,rgba(255,46,151,.35))}
+.hero .kick{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.hero .kick span{font-size:11.5px;letter-spacing:.42em;color:var(--cyan);font-weight:700;
+  text-transform:uppercase;white-space:nowrap;text-shadow:0 0 16px rgba(0,245,212,.45)}
+.hero .kick::after{content:"";flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(0,245,212,.45),rgba(0,245,212,0))}
+.hero h1{font-size:clamp(32px,4vw,52px);line-height:1.14;font-weight:900;letter-spacing:-.01em;
+  background:linear-gradient(100deg,#E8ECFF 8%,var(--cyan) 46%,var(--purple) 76%,var(--magenta));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .tsub{display:flex;align-items:center;gap:16px;margin-top:12px}
+.hero .tsub .lb{font-size:19px;font-weight:700;color:var(--text-dim);letter-spacing:.26em;white-space:nowrap}
+.hero .tsub .rl{flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(0,245,212,.5),rgba(0,245,212,.05))}
+.hero .tsub .vs{font-family:var(--mono);font-size:11.5px;color:var(--text-faint);
+  letter-spacing:.14em;white-space:nowrap}
+.hero .sub{margin-top:20px;font-size:15.5px;line-height:1.95;color:var(--text-dim);max-width:900px}
+.hero .sub b{color:#fff}
+.hero .sub b.no{color:var(--magenta)}
+.metas{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;margin-left:30px}
+.meta{position:relative;overflow:hidden;min-width:118px;padding:12px 18px;border:1px solid var(--border);
+  border-radius:14px;background:linear-gradient(160deg,rgba(15,22,56,.9),rgba(10,14,39,.7));backdrop-filter:blur(6px)}
+.meta::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--cyan),rgba(0,245,212,0))}
+.meta .k{font-size:11px;letter-spacing:.18em;color:var(--text-faint);text-transform:uppercase}
+.meta .v{font-size:20px;font-weight:800;color:#fff;margin-top:2px}
+.meta .v.cy{color:var(--cyan)}
+.meta .v.mg{color:var(--magenta)}
+.meta .v.yl{color:var(--yellow)}
+
+/* ===== 布局 ===== */
+.wrap{display:flex;max-width:var(--wrap);margin:0 auto;position:relative;z-index:1}
+nav#toc{position:sticky;top:66px;width:286px;flex:none;height:calc(100vh - 66px);overflow-y:auto;
+  padding:22px 12px 50px 22px;border-right:1px solid var(--border);font-size:13px;
+  scrollbar-width:thin;scrollbar-color:rgba(0,245,212,.25) transparent}
+nav#toc .tt{font-size:10.5px;letter-spacing:.3em;color:var(--text-faint);margin:16px 0 6px 10px;text-transform:uppercase}
+nav#toc a{display:block;padding:4.5px 10px;border-left:2px solid transparent;color:var(--text-dim);
+  border-radius:0 7px 7px 0;line-height:1.4;transition:.15s}
+nav#toc a:hover{color:var(--cyan);background:rgba(0,245,212,.07)}
+nav#toc a.l2{font-weight:700;color:var(--text);margin-top:7px;font-size:13.5px}
+nav#toc a.l3{padding-left:22px;font-size:12.5px}
+nav#toc a.on{color:var(--cyan);border-left-color:var(--cyan);background:rgba(0,245,212,.12)}
+main{flex:1;min-width:0;padding:8px 44px 100px;max-width:1150px;counter-reset:sec}
+
+/* ===== 审阅议题中心 ===== */
+.review{margin:10px 0 34px;padding:24px 26px;position:relative;border-radius:18px;
+  border:1px solid rgba(255,231,76,.32);
+  background:linear-gradient(140deg,rgba(255,231,76,.06),rgba(15,22,56,.65) 45%),var(--bg-card)}
+.review::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;border-radius:18px 18px 0 0;
+  background:linear-gradient(90deg,var(--yellow),var(--cyan),transparent 70%)}
+.review h3{color:var(--yellow);font-size:15px;letter-spacing:.14em;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.review h3::before{content:"";flex:none;width:7px;height:7px;border-radius:2px;
+  background:var(--yellow);box-shadow:0 0 10px rgba(255,231,76,.7)}
+.rv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.rv{display:flex;gap:12px;padding:12px 14px;border-radius:12px;border:1px solid var(--border);
+  background:rgba(10,14,39,.6);transition:.2s}
+.rv:hover{border-color:var(--border2);transform:translateY(-2px)}
+.rv .n{flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:13px;color:#04121a;background:linear-gradient(135deg,var(--cyan),var(--blue))}
+.rv .t{font-size:13.5px;line-height:1.65}
+.rv .t b{color:#fff}
+.rv .t .who{display:block;font-size:12px;color:var(--cyan);margin-top:2px}
+
+/* ===== 正文 ===== */
+h2{position:relative;font-size:22px;color:#fff;font-weight:800;margin:54px 0 18px;
+  padding:10px 0 12px 58px;border-bottom:1px solid var(--border2);counter-increment:sec}
+h2::before{content:counter(sec,decimal-leading-zero);position:absolute;left:0;top:2px;
+  font-size:34px;font-weight:900;font-family:var(--mono);letter-spacing:-2px;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+h3{font-size:17px;color:var(--cyan);font-weight:700;margin:30px 0 12px;padding-left:13px;
+  border-left:3px solid;border-image:linear-gradient(180deg,var(--cyan),var(--purple)) 1}
+h4{font-size:15.5px;color:#fff;font-weight:700;margin:24px 0 10px;padding:8px 14px;border-radius:10px;
+  border:1px solid var(--border);background:linear-gradient(90deg,rgba(0,245,212,.12),rgba(177,74,237,.05) 70%,transparent)}
+p{margin:10px 0}
+hr{border:none;height:1px;margin:30px 0;background:linear-gradient(90deg,transparent,var(--border2) 20%,var(--border2) 80%,transparent)}
+ul,ol{margin:9px 0 9px 24px} li{margin:5px 0}
+li::marker{color:var(--cyan)}
+strong{color:#fff}
+blockquote{margin:16px 0;padding:12px 18px;border-radius:0 12px 12px 0;position:relative;
+  background:linear-gradient(90deg,rgba(255,46,151,.08),rgba(255,46,151,.02))}
+blockquote::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px;
+  background:linear-gradient(180deg,var(--magenta),var(--purple))}
+blockquote p{margin:4px 0}
+
+/* ===== 表格 ===== */
+.tblw{overflow-x:auto;margin:16px 0;border:1px solid var(--border2);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:var(--bg-card)}
+th{background:linear-gradient(180deg,rgba(0,245,212,.16),rgba(0,245,212,.06));color:var(--cyan);
+  font-weight:700;text-align:left;padding:10px 14px;border-bottom:1px solid var(--border2);white-space:nowrap}
+td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+tbody tr:hover{background:rgba(0,245,212,.05)}
+tbody tr:last-child td{border-bottom:none}
+
+/* ===== 徽章（脚本自动注入） ===== */
+.pb{display:inline-block;font-size:11.5px;font-weight:800;padding:2px 10px;border-radius:7px;
+  font-family:var(--mono);white-space:nowrap}
+.pb-p0{color:#04121a;background:linear-gradient(135deg,var(--cyan),#7cf0dd)}
+.pb-p1{color:var(--cyan);border:1px solid rgba(0,245,212,.5);background:rgba(0,245,212,.1)}
+.pb-p2{color:var(--text-dim);border:1px solid var(--border);background:rgba(0,245,212,.04)}
+.pb-hi{color:#2a0513;background:linear-gradient(135deg,var(--magenta),#ff7ab8)}
+.pb-md{color:var(--yellow);border:1px solid rgba(255,231,76,.5);background:rgba(255,231,76,.1)}
+.pb-lo{color:var(--green);border:1px solid rgba(92,224,130,.45);background:rgba(92,224,130,.1)}
+.pb-ms{color:var(--purple);border:1px solid rgba(177,74,237,.5);background:rgba(177,74,237,.12);font-family:var(--mono)}
+.pb-st{color:var(--yellow);border:1px solid rgba(255,231,76,.45);background:rgba(255,231,76,.1)}
+tr.rv-done td{opacity:.5}
+.tag-n{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 8px;margin-left:5px;border-radius:999px;
+  vertical-align:1px;color:var(--green);border:1px solid rgba(92,224,130,.4);background:rgba(92,224,130,.08)}
+
+/* ===== 流程图 ===== */
+pre{position:relative;margin:18px 0;padding:18px 20px;border-radius:14px;overflow-x:auto;
+  background:#03061a;border:1px solid var(--border2)}
+pre::before{content:"FLOW";position:absolute;top:8px;right:12px;font-size:9.5px;letter-spacing:.3em;
+  color:rgba(0,245,212,.35);font-family:var(--mono);font-weight:700}
+pre code{font-family:var(--mono);font-size:12.6px;line-height:1.7;color:#8fe6d8;white-space:pre}
+code{font-family:var(--mono);font-size:.9em;color:var(--cyan);background:rgba(0,245,212,.12);padding:1px 6px;border-radius:6px}
+pre code{background:none;padding:0}
+
+/* ===== 动画 ===== */
+.sec{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.sec.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.sec{opacity:1;transform:none;transition:none}}
+
+footer{margin-top:60px;padding:20px 24px;border:1px dashed var(--border2);border-radius:14px;
+  color:var(--text-dim);font-size:12.8px;text-align:center;line-height:2}
+#top{position:fixed;right:26px;bottom:26px;z-index:80;width:44px;height:44px;border-radius:13px;cursor:pointer;
+  display:none;align-items:center;justify-content:center;
+  background:rgba(15,22,56,.92);border:1px solid var(--border2)}
+#top::after{content:"";width:10px;height:10px;border-left:2px solid var(--cyan);border-top:2px solid var(--cyan);
+  transform:translateY(3px) rotate(45deg)}
+#top:hover{box-shadow:0 0 20px rgba(0,245,212,.5);transform:translateY(-3px)}
+@media (max-width:980px){nav#toc{display:none} .hero-t{padding-left:16px} .hero .tsub .lb{font-size:14px;letter-spacing:.16em}
+  .hero .tsub .rl{display:none} main{padding:8px 18px 80px}}
+@media print{#bar,header.top,nav#toc,#top{display:none} body{background:#fff;color:#111}
+  .hero{background:none}.hero::before,.hero-t::before,.meta::before{display:none}
+  .hero h1{-webkit-text-fill-color:#000}
+  .hero .kick span{color:#000;text-shadow:none} .hero .tsub .lb,.hero .sub,.meta .k{color:#333}
+  .meta{border-color:#ccc;background:#fff}
+  h2,h3,h4,th{color:#000} .sec{opacity:1;transform:none} .tblw{overflow:visible}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<header class="top">
+  <div class="logo"><i></i>{{产品名}} · PRD</div>
+  <span class="bdg b-v">{{版本}}</span>
+  <span class="bdg b-w">{{状态}}</span>
+  <span class="bdg b-b">{{阻塞摘要，如 M0 阻塞 B-3 / B-4}}</span>
+  <div class="hd-r">{{日期}} · {{首发形态}} · {{核心手法}} · {{阶段}}</div>
+</header>
+
+<section class="hero"><div class="hero-in">
+  <div class="hero-t">
+    <div class="kick"><span>Product Requirements Document</span></div>
+    <h1>{{产品名}}</h1>
+    <div class="tsub">
+      <span class="lb">产品需求文档</span>
+      <span class="rl"></span>
+      <span class="vs">{{版本}} · {{日期}}</span>
+    </div>
+    <p class="sub">面向 <b>{{客户形态}}</b> 的{{产品形态}}：从{{A}}到{{B}}——{{承诺1}}、{{承诺2}}、{{承诺3}}、{{承诺4}}。<b class="no">本版不做</b>{{明确不做的领域}}。</p>
+  </div>
+  <div class="metas">
+    <div class="meta"><div class="k">版本</div><div class="v cy">{{版本}}</div></div>
+    <div class="meta"><div class="k">P0 需求</div><div class="v cy">{{N}} + 1</div></div>
+    <div class="meta"><div class="k">页面</div><div class="v">{{MVP 页数}} / {{总页数}}</div></div>
+    <div class="meta"><div class="k">北极星</div><div class="v mg" style="font-size:15px;padding-top:4px">{{北极星指标}}</div></div>
+    <div class="meta"><div class="k">待确认</div><div class="v" style="color:var(--magenta)">{{N}} 项</div></div>
+    <div class="meta"><div class="k">状态</div><div class="v yl" style="font-size:15px;padding-top:4px">{{状态}}</div></div>
+  </div>
+</div></section>
+
+<div class="wrap">
+<nav id="toc"><div class="tt">导航</div></nav>
+<main>
+
+  <!-- ===== 审阅议题（3～6 条，每条挂责任人） ===== -->
+  <div class="review">
+    <h3>审阅要点 · {{里程碑}} 评审会议题</h3>
+    <div class="rv-grid">
+      <div class="rv"><div class="n">1</div><div class="t"><b>{{编号}} 关闭</b>：{{要当场拍板的事，写清决策内容}}<span class="who">{{责任人}}</span></div></div>
+      <div class="rv"><div class="n">2</div><div class="t"><b>{{编号}} 关闭</b>：{{…}}<span class="who">{{责任人}}</span></div></div>
+      <div class="rv"><div class="n">3</div><div class="t"><b>{{编号}} 确认</b>：{{…}}<span class="who">{{责任人}}</span></div></div>
+    </div>
+  </div>
+
+  <h2 id="文档信息">文档信息</h2>
+  <table>
+  <thead><tr><th>项</th><th>内容</th></tr></thead>
+  <tbody>
+  <tr><td>文档名称</td><td>{{产品名}}产品需求文档（PRD）</td></tr>
+  <tr><td>版本</td><td>{{版本}}（{{版本说明}}）</td></tr>
+  <tr><td>编制日期</td><td>{{各版日期}}</td></tr>
+  <tr><td>定位基线</td><td>{{以哪份材料为准}}</td></tr>
+  <tr><td>范围决策</td><td>{{N}} 项决策（见 1.5 节决策记录）</td></tr>
+  <tr><td>文档状态</td><td>{{状态}}</td></tr>
+  <tr><td>关联文档</td><td>{{协作文档 + 各自职责边界}}</td></tr>
+  </tbody>
+  </table>
+  <blockquote><p>阅读约定：本 PRD 负责需求层的完整定义（用户故事、EARS 需求描述、流程、指标、非功能、风险、验收）；{{页面级细节 / 视觉稿 / 经营就绪事项}}分别以 {{对应文档}} 为准，本文仅保留其产品侧接口需求。</p></blockquote>
+
+  <h2 id="评审速览">评审速览</h2>
+  <table>
+  <thead><tr><th>维度</th><th>结论</th></tr></thead>
+  <tbody>
+  <tr><td>核心定位</td><td>{{面向谁 + 形态 + 承诺}}</td></tr>
+  <tr><td>首发范围</td><td>{{客户形态}} · {{首发场景}} · {{平台形态}}</td></tr>
+  <tr><td>MVP 内核</td><td>{{3～5 个核心能力，加粗}}</td></tr>
+  <tr><td>MVP 体量</td><td>P0 需求 {{N}} 条 + 1 条架构约束 · 页面 {{N}}</td></tr>
+  <tr><td>明确不做</td><td>{{逐项分号分隔}}</td></tr>
+  <tr><td>商业模式</td><td>{{收费方式或"本版不商业化"}}</td></tr>
+  <tr><td>北极星指标</td><td>{{指标名}}</td></tr>
+  <tr><td>{{里程碑}} 阻塞项</td><td>{{编号 + 事项 + 责任人}}</td></tr>
+  <tr><td>并行启动</td><td>{{周期长于开发、必须今天启动的事}}</td></tr>
+  <tr><td>风险 Top3</td><td>{{R编号 + 风险名}}</td></tr>
+  </tbody>
+  </table>
+
+  <h2 id="目录">目录</h2>
+  <ol>
+    <li>背景（1.1 问题定义 / 1.2 市场论证摘要 / 1.3 竞争格局与差异化 / 1.4 名词术语表 / 1.5 决策记录）</li>
+    <li>产品定位与目标（2.1 核心定位 / 2.2 画像 / 2.3 首发场景 / 2.4 目标与度量 / 2.5 北极星 / 2.6 非目标）</li>
+    <li>需求描述·EARS（{{各能力域}}）</li>
+    <li>功能清单与优先级（4.1 MVP 清单 / 4.2 阶段二 / 4.3 阶段三 / 4.4 相对基线调整）</li>
+    <li>业务流程说明（5.1 主流程 / 5.2 状态机 / 5.3 …）</li>
+    <li>交互与页面说明（6.1 页面范围 / 6.2 全局交互规则 / 6.3 权限矩阵 / 6.4 重点页面规格）</li>
+    <li>数据指标与埋点</li>
+    <li>非功能需求（8.1 性能 / 8.2 合规义务 / 8.3 安全与数据 / 8.4 兼容性 / 8.5 运维 / 8.6 数据保护）</li>
+    <li>依赖与风险</li>
+    <li>里程碑与验收</li>
+  </ol>
+  <p>附录 A 需求变更记录 · 附录 B 待确认问题清单（带状态）· 附录 C 参考文档索引</p>
+  <hr>
+
+  <!-- ================= 1 背景 ================= -->
+  <h2 id="1-背景">1. 背景</h2>
+
+  <h3 id="1-1-产品背景与问题定义">1.1 产品背景与问题定义</h3>
+  <p>{{行业大势判断，1 段}}</p>
+  <p>目标用户（{{用户群}}）当前的核心痛点：</p>
+  <ol>
+    <li><strong>{{痛点短语}}</strong>：{{展开，写机制不写形容词，如"一部短剧的生产需要在 5～8 个工具间来回切换，上下文反复丢失"。}}</li>
+    <li><strong>{{…}}</strong>：{{…}}</li>
+    <li><strong>{{…}}</strong>：{{…}}</li>
+  </ol>
+  <p>本产品的回答：以 <strong>{{主线}}</strong> 为生产主线、以 <strong>{{核心差异}}</strong> 为核心差异、以 <strong>{{工作范式}}</strong> 为工作范式、以 <strong>{{规模化载体}}</strong> 为管理载体、以 <strong>{{客户形态}}</strong> 为首发客户形态。</p>
+
+  <h3 id="1-2-市场论证摘要">1.2 市场论证摘要</h3>
+  <blockquote><p>详细论证见关联文档。此处仅列结论，供评审快速对齐。</p></blockquote>
+  <table>
+  <thead><tr><th>信号</th><th>证据</th><th>对本产品的含义</th></tr></thead>
+  <tbody>
+  <tr><td>{{信号1}}</td><td>{{可核查的证据：主体 + 数字 / 时间}}</td><td>{{必须下判断，不复述证据}}</td></tr>
+  <tr><td>{{信号2}}</td><td>{{…}}</td><td>{{…}}</td></tr>
+  </tbody>
+  </table>
+
+  <h3 id="1-3-竞争格局与差异化">1.3 竞争格局与差异化</h3>
+  <p>{{完整竞品矩阵见关联文档 X 节。本节补充对定位有影响的关键竞品：}}</p>
+  <table>
+  <thead><tr><th>竞品</th><th>关键能力</th><th>对本产品的启示</th></tr></thead>
+  <tbody>
+  <tr><td>{{竞品名}}</td><td>{{关键能力}}</td><td>{{启示，回指本 PRD 哪一节}}</td></tr>
+  </tbody>
+  </table>
+  <p><strong>差异化定位声明</strong>：</p>
+  <ul>
+    <li>定位：{{谁 + 什么形态 + 给出什么承诺}}。</li>
+    <li>核心差异：<strong>{{差异组合}}</strong>。</li>
+    <li>明确不做的正面竞争：{{单模型质量 / 大众 C 端 / 分发平台 …}}。</li>
+  </ul>
+
+  <h3 id="1-4-名词术语表">1.4 名词术语表</h3>
+  <table>
+  <thead><tr><th>术语</th><th>定义</th></tr></thead>
+  <tbody>
+  <tr><td>{{自造概念}}</td><td>{{定义；含阶段性边界的要写明时点，如"商业化后启用"}}</td></tr>
+  <tr><td>{{…}}</td><td>{{…}}</td></tr>
+  </tbody>
+  </table>
+
+  <h3 id="1-5-决策记录">1.5 决策记录</h3>
+  <table>
+  <thead><tr><th>#</th><th>决策项</th><th>结论</th><th>影响</th></tr></thead>
+  <tbody>
+  <tr><td>D-01</td><td>{{决策项}}</td><td>{{结论}}</td><td>{{它改变了哪些章节；被后续决策覆盖的在此注明"后被 D-xx 扩展"}}</td></tr>
+  <tr><td>D-02</td><td>{{…}}</td><td>{{…}}</td><td>{{…}}</td></tr>
+  </tbody>
+  </table>
+
+  <!-- ================= 2 产品定位与目标 ================= -->
+  <h2 id="2-产品定位与目标">2. 产品定位与目标</h2>
+
+  <h3 id="2-1-核心定位">2.1 核心定位</h3>
+  <p>面向 {{客户}} 的 {{形态}} {{品类}}：从 {{A}} 到 {{B}}，{{承诺1}}、{{承诺2}}、{{承诺3}}、{{承诺4}}。</p>
+
+  <h3 id="2-2-目标用户与画像">2.2 目标用户与画像</h3>
+  <p>{{MVP 用户均为…；后置画像见 T6 或章末说明}}</p>
+  <table>
+  <thead><tr><th>画像</th><th>典型特征</th><th>核心诉求</th><th>使用深度</th></tr></thead>
+  <tbody>
+  <tr><td>U0 {{角色名}}</td><td>{{特征}}</td><td>{{诉求}}</td><td>{{主要用哪几个页面 / 模式}}</td></tr>
+  <tr><td>U1 {{…}}</td><td>{{…}}</td><td>{{…}}</td><td>{{…}}</td></tr>
+  <tr><td>U2 {{…}}</td><td>{{…}}</td><td>{{…}}</td><td>{{…}}</td></tr>
+  </tbody>
+  </table>
+
+  <h3 id="2-3-首发场景策略">2.3 首发场景策略</h3>
+  <ul>
+    <li>MVP 仅开放 <strong>{{首发场景}}</strong>：其余场景展示"规划中"并收集意向（点击行为计入埋点，为阶段二排期提供数据）。</li>
+    <li>{{首发场景}}对平台的特殊要求（均已体现在需求优先级中）：{{逐项回指需求编号}}。</li>
+  </ul>
+
+  <h3 id="2-4-产品目标与业务目标">2.4 产品目标与业务目标</h3>
+  <table>
+  <thead><tr><th>维度</th><th>目标</th><th>度量</th></tr></thead>
+  <tbody>
+  <tr><td>产品目标 1</td><td>{{目标}}</td><td>{{指标名 + 口径，回指 7.1 节}}</td></tr>
+  <tr><td>产品目标 2</td><td>{{…}}</td><td>{{…}}</td></tr>
+  <tr><td>业务目标 1</td><td>{{…}}</td><td>{{…}}</td></tr>
+  </tbody>
+  </table>
+
+  <h3 id="2-5-北极星指标">2.5 北极星指标</h3>
+  <p><strong>{{指标名（英文全称）}}</strong>——{{同时反映激活 / 深度 / 商业潜质中的哪几件}}，且直接对齐"{{产品承诺}}"。指标树见 7.1 节。</p>
+
+  <h3 id="2-6-非目标">2.6 非目标</h3>
+  <ol>
+    <li>不自研 {{核心依赖}}（接入第三方，见 9.1 节）。</li>
+    <li>不做 {{相邻但非核心的业务}}——{{理由}}。</li>
+    <li><strong>{{本版不面向的客户形态}}</strong>：{{理由 + 产品形态如何按此设计}}。</li>
+    <li>{{暂不做的能力}}（= {{编号}}，{{阶段}}）；{{替代方案}}。</li>
+    <li><strong>{{未来目标}}</strong>：{{预留方式}}，{{开放时无需什么代价}}。</li>
+    <li>{{经营 / 合规就绪类事项}}不入产品 PRD 范围，统一由<strong>{{对应文档}}</strong>承载；本文仅保留产品侧接口需求：{{逐项}}。</li>
+  </ol>
+  <hr>
+
+  <!-- ================= 3 需求描述（EARS） ================= -->
+  <h2 id="3-用户故事与需求描述-EARS">3. 用户故事与需求描述（EARS）</h2>
+
+  <h3 id="3-0-EARS-约定">3.0 EARS 约定</h3>
+  <p>按项目规范，需求描述采用 EARS 五类句式：</p>
+  <table>
+  <thead><tr><th>类型</th><th>句式</th><th>用途</th></tr></thead>
+  <tbody>
+  <tr><td>Ubiquitous</td><td>系统应始终……</td><td>全局约束</td></tr>
+  <tr><td>Event-driven</td><td>当……时，系统应……</td><td>主流程行为</td></tr>
+  <tr><td>Unwanted</td><td>如果……（异常），则系统应……</td><td>异常与故障处理</td></tr>
+  <tr><td>State-driven</td><td>在……（状态）期间，系统应……</td><td>状态内行为</td></tr>
+  <tr><td>Optional</td><td>在提供……（功能）的情况下，系统应……</td><td>可选能力（含阶段二/三特性）</td></tr>
+  </tbody>
+  </table>
+  <p>每条需求包含：用户故事、EARS 描述、优先级、验收标准、关联页面、边界与异常。P0 需求完整展开；P1/P2 需求给出主条目，细节评审后补全。</p>
+
+  <h3 id="3-1-A-能力域">3.1 A {{能力域名}}</h3>
+
+  <h4>A1 {{需求名}}（P0）</h4>
+  <ul>
+    <li><strong>用户故事</strong>：作为 U1，我希望 {{动作}}，以便 {{收益}}。</li>
+    <li><strong>EARS</strong>：
+      <ul>
+        <li>当用户在 P0X {{触发动作}}后，系统应在 {{时限内}} 完成 {{具体产出}}。</li>
+        <li>在 {{某状态}} 期间，系统应 {{状态内行为}}。</li>
+        <li>如果 {{异常条件}}，则系统应 {{兜底行为}}。</li>
+        <li>系统应始终 {{全局约束}}。</li>
+      </ul>
+    </li>
+    <li><strong>验收标准</strong>：{{含数字与可判定结果}}。</li>
+    <li><strong>关联页面</strong>：P0X → P0Y。</li>
+    <li><strong>边界与异常</strong>：{{失败 / 超限 / 冲突 / 空态}}。</li>
+  </ul>
+
+  <h4>A2 {{需求名}}（P0，V1.0 新增）</h4>
+  <ul>
+    <li><strong>用户故事</strong>：{{…}}</li>
+    <li><strong>EARS</strong>：{{…}}</li>
+    <li><strong>验收标准</strong>：{{…}}</li>
+    <li><strong>关联页面</strong>：{{…}}</li>
+  </ul>
+
+  <h4>A3 {{P1 需求名}}（P1）</h4>
+  <ul>
+    <li>{{一句主条目：是什么 + 为什么后置}}。</li>
+  </ul>
+
+  <h3 id="3-2-T-多用户与协作">3.2 T {{能力域名}}</h3>
+
+  <h4>T6 {{架构约束名}}（架构约束）</h4>
+  <blockquote><p>本条为设计约束而非用户可见功能：确保未来 {{扩展}} 时<strong>无需 {{代价}}、低成本上线</strong>。</p></blockquote>
+  <ul>
+    <li><strong>EARS（Ubiquitous，设计约束）</strong>：
+      <ul>
+        <li>系统应采用"{{模型}}"的账号与数据归属模型；{{归属主体}}应抽象为"{{集合}}"，本阶段仅启用 {{其一}}。</li>
+        <li>系统的鉴权、存储与计费模型不应将"{{某概念}}"硬编码为唯一容器。</li>
+      </ul>
+    </li>
+    <li><strong>验收标准（本版）</strong>：{{设计评审通过的具体检查点}}；无"{{某概念}}"的硬编码。</li>
+    <li><strong>关联页面</strong>：无（架构层）。</li>
+  </ul>
+  <hr>
+
+  <!-- ================= 4 功能清单与优先级 ================= -->
+  <h2 id="4-功能清单与优先级">4. 功能清单与优先级</h2>
+
+  <h3 id="4-1-MVP-需求清单">4.1 MVP（阶段一，P0）需求清单</h3>
+  <table>
+  <thead><tr><th>编号</th><th>需求</th><th>优先级</th><th>相对基线</th></tr></thead>
+  <tbody>
+  <tr><td>A1</td><td>{{需求名}}</td><td>P0</td><td>一致</td></tr>
+  <tr><td>A4a</td><td>{{需求名}}</td><td>P0</td><td><strong>V1.0 新增（自 A4 拆分）</strong></td></tr>
+  <tr><td>—</td><td>页面范围</td><td>—</td><td>{{P01～P12、P17、P18（14 页）}}</td></tr>
+  </tbody>
+  </table>
+
+  <h3 id="4-2-阶段二-P1">4.2 阶段二（P1）</h3>
+  <p>{{编号 + 需求名，分号分隔，一段平铺}}。</p>
+
+  <h3 id="4-3-阶段三-P2-P3">4.3 阶段三（P2/P3）</h3>
+  <p>{{…}}</p>
+
+  <h3 id="4-4-相对基线的调整说明">4.4 相对基线的调整说明</h3>
+  <table>
+  <thead><tr><th>#</th><th>调整</th><th>理由</th></tr></thead>
+  <tbody>
+  <tr><td>1</td><td>{{调整内容}}</td><td>决策 D-03</td></tr>
+  <tr><td>2</td><td>{{…}}</td><td>{{…}}</td></tr>
+  </tbody>
+  </table>
+  <hr>
+
+  <!-- ================= 5 业务流程说明 ================= -->
+  <h2 id="5-业务流程说明">5. 业务流程说明</h2>
+
+  <h3 id="5-1-核心主流程">5.1 核心主流程</h3>
+  <pre><code>                    ┌──────────────────────────────────────────────┐
+                    │  P01 首页（{{入口数}} 个入口）                   │
+                    │  1 {{入口1}} → {{页面}}                        │
+                    │  2 {{入口2}} → {{页面}}                        │
+                    │  3 {{入口3}} → {{页面}}                        │
+                    └───────────┬──────────────────────┬───────────┘
+                                ↓                      ↓
+                    ┌───────────────────┐   ┌───────────────────┐
+                    │  {{环节A}} P0X     │   │  {{环节B}} P0Y     │
+                    └─────────┬─────────┘   └─────────┬─────────┘
+                              │      产物同源，随时互切    │
+                              ↓                            ↓
+                    ┌──────────────────────────────────────────────┐
+                    │  {{产出}} P12 → {{沉淀}} P17 → {{管理}} P18    │
+                    └──────────────────────────────────────────────┘
+</code></pre>
+  <p><strong>{{同源 / 一致性规则}}</strong>：{{图里放不下的约束}}。</p>
+
+  <h3 id="5-2-任务状态机">5.2 任务状态机</h3>
+  <pre><code> [草稿 draft] --提交--&gt; [排队 queued] --调度--&gt; [生成中 running]
+                          │                    │
+                    (用户取消)              (成功/失败)
+                          ↓                    ↓
+                    [已取消 canceled]   [已完成 succeeded]
+                                              [已失败 failed]
+                                                 │
+                                            (一键重试 / 仅重试失败项)
+                                                 ↓
+                                            [排队 queued]
+
+规则：
+- queued：可取消，取消与失败任务不占用配额
+- running：不可取消；用量按实际计量归集
+- failed：不占用配额；失败原因写入任务记录
+- succeeded：结果默认保留 {{N}} 天，到期前 {{N}} 天提醒转存
+- 批量任务：整体状态 = 子任务聚合；断点续作见 {{编号}}
+</code></pre>
+  <hr>
+
+  <!-- ================= 6 交互与页面说明 ================= -->
+  <h2 id="6-交互与页面说明">6. 交互与页面说明</h2>
+
+  <h3 id="6-1-页面范围与跨文档对齐">6.1 页面范围与跨文档对齐</h3>
+  <p>页面级布局线框、组件、状态、跳转以《{{原型规格}}》为准。MVP 交付 {{N}} 页，首版原型优先顺序：<strong>{{P01 → P02 → …}}</strong>，其余页面评审后补齐。</p>
+  <blockquote><p><strong>跨文档对齐提醒</strong>：基线文档与本 PRD 存在 {{N}} 处滞后，原型稿升版时按以下清单对齐（冲突期间以本 PRD 为准）：1）{{…}}；2）{{…}}；3）{{…}}。</p></blockquote>
+
+  <h3 id="6-2-全局交互规则">6.2 全局交互规则</h3>
+  <table>
+  <thead><tr><th>#</th><th>规则</th><th>说明</th></tr></thead>
+  <tbody>
+  <tr><td>G1</td><td>异步任务全局可见</td><td>{{常驻入口 + 角标 + 浮层；批量任务展示聚合进度与"仅重试失败项"}}</td></tr>
+  <tr><td>G2</td><td>用量 / 成本前置展示</td><td>{{提交旁展示预估；完成后展示实际}}</td></tr>
+  <tr><td>G3</td><td>错误反馈分级</td><td>{{参数错误行内 / 任务失败 Toast + 重试 / 服务异常全局横幅 + 降级说明}}</td></tr>
+  <tr><td>G4</td><td>自动保存与版本</td><td>{{间隔 ≤Ns 或失焦触发；版本历史可回滚}}</td></tr>
+  <tr><td>G5</td><td>引用追溯</td><td>{{结果可回溯：引用对象 / 参数 / 发起成员}}</td></tr>
+  <tr><td>G9</td><td>消息通知矩阵</td><td>{{逐场景列"事件 → 通道 → 通知谁"}}</td></tr>
+  <tr><td>G10</td><td>新手引导</td><td>{{首登清单 + 空态模板 + 失败兜底文案；回指它缓解哪个风险}}</td></tr>
+  <tr><td>G11</td><td>帮助与支持入口</td><td>{{FAQ / 工单 / 社群；经营侧 SLA 移交给就绪清单}}</td></tr>
+  <tr><td>G13</td><td>合规摩擦最小化</td><td>{{实名一次完成全程复用；合规动作集中到首次生成前一次性完成；拦截页附原因 + 申诉入口 + 时效}}</td></tr>
+  </tbody>
+  </table>
+
+  <h3 id="6-3-权限矩阵">6.3 权限矩阵</h3>
+  <p><strong>组织级角色</strong></p>
+  <table>
+  <thead><tr><th>操作</th><th style="text-align:center">管理员</th><th style="text-align:center">成员</th></tr></thead>
+  <tbody>
+  <tr><td>{{组织设置 / 成员邀请与移除}}</td><td style="text-align:center">✓</td><td style="text-align:center">✗</td></tr>
+  <tr><td>{{创建项目}}</td><td style="text-align:center">✓</td><td style="text-align:center">✓</td></tr>
+  </tbody>
+  </table>
+  <p><strong>对象级角色</strong></p>
+  <table>
+  <thead><tr><th>操作</th><th style="text-align:center">所有者</th><th style="text-align:center">编辑者</th><th style="text-align:center">查看者</th></tr></thead>
+  <tbody>
+  <tr><td>{{项目设置 / 删除 / 角色分配}}</td><td style="text-align:center">✓</td><td style="text-align:center">✗</td><td style="text-align:center">✗</td></tr>
+  <tr><td>{{查看 / 评论}}</td><td style="text-align:center">✓</td><td style="text-align:center">✓</td><td style="text-align:center">✓</td></tr>
+  </tbody>
+  </table>
+  <blockquote><p>MVP 角色简化为：<strong>{{最小角色集}}</strong> + 对象三级角色。精细化协作（{{实时协同 / 批注 / 派发}}）为 {{编号}}（{{阶段}}）。</p></blockquote>
+  <hr>
+
+  <!-- ================= 7 数据指标与埋点 ================= -->
+  <h2 id="7-数据指标与埋点">7. 数据指标与埋点</h2>
+
+  <h3 id="7-1-指标体系">7.1 指标体系</h3>
+  <pre><code>北极星：{{指标名}}
+├─ 激活（{{口径}}）
+│   ├─ {{团队注册→首个产出时长（目标：≤N 天，中位数）}}
+│   └─ {{首周全链路完成占比}}
+├─ 留存
+│   ├─ {{周活跃数}}
+│   └─ {{第 N 周留存率}}
+├─ 深度
+│   ├─ {{周均任务数 / 单元}}
+│   ├─ {{资产复用率}}
+│   └─ {{协作活跃度}}
+└─ 变现准备（商业化前）→ 变现（{{节点}}起）
+    ├─ {{单客户月均用量与成本台账}}
+    ├─ {{配额触发率}}
+    └─ {{影子账单：假设单价 × 月用量折算，只算不收}}
+</code></pre>
+  <p>目标基线值在 MVP 上线后按首月数据校准，本版不预设（避免拍脑袋指标，见附录 B-{{n}}）。</p>
+
+  <h3 id="7-2-核心埋点事件表">7.2 核心埋点事件表</h3>
+  <table>
+  <thead><tr><th>事件</th><th>触发时机</th><th>关键参数</th></tr></thead>
+  <tbody>
+  <tr><td>{{entity_create / invite / remove}}</td><td>{{生命周期}}</td><td>{{规模 / 角色}}</td></tr>
+  <tr><td>{{task_start / complete / fail}}</td><td>{{任务执行}}</td><td>{{模式、入口、用量、耗时、发起成员}}</td></tr>
+  <tr><td>{{export_complete}}</td><td>{{导出产出}}</td><td>{{规格、时长、批量数}}</td></tr>
+  </tbody>
+  </table>
+
+  <h3 id="7-3-数据口径定义">7.3 数据口径定义</h3>
+  <table>
+  <thead><tr><th>口径</th><th>定义</th></tr></thead>
+  <tbody>
+  <tr><td>{{核心产出物流量}}</td><td>{{写到可计算精度，如"主动导出、时长 ≥30 秒、含 ≥1 条音频轨与字幕轨的 MP4"}}</td></tr>
+  <tr><td>{{核心过程指标}}</td><td>{{公式}}</td></tr>
+  </tbody>
+  </table>
+  <hr>
+
+  <!-- ================= 8 非功能需求 ================= -->
+  <h2 id="8-非功能需求">8. 非功能需求</h2>
+
+  <h3 id="8-1-性能">8.1 性能</h3>
+  <blockquote><p><strong>下表基线在 {{前置条件}} 完成前为假设值，须以 {{来源}} 校准后冻结</strong>；平台侧指标不受此影响。</p></blockquote>
+  <table>
+  <thead><tr><th>项</th><th>基线</th></tr></thead>
+  <tbody>
+  <tr><td>{{页面首屏可进入核心流程}}</td><td>≤3s</td></tr>
+  <tr><td>{{核心能力耗时}}</td><td>{{≤Ns}}</td></tr>
+  <tr><td>服务可用性</td><td>≥99.5%（{{该数值的性质与商务条款归属}}）</td></tr>
+  </tbody>
+  </table>
+
+  <h3 id="8-2-合规义务">8.2 合规义务</h3>
+  <p>下表各项均为上线前置条件，缺一项即阻塞对应里程碑，须逐条确认到责任人。</p>
+  <table>
+  <thead><tr><th>#</th><th>义务</th><th>需求表述（EARS）</th><th>状态</th></tr></thead>
+  <tbody>
+  <tr><td>N1</td><td>{{AI 生成内容标识}}</td><td>系统应始终为导出的 AI 生成内容附加标识（{{形式}}），{{用户是否可移除}}。</td><td>{{需法务确认实现口径}}</td></tr>
+  <tr><td>N2</td><td>{{内容安全}}</td><td>当用户提交 {{输入}} 时，系统应进行输入侧审核；当生成完成时，系统应对输出进行审核；命中策略应拦截并说明原因。</td><td>{{审核策略由风控定义}}</td></tr>
+  <tr><td>N7</td><td><strong>{{上线资质}}</strong></td><td>系统正式对外提供服务前，应完成 {{资质1 / 资质2 / 资质3}}——<strong>{{哪几项阻塞哪个里程碑}}</strong>。</td><td>未启动——{{办理周期可能长于开发周期，应立即启动}}</td></tr>
+  </tbody>
+  </table>
+
+  <h3 id="8-3-安全与数据">8.3 安全与数据</h3>
+  <ul>
+    <li><strong>{{数据隔离}}</strong>（{{编号}}）；{{跨范围共享的边界}}。</li>
+    <li>{{上传素材与产出存储加密；外部调用密钥平台侧托管，不暴露给前端}}。</li>
+    <li>{{权限回收即时生效}}。</li>
+    <li>{{数据导出与删除流程满足常规合规要求}}。</li>
+  </ul>
+
+  <h3 id="8-4-兼容性">8.4 兼容性</h3>
+  <ul>
+    <li>平台端形态：<strong>{{Web（Chromium 系现代浏览器）优先}}</strong>，{{是否保留桌面端可能性}}；{{移动端在不在 MVP 范围}}。</li>
+  </ul>
+
+  <h3 id="8-5-运维与可靠性">8.5 运维与可靠性</h3>
+  <table>
+  <thead><tr><th>项</th><th>要求</th></tr></thead>
+  <tbody>
+  <tr><td>降级矩阵</td><td>{{每类能力 ≥2 家供应商；切换阈值；切换须通知谁并记审计日志；演练时限}}</td></tr>
+  <tr><td>监控告警</td><td>{{哪几类核心告警}}</td></tr>
+  <tr><td>并发与配额</td><td>{{优先级规则；超限时明示排队位次，不静默丢弃}}</td></tr>
+  <tr><td>灰度与回滚</td><td>{{白名单灰度；关键路径回滚预案}}</td></tr>
+  </tbody>
+  </table>
+
+  <h3 id="8-6-数据保护">8.6 数据保护</h3>
+  <table>
+  <thead><tr><th>项</th><th>要求</th></tr></thead>
+  <tbody>
+  <tr><td>备份</td><td>{{核心资产每日备份；RPO ≤Nh、RTO ≤Nh；恢复演练时限}}</td></tr>
+  <tr><td>回收站</td><td>{{删除先进回收站，保留 N 天可自助恢复；彻底清除仅管理员可操作并记审计}}</td></tr>
+  <tr><td>分层存储</td><td>{{长期 / 默认 / 归属 三档 + 配额策略}}</td></tr>
+  </tbody>
+  </table>
+  <hr>
+
+  <!-- ================= 9 依赖与风险 ================= -->
+  <h2 id="9-依赖与风险">9. 依赖与风险</h2>
+
+  <h3 id="9-1-外部依赖">9.1 外部依赖</h3>
+  <table>
+  <thead><tr><th>依赖</th><th>内容</th><th>影响</th></tr></thead>
+  <tbody>
+  <tr><td>{{依赖方}}</td><td>{{提供什么}}</td><td>{{影响我们的什么：哪个需求的载体 / 哪个成本输入 / 阻塞哪个里程碑}}</td></tr>
+  </tbody>
+  </table>
+
+  <h3 id="9-2-风险清单">9.2 风险清单</h3>
+  <table>
+  <thead><tr><th>#</th><th>风险</th><th style="text-align:center">等级</th><th>对策</th></tr></thead>
+  <tbody>
+  <tr><td>R1</td><td>{{外部依赖风险}}</td><td style="text-align:center">高</td><td>{{具体机制 + 回指章节}}</td></tr>
+  <tr><td>R2</td><td>{{能力上限风险}}</td><td style="text-align:center">高</td><td>{{…}}</td></tr>
+  <tr><td>R3</td><td>{{MVP 体量超载 / 技术难度被低估}}</td><td style="text-align:center">高</td><td>{{交付次序 + 成熟度分级 + 里程碑准入门槛}}</td></tr>
+  <tr><td>R13</td><td><strong>{{免费期滥用 / 成本失控}}</strong></td><td style="text-align:center">高</td><td>{{注册策略 + 认证前置 + 配额 + 异常监控}}</td></tr>
+  </tbody>
+  </table>
+  <hr>
+
+  <!-- ================= 10 里程碑与验收 ================= -->
+  <h2 id="10-里程碑与验收">10. 里程碑与验收</h2>
+
+  <h3 id="10-1-里程碑">10.1 里程碑</h3>
+  <p>下表为阶段门，不含日期——排期需研发负责人评估后确认。</p>
+  <table>
+  <thead><tr><th>阶段</th><th>内容</th><th>准出条件</th></tr></thead>
+  <tbody>
+  <tr><td>M0</td><td>PRD 评审通过（本文档）</td><td>{{阻塞项关闭或指定责任人；架构评审通过；并行事项启动}}</td></tr>
+  <tr><td>M1</td><td>MVP 开发完成 → 内测</td><td>{{4.1 节全部 P0 验收通过；性能基线达标；演练完成；<strong>价值信号（软指标）</strong>}}</td></tr>
+  <tr><td>M2</td><td>{{公测 / 发布}}</td><td>{{指标与埋点可用；合规落地；<strong>证照齐备——未齐备则延期</strong>}}</td></tr>
+  <tr><td>M-BC</td><td><strong>{{商业化上线}}</strong></td><td><strong>Go/No-Go 量化门槛</strong>：{{？}}；<strong>准出</strong>：{{…}}</td></tr>
+  </tbody>
+  </table>
+
+  <h3 id="10-2-验收冒烟清单">10.2 验收冒烟清单</h3>
+  <ol>
+    <li>{{主流程}}：从 {{输入}} 到 {{产出}}——全程无阻断。</li>
+    <li>{{关键能力闭环}}：{{…}}</li>
+    <li>{{多角色链路}}：{{…}}</li>
+    <li>{{异常}}：制造一次失败 → {{兜底行为}}。</li>
+    <li>{{冲突}}：多成员同时编辑 → {{…}}。</li>
+    <li>{{合规}}：{{未实名 / 无授权 / 违规内容 被拦截}}。</li>
+  </ol>
+  <hr>
+
+  <!-- ================= 附录 ================= -->
+  <h2 id="附录-A-需求变更记录">附录 A. 需求变更记录</h2>
+  <table>
+  <thead><tr><th>版本</th><th>日期</th><th>变更</th><th>依据</th></tr></thead>
+  <tbody>
+  <tr><td>V1.0</td><td>{{日期}}</td><td>首版：{{变更要点}}</td><td>{{决策 D-01～D-04}}</td></tr>
+  <tr><td>V1.1</td><td>{{日期}}</td><td><strong>{{变更主题}}</strong>：1）{{…}}；2）{{…}}</td><td>{{依据}}</td></tr>
+  </tbody>
+  </table>
+
+  <h2 id="附录-B-待确认问题清单">附录 B. 待确认问题清单</h2>
+  <blockquote><p>状态更新（{{日期}}）：<strong>{{已关闭项}}</strong>；余 {{N}} 项按责任方推进，其中 <strong>{{编号}} 为 {{里程碑}} 准出阻塞项</strong>。</p></blockquote>
+  <table>
+  <thead><tr><th>#</th><th>问题</th><th>建议责任方</th><th>状态</th></tr></thead>
+  <tbody>
+  <tr><td>B-1</td><td>{{问题}}</td><td>{{产品 + 研发}}</td><td>已确认：{{结论}}</td></tr>
+  <tr><td>B-3</td><td>{{问题}}</td><td>{{研发 + 商务}}</td><td>阻塞 M0</td></tr>
+  <tr><td>B-4</td><td>{{问题}}</td><td>{{法务}}</td><td>待确认</td></tr>
+  </tbody>
+  </table>
+
+  <h2 id="附录-C-参考文档索引">附录 C. 参考文档索引</h2>
+  <table>
+  <thead><tr><th>文档</th><th>用途</th></tr></thead>
+  <tbody>
+  <tr><td>《{{文档名}}》</td><td>{{提供什么输入}}</td></tr>
+  </tbody>
+  </table>
+  <hr>
+  <p><em>{{本文档与其余交付包的关系与冲突仲裁规则}}。</em></p>
+  <footer>{{产品名}} PRD {{版本}}（{{日期}}）· {{状态}}<br>{{评审意见回传方式}}</footer>
+</main>
+</div>
+<button id="top" title="返回顶部"></button>
+
+<script>
+// ---- 阅读进度条 ----
+var bar=document.getElementById('bar');
+if(bar) window.addEventListener('scroll',function(){
+  var h=document.documentElement,p=h.scrollTop/(h.scrollHeight-h.clientHeight);
+  bar.style.width=(p*100)+'%';
+},{passive:true});
+
+// ---- TOC + scrollspy ----
+// 注意：#bar / nav#toc / #top 缺一个就会让整段脚本中断，后面徽章、目录、动画全部失效。
+// 每个入口都先判空，缺元素就静默跳过。
+(function(){
+  var nav=document.getElementById('toc');
+  if(!nav) return;
+  var hs=document.querySelectorAll('main h2, main h3');
+  hs.forEach(function(h){
+    if(!h.id||h.textContent.indexOf('审阅要点')>-1) return;
+    var a=document.createElement('a');
+    a.href='#'+h.id;a.textContent=h.textContent.replace(/\s+/g,' ').slice(0,40);
+    a.className=h.tagName==='H2'?'l2':'l3';
+    nav.appendChild(a);
+  });
+  var ls=nav.querySelectorAll('a');
+  if(!ls.length) return;
+  function spy(){
+    var cur=ls[0],y=scrollY+140;
+    ls.forEach(function(l){var t=document.getElementById(l.getAttribute('href').slice(1));if(t&&t.offsetTop<=y)cur=l});
+    ls.forEach(function(l){l.classList.toggle('on',l===cur)});
+  }
+  addEventListener('scroll',spy,{passive:true});spy();
+})();
+
+// ---- 表格滚动包装 + 行状态 ----
+document.querySelectorAll('main table').forEach(function(t){
+  var w=document.createElement('div');w.className='tblw';
+  t.parentNode.insertBefore(w,t);w.appendChild(t);
+});
+document.querySelectorAll('main tr').forEach(function(tr){
+  var x=tr.textContent;
+  if(/阻塞\s*M/.test(x)&&!/已关闭|关闭或指定/.test(x)) tr.style.boxShadow='inset 3px 0 0 var(--magenta)';
+  if(/已确认/.test(x)&&!/未确认/.test(x)) tr.classList.add('rv-done');
+});
+
+// ---- 徽章系统：纯文本单元格关键词转换 ----
+var MAP={'P0':['pb-p0'],'P0（约束）':['pb-p0'],'P1':['pb-p1'],'P2':['pb-p2'],'P3':['pb-p2'],
+ '高':['pb-hi'],'中':['pb-md'],'低':['pb-lo'],
+ 'M0':['pb-ms'],'M1':['pb-ms'],'M2':['pb-ms'],'M3':['pb-ms'],'M-BC':['pb-ms']};
+document.querySelectorAll('main td, main th').forEach(function(c){
+  var k=c.textContent.trim();
+  if(!c.children.length){
+    if(MAP[k]){c.innerHTML='<span class="pb '+MAP[k][0]+'">'+k+'</span>';return;}
+    if(/^(阻塞\s*M\w*|M\d+ 阻塞)$/.test(k)){
+      c.innerHTML='<span class="pb pb-md" style="color:var(--magenta);border-color:rgba(255,46,151,.5);background:rgba(255,46,151,.12)">阻塞</span>';return;}
+    if(/^(待确认|排期待定|挂起.*)$/.test(k)){c.innerHTML='<span class="pb pb-st">'+k+'</span>';return;}
+  }
+  // 前置状态词 + 说明：不论格内有无行内标记都只换掉状态词，后文保留
+  var sm=c.innerHTML.match(/^\s*(未启动|已启动|办理中)\s*(?:——|--|—|-|:|：)\s*([\s\S]+)$/);
+  if(sm){c.innerHTML='<span class="pb pb-hi">'+sm[1]+'</span> '+sm[2];}
+});
+
+// ---- 版本新增标记 ----
+document.querySelectorAll('main h4, main li, main td').forEach(function(el){
+  var h=el.innerHTML;
+  var n=h.replace(/(V1\.[1-9][^<]{0,16}?(新增|拆分|后移|扩展|量化|补充|降级))/g,'<span class="tag-n">$1</span>');
+  if(n!==h) el.innerHTML=n;
+});
+
+// ---- 章节进入动画 ----
+(function(){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+  },{threshold:.06});
+  document.querySelectorAll('main h2, main .review, main .tblw, main pre, main h4').forEach(function(el,i){
+    el.classList.add('sec');el.style.transitionDelay=Math.min(i%6*40,200)+'ms';io.observe(el);
+  });
+})();
+
+// ---- 返回顶部 ----
+var tb=document.getElementById('top');
+if(tb){
+  addEventListener('scroll',function(){tb.style.display=scrollY>700?'flex':'none'},{passive:true});
+  tb.onclick=function(){scrollTo({top:0,behavior:'smooth'})};
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:,">
+<title>【课程名】·【主题副标题】（N 分钟课堂版）</title>
+<meta name="description" content="【一句话课程描述，含关键词：主题、环节、成果、受众、双轨】">
+<style>
+:root{
+  --bg-deep:#04071a;--bg-night:#0A0E27;--bg-card:#0F1638;--bg-panel:rgba(20,27,63,.72);
+  --cyan:#00F5D4;--magenta:#FF2E97;--yellow:#FFE74C;--crystal:#4FC3F7;--nebula:#BB86FC;
+  --purple:#B14AED;--orange:#FF6B35;--blue:#3A86FF;--green:#5CE082;
+  --text:#E8ECFF;--text-dim:#8E96C9;--text-faint:#5A6094;--border:rgba(0,245,212,.28);--grid:rgba(0,245,212,.07);
+  --ink:#E8ECFF;--muted:#8E96C9;--card:rgba(15,22,56,.92);--line:rgba(0,245,212,.18)
+}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:"PingFang SC","Microsoft YaHei","HarmonyOS Sans SC",-apple-system,"Segoe UI",sans-serif;background:var(--bg-deep);color:var(--text);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(0,245,212,.10),transparent 60%),radial-gradient(ellipse 60% 50% at 90% 20%,rgba(187,134,252,.10),transparent 55%),radial-gradient(ellipse 70% 60% at 10% 80%,rgba(79,195,247,.10),transparent 55%),linear-gradient(180deg,#04071a 0%,#060A22 50%,#04071a 100%)}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 90% 70% at 50% 40%,#000 30%,transparent 90%);opacity:.55}
+a{color:inherit}
+.topnav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(6,10,34,.86);border-bottom:1px solid var(--border);padding:10px 22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.5px;white-space:nowrap}.brand .logo{width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:linear-gradient(135deg,var(--cyan),var(--magenta));box-shadow:0 0 14px rgba(0,245,212,.5);font-size:16px}.nav-links{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}.nav-links a{color:var(--text-dim);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:20px;border:1px solid transparent;transition:.2s;white-space:nowrap}.nav-links a:hover{color:var(--cyan);border-color:var(--border);background:rgba(0,245,212,.06)}
+.toolnote{width:calc(100% - 48px);max-width:1232px;margin:24px auto 0;padding:18px 24px;border-radius:16px;background:linear-gradient(135deg,rgba(0,245,212,.10),rgba(187,134,252,.08));border:1px solid var(--border);box-shadow:0 0 24px rgba(0,245,212,.10);font-size:13.4px;line-height:1.85}.toolnote .th{display:flex;align-items:center;gap:10px;color:var(--cyan);font-weight:800;letter-spacing:2px;font-size:14.5px;margin-bottom:10px}.toolnote b{color:var(--cyan)}
+.part-banner{margin:50px auto 28px;max-width:1280px;padding:0 24px;scroll-margin-top:80px}.part-banner .pnum{font-family:"JetBrains Mono",Consolas,monospace;font-size:13px;letter-spacing:4px;color:var(--cyan);text-shadow:0 0 12px rgba(0,245,212,.6)}.part-banner .pnum.purple{color:var(--nebula);text-shadow:0 0 12px rgba(187,134,252,.6)}.part-banner .pnum.orange{color:var(--orange);text-shadow:0 0 12px rgba(255,107,53,.6)}.part-banner h1{font-size:clamp(24px,3.4vw,40px);margin:8px 0 6px;font-weight:800;letter-spacing:1px}.part-banner .pdesc{color:var(--text-dim);font-size:14.5px}.part-banner .star{color:var(--yellow);font-size:13px;font-weight:700;margin-left:8px}
+main{max-width:1280px;margin:0 auto;padding:0 24px 70px}.page{position:relative;margin:0 auto 34px;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,rgba(15,22,56,.94),rgba(10,14,39,.97));border:1px solid var(--border);box-shadow:0 10px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.04);scroll-margin-top:80px}.page::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 0% 0%,rgba(0,245,212,.08),transparent 40%),radial-gradient(circle at 100% 100%,rgba(187,134,252,.07),transparent 40%)}.page-head{display:flex;align-items:center;gap:14px;padding:15px 24px;border-bottom:1px solid rgba(0,245,212,.14);background:linear-gradient(90deg,rgba(0,245,212,.05),transparent)}.page-num{font-family:"JetBrains Mono",Consolas,monospace;font-weight:700;font-size:14px;padding:4px 10px;border-radius:6px;border:1px solid var(--cyan);color:var(--cyan);box-shadow:0 0 10px rgba(0,245,212,.25);white-space:nowrap}.page-num.purple{border-color:var(--nebula);color:var(--nebula);box-shadow:0 0 10px rgba(187,134,252,.3)}.page-num.orange{border-color:var(--orange);color:var(--orange);box-shadow:0 0 10px rgba(255,107,53,.3)}.page-num.yellow{border-color:var(--yellow);color:var(--yellow);box-shadow:0 0 10px rgba(255,231,76,.3)}.page-title{font-size:clamp(16px,2.2vw,22px);font-weight:700;letter-spacing:.5px;flex:1}.pace{font-size:12px;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,231,76,.4);color:var(--yellow);white-space:nowrap}.pace.zap{border-color:rgba(0,245,212,.4);color:var(--cyan)}.pace.skip{border-color:rgba(140,150,200,.3);color:var(--text-dim)}.pace.core{border-color:rgba(255,46,151,.4);color:var(--magenta)}.page-body{padding:23px}
+.layout-tag{display:inline-block;font-size:12px;color:var(--text-dim);background:rgba(0,245,212,.08);border:1px solid var(--border);padding:3px 10px;border-radius:6px;margin-bottom:16px}.scene{border-radius:14px;border:1px solid rgba(0,245,212,.18);overflow:hidden;margin-bottom:18px;background:radial-gradient(ellipse at top,#0d1640,#070b24);min-height:180px;position:relative}.info-title{font-size:14px;color:var(--cyan);font-weight:700;margin:14px 0 8px;letter-spacing:1px;display:flex;align-items:center;gap:8px}.info-title::before{content:"";width:4px;height:14px;background:var(--cyan);box-shadow:0 0 8px var(--cyan);border-radius:2px}.formula{background:linear-gradient(135deg,rgba(255,231,76,.12),rgba(0,245,212,.08));border:1px solid rgba(255,231,76,.4);border-radius:12px;padding:16px 20px;margin:12px 0;text-align:center;font-size:17px;font-weight:600;box-shadow:0 0 24px rgba(255,231,76,.12)}.formula .lab{display:block;font-size:11px;color:var(--yellow);letter-spacing:3px;margin-bottom:6px}.formula .eq{font-family:"JetBrains Mono",Consolas,monospace;font-size:16px}.formula .eq b{color:var(--yellow)}.define-box{background:rgba(0,245,212,.06);border-left:3px solid var(--cyan);border-radius:0 10px 10px 0;padding:12px 16px;margin:10px 0;font-size:14px}.define-box b{color:var(--cyan)}
+.steps{display:flex;flex-direction:column;gap:10px;margin:10px 0}.step{display:flex;gap:12px;align-items:flex-start;background:var(--bg-panel);border:1px solid rgba(0,245,212,.15);border-radius:10px;padding:11px 14px;font-size:13.5px}.step .n{flex-shrink:0;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;font-family:"JetBrains Mono",monospace;background:linear-gradient(135deg,var(--cyan),#0a8b7a);color:#001b16;box-shadow:0 0 10px rgba(0,245,212,.4)}.ops{margin-top:14px;background:linear-gradient(135deg,rgba(255,107,53,.08),rgba(255,46,151,.06));border:1px solid rgba(255,107,53,.35);border-radius:10px;padding:12px 16px;font-size:14px}.ops .h{color:var(--orange);font-weight:700;margin-bottom:4px;font-size:13px;letter-spacing:1px}.prompt{margin-top:14px;border-radius:10px;overflow:hidden;border:1px solid rgba(0,245,212,.25);background:#060a1e;font-family:"JetBrains Mono",Consolas,monospace}.prompt .ph{background:rgba(0,245,212,.10);padding:8px 14px;font-size:12px;color:var(--cyan);border-bottom:1px solid rgba(0,245,212,.2);display:flex;align-items:center;gap:8px}.prompt .ph::before{content:"▌";color:var(--magenta)}.prompt .pc{padding:14px 16px;font-size:12.5px;color:#c8d0f5;line-height:1.85;white-space:pre-wrap}.prompt .k{color:var(--cyan);font-weight:700}.prompt .v{color:var(--nebula);font-weight:700}.prompt .warn{color:var(--yellow);font-weight:700}.script-stages{display:flex;flex-direction:column;gap:10px;margin-top:10px}.stage{background:var(--bg-panel);border:1px solid rgba(177,74,237,.35);border-radius:10px;padding:12px 14px;font-size:13.5px}.stage .st{color:var(--nebula);font-weight:700;margin-bottom:4px;font-size:13px}.badge-new{display:inline-block;background:linear-gradient(90deg,var(--magenta),var(--orange));color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:8px;vertical-align:middle}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.grid6{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.card{border-radius:12px;overflow:hidden;background:linear-gradient(160deg,rgba(15,22,56,.9),rgba(10,14,39,.95));border:1px solid var(--border)}.card-top{padding:11px;text-align:center}.card-copy{padding:12px;font-size:13px;color:var(--text-dim);line-height:1.75}.card-copy b{color:var(--cyan)}
+.tl-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:16px}.tl-item{padding:14px 10px;background:rgba(20,27,63,.72);border:1px solid var(--border);border-radius:12px;text-align:center}.tl-item .no{font-size:22px;font-weight:900;color:var(--cyan)}.tl-item .t{font-size:13px;color:var(--yellow);margin:4px 0 6px}.tl-item .label{font-size:11px;color:var(--text-dim);line-height:1.4}
+.data-table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}.data-table th,.data-table td{padding:9px 11px;border:1px solid rgba(0,245,212,.18);text-align:left}.data-table th{background:rgba(0,245,212,.10);color:var(--cyan);font-weight:700}.data-table td.bad{color:#ff8ba7}.data-table td.good{color:var(--green)}.check-list{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-top:12px}.check-list label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-dim);background:var(--bg-panel);padding:10px 12px;border-radius:10px;border:1px solid rgba(0,245,212,.16)}.check-list input{width:18px;height:18px;accent-color:var(--cyan)}
+.backtop{position:fixed;right:22px;bottom:26px;z-index:60;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;text-decoration:none;font-size:17px;color:var(--cyan);border:1px solid var(--border);background:rgba(6,10,34,.85);backdrop-filter:blur(10px);box-shadow:0 0 18px rgba(0,245,212,.25);transition:.2s}.backtop:hover{color:var(--yellow);border-color:rgba(255,231,76,.4);transform:translateY(-2px)}footer{text-align:center;padding:40px 24px;color:var(--text-faint);font-size:13px;border-top:1px solid var(--border);margin-top:40px}footer .wm{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);border-radius:20px;background:rgba(0,245,212,.04);color:var(--cyan);font-size:12px;margin-top:14px}
+.w-yellow{color:var(--yellow)}.w-cyan{color:var(--cyan)}.w-magenta{color:var(--magenta)}.w-nebula{color:var(--nebula)}.w-green{color:var(--green)}
+.tier{display:flex;flex-direction:column;gap:8px;margin-top:10px}.tier-row{display:flex;align-items:flex-start;gap:12px;padding:11px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg-panel);font-size:13.5px}.tier-row .tk{font-family:"JetBrains Mono",monospace;font-weight:800;flex-shrink:0;width:74px;color:var(--cyan);letter-spacing:1px}
+.pyr{display:flex;flex-direction:column;align-items:center;gap:7px;padding:20px 16px}.pyr .lv{border-radius:9px;text-align:center;padding:11px 10px;font-size:13px;font-weight:700;border:1px solid;line-height:1.4}.pyr .lv span{display:block;font-size:11px;font-weight:400;color:var(--text-dim);margin-top:3px}
+.masthead{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#070c22}.masthead .mh-top{text-align:center;padding:16px 14px 10px;border-bottom:3px double rgba(0,245,212,.35)}.masthead .mh-name{font-size:clamp(20px,3vw,30px);font-weight:900;letter-spacing:6px;color:var(--text)}.masthead .mh-sub{font-size:11px;color:var(--text-dim);letter-spacing:2px;margin-top:4px}.masthead .mh-body{padding:14px}.masthead .mh-lead{font-size:15px;font-weight:800;line-height:1.5;margin-bottom:8px}.masthead .mh-line{font-size:12.5px;color:var(--text-dim);line-height:1.75}.masthead .mh-side{border-left:1px solid rgba(0,245,212,.18);padding-left:12px}.masthead .mh-tag{display:inline-block;font-size:10px;color:var(--cyan);border:1px solid rgba(0,245,212,.3);border-radius:4px;padding:1px 6px;margin-bottom:6px}
+.rank-ladder{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:14px}.rank-step{padding:10px 6px;background:var(--bg-panel);border:1px solid var(--border);border-radius:10px;text-align:center}.rank-step .ri{font-size:20px;line-height:1.2}.rank-step .rt{font-weight:800;font-size:12.5px;margin:3px 0 2px}.rank-step .rd{font-size:10.5px;color:var(--text-faint);line-height:1.45}.rank-step.on{border-color:rgba(255,231,76,.6);box-shadow:0 0 16px rgba(255,231,76,.18)}
+.rankup{margin-top:16px;border-radius:12px;border:1px solid rgba(255,231,76,.45);background:linear-gradient(135deg,rgba(255,231,76,.12),rgba(255,46,151,.07));padding:14px 18px;font-size:14px;line-height:1.8}.rankup .rh{color:var(--yellow);font-weight:800;letter-spacing:2px;font-size:13px;margin-bottom:4px}.rankup b{color:var(--yellow)}
+.rankchip{display:inline-block;font-size:11px;font-weight:800;color:#1b1600;background:linear-gradient(90deg,var(--yellow),var(--orange));border-radius:10px;padding:2px 9px;margin-left:8px;vertical-align:2px;white-space:nowrap}
+.timechip{display:inline-block;font-size:11px;color:var(--cyan);border:1px solid rgba(0,245,212,.35);border-radius:10px;padding:2px 9px;margin-left:8px;vertical-align:2px;white-space:nowrap}
+.rest-banner{max-width:1280px;margin:34px auto;padding:16px 24px;border-radius:14px;border:1px dashed rgba(255,231,76,.45);background:rgba(255,231,76,.05);text-align:center;color:var(--yellow);font-weight:700;letter-spacing:1px}.rest-banner small{display:block;color:var(--text-dim);font-weight:400;letter-spacing:0;margin-top:4px;font-size:12.5px}
+.prep{width:calc(100% - 48px);max-width:1232px;margin:14px auto 0;padding:18px 24px 20px;border:1px solid var(--border);border-radius:16px;background:linear-gradient(135deg,rgba(0,245,212,.07),rgba(187,134,252,.05));box-shadow:0 0 24px rgba(0,245,212,.07)}
+.prep-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.prep-t{font-size:14.5px;font-weight:800;color:var(--cyan);letter-spacing:2px}
+.prep-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.prep-item{position:relative;display:flex;gap:11px;align-items:flex-start;padding:12px 15px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.03);cursor:pointer;transition:border-color .18s,background .18s;font-size:13.4px;line-height:1.62}
+.prep-item:hover{border-color:rgba(0,245,212,.6);background:rgba(0,245,212,.06)}
+.prep-item input{flex:none;width:18px;height:18px;margin-top:2px;accent-color:var(--cyan);cursor:pointer}
+.pt{display:flex;flex-direction:column;gap:5px;flex:1;min-width:0}
+.pt-h{font-size:13.6px;font-weight:800;color:var(--cyan);letter-spacing:.6px;line-height:1.35}
+.pt-b{color:var(--text);line-height:1.62}
+.nb{white-space:nowrap}
+.pt-plan,.pt-todo{margin-top:1px;padding:6px 10px;border-radius:9px;font-size:12.7px;line-height:1.6;color:var(--text-dim)}
+.pt-plan{border-left:2px solid rgba(255,231,76,.6);background:rgba(255,231,76,.07)}
+.pt-todo{border-left:2px solid rgba(79,195,247,.55);background:rgba(79,195,247,.07)}
+.pt-plan b,.pt-todo b{display:inline-block;padding:1px 7px;margin-right:7px;border-radius:6px;font-size:11.6px;font-weight:800;letter-spacing:.5px;white-space:nowrap}
+.pt-plan b{color:var(--yellow);background:rgba(255,231,76,.16);border:1px solid rgba(255,231,76,.34)}
+.pt-todo b{color:var(--crystal);background:rgba(79,195,247,.14);border:1px solid rgba(79,195,247,.32)}
+.prep-item input:checked~.pt{opacity:.55}
+@media(max-width:980px){.grid6{grid-template-columns:repeat(3,1fr)}.grid4{grid-template-columns:repeat(2,1fr)}.grid3{grid-template-columns:1fr}.tl-grid{grid-template-columns:repeat(3,1fr)}.rank-ladder{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:720px){.page-body{padding:18px 16px}.topnav{padding:10px 14px}.part-banner{padding:0 12px}main{padding:0 12px 60px}.grid2{grid-template-columns:1fr}.check-list{grid-template-columns:1fr}.tl-grid{grid-template-columns:repeat(2,1fr)}.nav-links{margin-left:0}.rank-ladder{grid-template-columns:repeat(2,1fr)}.toolnote{padding:16px 18px;width:calc(100% - 24px);margin-top:18px}.prep{padding:16px 18px 18px;width:calc(100% - 24px)}.prep-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="top" style="position:absolute;top:0;left:0"></div>
+<nav class="topnav">
+  <div class="brand"><span class="logo">【emoji】</span><span>AI 少年 · 【课程名】</span></div>
+  <!-- 导航按实际 PART 数量自行增补：每个 part-banner 的 id 都要有一条对应 <a>，体检第 4 项会逐个核对断链 -->
+  <div class="nav-links"><a href="#part0">【环节0】</a><a href="#appendix">📎 附录</a></div>
+</nav>
+<div class="toolnote"><div class="th">🧭 使用说明 · 【主题名】</div>📚 <b>课程概述</b>：面向<b>【年级】</b>的【课程定位一句话】。沿【主线索：环节 → 环节 → … → 环节】推进，最终产出<b>【最终成果】</b>。【AI 工具名单】全程只当助手，【课程的核心理念一句话】。<br>⏱ <b>两种上法</b>：<b>【全时长】分钟全流程</b>与<b>【快线时长】分钟快线</b>（每页右上角标注：⏱核心 = 两版都上，⚡选做 = 仅全时长版，快线跳过）。全课共 <b>N 处 AI 工具使用点</b>，每处都给出可直接照抄的指令，附录有速查总表。学生以 4–6 人一组，共用设备，岗位每关轮换。<br>🛡 <b>安全底线</b>：【本课程安全底线，AI 课默认：不编造、不偷拍；不使用未授权的肖像与声音，不克隆真人声音；AI 生成的图片和视频必须标注「AI 生成 · 示意图」。AI 写的是初稿，不是答案。】</div>
+
+<!-- 教师课前准备块（两种模式都放；位置固定：toolnote 之后、第一个 PART 横幅之前）
+     不计页码：不写 page-num、不进 topnav，所以插它不动任何页码与跨页引用。
+     六项每项都要带「缺了怎么办」的预案——预案才是这一块的价值。 -->
+<div class="prep" id="prep">
+  <div class="prep-h"><span class="prep-t">📋 教师课前准备 · 逐项打勾</span></div>
+  <div class="prep-grid">
+    <label class="prep-item"><input type="checkbox"><span class="pt"><span class="pt-h">📺 设备</span><span class="pt-b">【设备要求】</span><span class="pt-plan"><b>没网络的预案</b>【断网怎么上】</span></span></label>
+    <label class="prep-item"><input type="checkbox"><span class="pt"><span class="pt-h">🔑 账号</span><span class="pt-b">【要预登的账号与额度】</span><span class="pt-plan"><b>额度不够</b>【额度不够的替代做法】</span></span></label>
+    <label class="prep-item"><input type="checkbox"><span class="pt"><span class="pt-h">📄 纸本</span><span class="pt-b">【要印的学案与页码，写真实存在的页】</span><span class="pt-todo"><b>先别发的</b>【哪些纸要留到后面环节再发，及原因】</span></span></label>
+    <label class="prep-item"><input type="checkbox"><span class="pt"><span class="pt-h">🎒 物料</span><span class="pt-b">【教具、耗材与数量】<span class="nb">（附录有完整清单）</span>。</span></span></label>
+    <label class="prep-item"><input type="checkbox"><span class="pt"><span class="pt-h">🖼️ 素材</span><span class="pt-b">【课前要准备好的范例、样片】</span><span class="pt-todo"><b>另备</b>【示范稿，注明在哪一页要用】</span></span></label>
+    <label class="prep-item"><input type="checkbox"><span class="pt"><span class="pt-h">👥 分组</span><span class="pt-b">【分组人数，名单排好】</span><span class="pt-todo"><b>岗位轮换</b>【岗位与轮换方式，注明轮换表贴在哪一页】</span></span></label>
+  </div>
+</div>
+
+<!-- 语域红线（填内容前先看一遍 SKILL.md 第 4.1 节）：
+     这是给老师拿去给学生上课的课件，全文禁用公司/职场语汇——
+     下班→课程结束时、交付物/产物→成果/作品、交期→完成时间、结营→结业、
+     交接→换岗交接/收尾、复盘→回头看、立项→项目启动、干到→升到。
+     判据：念给初中生听，他需不需要先知道「上班是什么」才懂？需要就换词。 -->
+
+<!-- ============ PART 00 开场 ============ -->
+<div class="part-banner" id="part0"><div class="pnum">PART · 00 · 【环节名】</div><h1>【emoji 大标题】</h1><div class="pdesc">【一句话描述本环节】<span class="timechip">⏱ 全时长版 · N'</span><span class="timechip">⚡ 快线 · N'</span></div></div>
+<main>
+<section class="page" id="p01"><div class="page-head"><span class="page-num">P 01</span><span class="page-title">【页标题】</span><span class="pace core">⏱ 核心 · N'</span></div><div class="page-body">
+  <span class="layout-tag">🖥️ 版式：【本页版式说明】</span>
+  【正文——组件写法见下方 DEMO 部分示范页】
+</div></section>
+</main>
+
+<!-- 长版专属休息（快线不停），放在 </main> 与下一个 part-banner 之间：
+<div class="rest-banner">☕ 休息 N 分钟（仅全时长版）<small>站起来，离开屏幕。快线不停。</small></div>
+-->
+
+<!-- ============ 附录 ============ -->
+<div class="part-banner" id="appendix"><div class="pnum">APPENDIX · 附录</div><h1>📎 课后延伸 + AI 工具速查表</h1><div class="pdesc">课堂没做完的、课后想加餐的、指令想抄的，都在这里</div></div>
+<main>
+<section class="page" id="p90"><div class="page-head"><span class="page-num yellow">P 90</span><span class="page-title">附录 B · N 处 AI 工具使用点速查表</span><span class="pace skip">📎 随时查</span></div><div class="page-body">
+  <table class="data-table"><tr><th>#</th><th>工具</th><th>用途</th><th>页码</th><th>双轨</th></tr><tr><td>①</td><td><b>【工具】</b></td><td>【用途】</td><td>P【NN】</td><td>两版都上</td></tr></table>
+  <div class="define-box" style="border-left-color:var(--magenta);background:rgba(255,46,151,.06)">🛡 <b>安全底线（再读一遍）</b>：…</div>
+</div></section>
+</main>
+<footer>AI 少年 · 【课程名】 ｜ 【一句话口号】<div class="wm">【emoji 主题 · N 分钟课堂版（含 快线 快线）】</div></footer>
+<a class="backtop" href="#top">▲</a>
+
+<!-- ============ DEMO · 组件示范（制作正式课件时删除本 PART 与下方全部） ============ -->
+<div class="part-banner" id="demo"><div class="pnum">DEMO · 组件示范</div><h1>🧩 组件速查示范页（制作时删除本 PART）</h1><div class="pdesc">每个组件照这里的写法复制，只改文字</div></div>
+<main>
+<section class="page"><div class="page-head"><span class="page-num">D 01</span><span class="page-title">基础版式组件</span><span class="pace core">⏱ 核心</span></div><div class="page-body">
+  <span class="layout-tag">🖥️ 版式：…（每页正文第一行都放这个）</span>
+  <div class="info-title">小节标题 info-title</div>
+  <div class="grid3"><div class="card" style="border-color:var(--cyan)"><div class="card-top" style="font-size:28px">🎯</div><div class="card-copy"><b>卡片一</b><br>card-copy 里 b 自动变青色；边框色用 style 指定。</div></div><div class="card" style="border-color:var(--nebula)"><div class="card-top" style="font-size:28px">🤖</div><div class="card-copy"><b class="w-nebula">卡片二</b><br>标题色可用 .w-yellow/.w-cyan/.w-magenta/.w-nebula/.w-green。</div></div><div class="card" style="border-color:var(--magenta)"><div class="card-top" style="font-size:28px">📦</div><div class="card-copy"><b class="w-magenta">卡片三</b><br>grid2/grid3/grid4/grid6 换列数即可。</div></div></div>
+  <div class="steps"><div class="step"><span class="n">1</span><span><b>步骤一</b>——steps + step + .n 圆号，写流程。</span></div><div class="step"><span class="n">2</span><span><b>步骤二</b>——每步一句，动词开头。</span></div><div class="step"><span class="n">3</span><span><b>步骤三</b>——尽量不超过 6 步。</span></div></div>
+  <div class="formula"><span class="lab">CORE FORMULA</span><div class="eq">A + <b>B</b> = <b>C</b>（b 自动高亮黄）</div></div>
+  <div class="define-box">💡 <b>define-box 默认青色</b>：定义、要点、提醒。深度点与警示用下面的变体。</div>
+  <div class="define-box" style="border-left-color:var(--yellow);background:rgba(255,231,76,.06)">🧠 <b>深度点（黄色变体）</b>：面向「有深度」要求的拔高点。</div>
+  <div class="define-box" style="border-left-color:var(--magenta);background:rgba(255,46,151,.07)">🚨 <b>警示（品红变体）</b>：红线、危险操作提醒。</div>
+  <div class="ops"><div class="h">📍 ops 互动盒</div>课堂互动、练一练、抢答、分组任务写这里。可内嵌 <span class="rankchip">rankchip</span> 与 <span class="timechip">⏱ 版 · N'</span>。</div>
+</div></section>
+
+<section class="page"><div class="page-head"><span class="page-num purple">D 02</span><span class="page-title">数据、指令与游戏化组件</span><span class="pace zap">⚡ 选做</span></div><div class="page-body">
+  <table class="data-table"><tr><th>栏目</th><th>反例</th><th>正例</th></tr><tr><td><b>data-table</b></td><td class="bad">✗ td.bad 红粉</td><td class="good">✓ td.good 绿</td></tr></table>
+  <div class="tier"><div class="tier-row" style="border-color:rgba(255,46,151,.5)"><span class="tk w-magenta">红线①</span><span>tier + tier-row + .tk 标签；边框色按严重度配 rgba 色，tk 可配 .w-色。</span></div><div class="tier-row" style="border-color:rgba(255,231,76,.45)"><span class="tk w-yellow">注意②</span><span>第二条。</span></div><div class="tier-row"><span class="tk">默认③</span><span>不指定边框色即默认青。</span></div></div>
+  <div class="script-stages"><div class="stage"><div class="st">stage 小标题（.st 紫色）</div>script-stages + stage：轮次、分镜、多段模板。</div><div class="stage"><div class="st">第二段</div>每段一张卡。</div></div>
+  <div class="prompt"><div class="ph">🤖 工具 · 用途 · 指令① <span class="rankchip">⚡ 仅长版</span></div><div class="pc">prompt 指令框：.pc 内用真实换行分段；
+<span class="k">.k 高亮青</span>（关键参数）、<span class="v">.v 高亮紫</span>（填空位）、<span class="warn">.warn 警示黄</span>（负面要求/防编造约束）。
+图像/视频指令末尾必带负面要求；文字指令必带「缺了标【缺】，不要编」。</div></div>
+  <div class="rank-ladder"><div class="rank-step on"><div class="ri">🌱</div><div class="rt">等级一</div><div class="rd">当前级加 .on</div></div><div class="rank-step"><div class="ri">🪪</div><div class="rt">等级二</div><div class="rd">说明</div></div><div class="rank-step"><div class="ri">🎙️</div><div class="rt">等级三</div><div class="rd">说明</div></div><div class="rank-step"><div class="ri">🔎</div><div class="rt">等级四</div><div class="rd">说明</div></div><div class="rank-step"><div class="ri">✒️</div><div class="rt">等级五</div><div class="rd">说明</div></div><div class="rank-step"><div class="ri">🏅</div><div class="rt">等级六</div><div class="rd">说明</div></div></div>
+  <div class="rankup"><div class="rh">🎖️ 晋升 · 等级一 → 等级二</div>rankup 晋升卡：写清<b>授衔条件</b> + 快线替代授衔路径。</div>
+  <div class="pyr" style="background:rgba(0,245,212,.03);border-radius:12px;border:1px solid var(--border)"><div class="lv" style="width:100%;border-color:rgba(255,46,151,.6);background:rgba(255,46,151,.13);color:#fff">① 顶层<span>pyr 层级图，宽度递减</span></div><div class="lv" style="width:75%;border-color:rgba(255,231,76,.55);background:rgba(255,231,76,.10)">②<span>说明</span></div><div class="lv" style="width:50%;border-color:rgba(0,245,212,.55);background:rgba(0,245,212,.10)">③<span>说明</span></div></div>
+  <div class="check-list"><label><input type="checkbox">check-list 检查项一</label><label><input type="checkbox">检查项二</label><label><input type="checkbox">检查项三</label><label><input type="checkbox">检查项四</label></div>
+  <div class="tl-grid" style="grid-template-columns:repeat(5,1fr)"><div class="tl-item"><div class="no">🏆</div><div class="t">奖项一</div><div class="label">tl-item 说明</div></div><div class="tl-item"><div class="no">🎙️</div><div class="t">奖项二</div><div class="label">说明</div></div><div class="tl-item"><div class="no">✒️</div><div class="t">奖项三</div><div class="label">说明</div></div><div class="tl-item"><div class="no">🎨</div><div class="t">奖项四</div><div class="label">说明</div></div><div class="tl-item"><div class="no">🔥</div><div class="t">奖项五</div><div class="label">说明</div></div></div>
+  <div class="masthead"><div class="mh-top"><div class="mh-name">作 品 小 样</div><div class="mh-sub">masthead · 报头/报纸/海报小样</div></div><div class="mh-body"><div class="mh-lead">mh-lead 大标题</div><div class="mh-line">mh-line 正文行；.mh-side 分栏 + .mh-tag 小标签（见 120 分钟版 P30）。</div></div></div>
+</div></section>
+</main>
+</body>
+</html>
